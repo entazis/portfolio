@@ -2,6 +2,9 @@
 
 A modern, responsive software engineering portfolio built with Next.js, TypeScript, and Tailwind CSS.
 
+Prompt used for initializing the project:  
+*Create a website for me where I can show my portfolio as a software engineer and I can also share the applications I've built. Make it a single-page application using Next.js, and make it interactive with beautiful animations, it should be immersive, and professional. Make it responsive and also apply the best UX practices. Make this website server-side rendered, and make it static rendered as much as you can. Use tailwind CSS for the styling. It should not have authentication or registration fields at first but later on, if either of the applications requires (saving sessions, storing data, ...) then make Google, Facebook, Stackoverflow, .. and other popular 3rd party authentications/ registration available.*
+
 ## Features
 
 - Responsive design with Tailwind CSS
