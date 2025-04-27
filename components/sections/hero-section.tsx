@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Briefcase, Github } from "lucide-react";
 import { motion } from "@/lib/motion";
+import { Briefcase, ChevronDown, Github } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
@@ -67,7 +67,7 @@ export default function HeroSection() {
             </h2>
           </motion.div>
           
-          <motion.p
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -75,7 +75,7 @@ export default function HeroSection() {
           >
             Passionate about creating elegant solutions to complex problems. 
             I specialize in building modern web applications with cutting-edge technologies.
-          </motion.p>
+          </motion.div>
           
           <motion.div
             initial={{ opacity: 0 }}
@@ -109,5 +109,3 @@ export default function HeroSection() {
     </section>
   );
 }
-
-export { HeroSection }
