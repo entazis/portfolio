@@ -13,7 +13,7 @@ const DELETING_DELAY = Number(process.env.NEXT_PUBLIC_DELETING_DELAY) || 50;
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
-  const texts = ["Full-Stack Software Engineer", "7+ Years Experience in Fast-Paced Environments", "Building Scalable Systems", "AI Enthusiast", "Problem Solver"];
+  const texts = ["Full-Stack Software Engineer", "7+ Years Experience", "Building Scalable Systems", "AI Enthusiast", "Problem Solver"];
   
   useEffect(() => {
     const typeText = async () => {
@@ -55,7 +55,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Hello, I'm <span className="text-primary">Bence</span>
+              Hello, I&apos;m <span className="text-primary">Bence</span>
             </h1>
           </motion.div>
           
@@ -77,8 +77,7 @@ export default function HeroSection() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="text-muted-foreground max-w-2xl"
           >
-            Passionate about creating elegant solutions to complex problems. 
-            I specialize in building modern web applications with cutting-edge technologies.
+            Expertise in building scalable systems, optimizing performance, improving system stability, and mentoring team members in fast-paced environments.
           </motion.div>
           
           <motion.div
