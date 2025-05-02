@@ -11,7 +11,12 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'Dev Portfolio | Software Engineer',
   description: 'Professional portfolio showcasing software engineering projects and skills',
+  viewport: 'width=device-width, initial-scale=1',
+  robots: 'index, follow',
 };
+
+export const dynamic = 'force-static';
+export const revalidate = false;
 
 export default function RootLayout({
   children,

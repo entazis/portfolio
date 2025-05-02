@@ -90,11 +90,6 @@ export function SkillsSection() {
                     <Progress 
                       value={skill.level} 
                       className="h-2"
-                      style={{
-                        backgroundImage: theme === "dark" 
-                          ? "linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.7) 100%)" 
-                          : "linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--primary)/0.6) 100%)"
-                      }}
                     />
                   </div>
                 ))}
@@ -107,13 +102,15 @@ export function SkillsSection() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-16"
         >
-          <h3 className="text-xl font-semibold text-center mb-6">{t('skills.technologiesTitle')}</h3>
+          <h3 className="text-xl font-semibold text-center mb-6">
+            {t('skills.technologies')}
+          </h3>
           <div className="flex flex-wrap justify-center gap-2">
             {technologies.map((tech) => (
-              <Badge key={tech} variant="secondary" className="text-sm px-3 py-1">
+              <Badge key={tech} variant="secondary">
                 {tech}
               </Badge>
             ))}

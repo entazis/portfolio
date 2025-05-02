@@ -2,28 +2,42 @@
 
 import React from "react";
 
+// Define custom animation properties
+interface CustomAnimationProps {
+  x?: number;
+  y?: number;
+  opacity?: number;
+}
+
 // Basic animation props interface
 interface AnimationProps {
-  initial?: Record<string, unknown>;
-  animate?: Record<string, unknown>;
-  exit?: Record<string, unknown>;
-  transition?: Record<string, unknown>;
-  whileHover?: Record<string, unknown>;
-  whileTap?: Record<string, unknown>;
-  whileInView?: Record<string, unknown>;
+  initial?: Partial<React.CSSProperties> & CustomAnimationProps;
+  animate?: Partial<React.CSSProperties> & CustomAnimationProps;
+  exit?: Partial<React.CSSProperties> & CustomAnimationProps;
+  transition?: {
+    duration?: number;
+    ease?: string;
+    delay?: number;
+  };
+  whileHover?: Partial<React.CSSProperties> & CustomAnimationProps;
+  whileTap?: Partial<React.CSSProperties> & CustomAnimationProps;
+  whileInView?: Partial<React.CSSProperties> & CustomAnimationProps;
   viewport?: Record<string, unknown>;
   className?: string;
   style?: React.CSSProperties;
   [key: string]: any;
 }
 
+// Create a type for the motion component
+type MotionComponent<T extends React.ElementType> =
+  React.ForwardRefExoticComponent<
+    AnimationProps & React.ComponentPropsWithoutRef<T>
+  >;
+
 // Simple wrapper function to add animations
 export function motion<T extends React.ElementType = "div">(
   Component: T
-): React.ForwardRefExoticComponent<
-  AnimationProps & React.ComponentPropsWithoutRef<T>
-> {
-  // This is a simplified version of motion that applies CSS transitions
+): MotionComponent<T> {
   const MotionComponent = React.forwardRef<
     any,
     AnimationProps & React.ComponentPropsWithoutRef<T>
@@ -41,17 +55,17 @@ export function motion<T extends React.ElementType = "div">(
       style,
       ...rest
     } = props;
-    
+
     // Apply transitions using built-in CSS
     const cssTransition = transition
-      ? `all ${transition.duration || 0.3}s ${
-          transition.ease || "ease"
-        } ${transition.delay || 0}s`
+      ? `all ${transition.duration || 0.3}s ${transition.ease || "ease"} ${
+          transition.delay || 0
+        }s`
       : "all 0.3s ease";
-    
+
     // Merge styles with initial and animate properties
     const combinedStyle: React.CSSProperties = {
-      ...initial,
+      ...(initial as React.CSSProperties),
       ...style,
       transition: cssTransition,
       ...((animate || initial) && {
@@ -71,14 +85,14 @@ export function motion<T extends React.ElementType = "div">(
       style: combinedStyle,
     });
   });
-  
+
   MotionComponent.displayName = `Motion${
     typeof Component === "string"
       ? Component
       : Component.name || Component.toString()
   }`;
-  
-  return MotionComponent;
+
+  return MotionComponent as MotionComponent<T>;
 }
 
 // Simplified implementation for common motion components
