@@ -11,7 +11,7 @@ import { config } from "@/lib/config";
 import { motion } from "@/lib/motion";
 import { Briefcase, ChevronDown, Github } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { TypingText } from "./typing-text";
 
 interface GitHubProfile {
   username: string;
@@ -20,34 +20,6 @@ interface GitHubProfile {
 }
 
 export default function HeroSection() {
-  const [typedText, setTypedText] = useState("");
-  const [textIndex, setTextIndex] = useState(0);
-  
-  useEffect(() => {
-    const typeText = async () => {
-      // Type current text
-      const currentText = config.heroTexts[textIndex];
-      for (let i = 0; i <= currentText.length; i++) {
-        setTypedText(currentText.substring(0, i));
-        await new Promise(resolve => setTimeout(resolve, config.typingDelay));
-      }
-      
-      // Pause at the end
-      await new Promise(resolve => setTimeout(resolve, config.pauseDelay));
-      
-      // Delete the text
-      for (let i = currentText.length; i >= 0; i--) {
-        setTypedText(currentText.substring(0, i));
-        await new Promise(resolve => setTimeout(resolve, config.deletingDelay));
-      }
-      
-      // Move to next text
-      setTextIndex((textIndex + 1) % config.heroTexts.length);
-    };
-    
-    typeText();
-  }, [textIndex]);
-
   return (
     <section 
       id="hero" 
@@ -73,10 +45,7 @@ export default function HeroSection() {
             transition={{ delay: 0.2, duration: 0.5 }}
             className="h-8"
           >
-            <h2 className="text-xl md:text-2xl font-medium text-muted-foreground">
-              <span className="text-primary">{typedText}</span>
-              <span className="animate-pulse">|</span>
-            </h2>
+            <TypingText texts={config.heroTexts} />
           </motion.div>
           
           <motion.div
