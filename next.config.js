@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  reactStrictMode: true,
+  experimental: {
+    serverActions: true,
+  },
+  output: "export",
   eslint: {
     ignoreDuringBuilds: true,
   },
