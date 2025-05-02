@@ -1,36 +1,52 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "@/lib/motion";
-import { projectsData } from "@/lib/data";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
 } from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { projectsData } from "@/lib/data";
+import { motion } from "@/lib/motion";
 import { ExternalLink, Github } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+
+// Define Project type if not exported from projectsData
+interface Project {
+  id: number;
+  title: string;
+  shortDescription: string;
+  description: string;
+  image: string;
+  category: string;
+  technologies: string[];
+  features: string[];
+  demoUrl?: string | null;
+  githubUrl?: string | null;
+}
 
 export function ProjectsSection() {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [filter, setFilter] = useState("all");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [filter, setFilter] = useState<string>("all");
+  const { t } = useTranslation('common');
 
-  const filteredProjects = filter === "all" 
+  const filteredProjects: Project[] = filter === "all" 
     ? projectsData 
-    : projectsData.filter(project => project.category === filter);
+    : projectsData.filter((project: Project) => project.category === filter);
 
   return (
     <section id="projects" className="py-20 bg-muted/30">
@@ -42,20 +58,20 @@ export function ProjectsSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-2">Featured Projects</h2>
+          <h2 className="text-3xl font-bold mb-2">{t('projects.title')}</h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            A showcase of my recent work. These projects demonstrate my skills and expertise in different technologies.
+            {t('projects.subtitle')}
           </p>
         </motion.div>
 
         <div className="flex justify-center mb-8">
           <Tabs defaultValue="all" value={filter} onValueChange={setFilter}>
             <TabsList>
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="web">Web Apps</TabsTrigger>
-              <TabsTrigger value="mobile">Mobile</TabsTrigger>
-              <TabsTrigger value="backend">Backend</TabsTrigger>
+              <TabsTrigger value="all">{t('projects.all')}</TabsTrigger>
+              <TabsTrigger value="web">{t('projects.web')}</TabsTrigger>
+              <TabsTrigger value="mobile">{t('projects.mobile')}</TabsTrigger>
+              <TabsTrigger value="backend">{t('projects.backend')}</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -84,7 +100,7 @@ export function ProjectsSection() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 3).map((tech) => (
+                    {project.technologies.slice(0, 3).map((tech: string) => (
                       <Badge key={tech} variant="secondary">
                         {tech}
                       </Badge>
@@ -95,7 +111,7 @@ export function ProjectsSection() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <Button size="sm" variant="ghost">View Details</Button>
+                  <Button size="sm" variant="ghost">{t('projects.viewDetails')}</Button>
                 </CardFooter>
               </Card>
             </motion.div>
@@ -121,14 +137,14 @@ export function ProjectsSection() {
               
               <div className="space-y-4">
                 <div>
-                  <h4 className="text-lg font-medium mb-2">Overview</h4>
+                  <h4 className="text-lg font-medium mb-2">{t('projects.overview')}</h4>
                   <p className="text-muted-foreground">{selectedProject.description}</p>
                 </div>
                 
                 <div>
-                  <h4 className="text-lg font-medium mb-2">Technologies Used</h4>
+                  <h4 className="text-lg font-medium mb-2">{t('projects.technologiesUsed')}</h4>
                   <div className="flex flex-wrap gap-2">
-                    {selectedProject.technologies.map((tech) => (
+                    {selectedProject.technologies.map((tech: string) => (
                       <Badge key={tech} variant="secondary">
                         {tech}
                       </Badge>
@@ -137,9 +153,9 @@ export function ProjectsSection() {
                 </div>
                 
                 <div>
-                  <h4 className="text-lg font-medium mb-2">Key Features</h4>
+                  <h4 className="text-lg font-medium mb-2">{t('projects.keyFeatures')}</h4>
                   <ul className="list-disc pl-5 text-muted-foreground">
-                    {selectedProject.features.map((feature, i) => (
+                    {selectedProject.features.map((feature: string, i: number) => (
                       <li key={i}>{feature}</li>
                     ))}
                   </ul>
@@ -150,7 +166,7 @@ export function ProjectsSection() {
                     <Button asChild>
                       <a href={selectedProject.demoUrl} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="mr-2 h-4 w-4" />
-                        Live Demo
+                        {t('projects.liveDemo')}
                       </a>
                     </Button>
                   )}
@@ -158,7 +174,7 @@ export function ProjectsSection() {
                     <Button variant="outline" asChild>
                       <a href={selectedProject.githubUrl} target="_blank" rel="noopener noreferrer">
                         <Github className="mr-2 h-4 w-4" />
-                        View Code
+                        {t('projects.viewCode')}
                       </a>
                     </Button>
                   )}

@@ -85,5 +85,87 @@
     "viewProjects": "View Projects",
     "githubProfiles": "GitHub Profiles",
     "scrollToAbout": "Scroll to About section"
+  },
+  "skills": {
+    "title": "Skills & Expertise",
+    "subtitle": "I've developed a diverse set of skills throughout my career. Here's an overview of my technical expertise and proficiency levels.",
+    "frontend": "Frontend",
+    "backend": "Backend",
+    "tools": "Tools & DevOps",
+    "technologiesTitle": "Technologies & Tools"
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "subtitle": "A showcase of my recent work. These projects demonstrate my skills and expertise in different technologies.",
+    "all": "All",
+    "web": "Web Apps",
+    "mobile": "Mobile",
+    "backend": "Backend",
+    "viewDetails": "View Details",
+    "overview": "Overview",
+    "technologiesUsed": "Technologies Used",
+    "keyFeatures": "Key Features",
+    "liveDemo": "Live Demo",
+    "viewCode": "View Code"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Have a project in mind or want to discuss potential opportunities? Feel free to reach out!",
+    "infoTitle": "Contact Information",
+    "infoDescription": "Feel free to reach out to me through any of these channels. I'm always open to discussing new projects, opportunities, or partnerships.",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "availabilityTitle": "Availability",
+    "availabilityDescription": "I'm currently <1>available</1> for freelance work or full-time positions. My typical response time is within 24 hours.",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "Your email",
+      "subject": "Subject",
+      "subjectPlaceholder": "Message subject",
+      "message": "Message",
+      "messagePlaceholder": "Your message"
+    },
+    "sending": "Sending...",
+    "sendMessage": "Send Message",
+    "successMessage": "Message sent successfully!"
+  },
+  "header": {
+    "brand": "DevPortfolio",
+    "nav": {
+      "home": "Home",
+      "about": "About",
+      "skills": "Skills",
+      "projects": "Projects",
+      "experience": "Experience",
+      "contact": "Contact"
+    }
+  },
+  "footer": {
+    "brand": "DevPortfolio",
+    "description": "A showcase of my projects, skills, and experience as a software engineer.",
+    "quickLinks": "Quick Links",
+    "links": {
+      "home": "Home",
+      "projects": "Projects",
+      "contact": "Contact"
+    },
+    "connect": "Connect",
+    "social": {
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter",
+      "email": "Email"
+    },
+    "rights": "All rights reserved.",
+    "builtWith": "Built with Next.js and Tailwind CSS"
+  },
+  "modeToggle": {
+    "toggleTheme": "Toggle theme",
+    "light": "Lighteeer",
+    "dark": "Dark",
+    "system": "System"
   }
 } 

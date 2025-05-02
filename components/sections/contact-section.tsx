@@ -1,10 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "@/lib/motion";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,8 +11,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
+import { motion } from "@/lib/motion";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import * as z from "zod";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -36,6 +37,7 @@ const formSchema = z.object({
 
 export function ContactSection() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useTranslation('common');
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,7 +55,7 @@ export function ContactSection() {
     // Simulate form submission
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Message sent successfully!");
+      toast.success(t('contact.successMessage'));
       form.reset();
     }, 1500);
   }
@@ -68,10 +70,10 @@ export function ContactSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-2">Get In Touch</h2>
+          <h2 className="text-3xl font-bold mb-2">{t('contact.title')}</h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Have a project in mind or want to discuss potential opportunities? Feel free to reach out!
+            {t('contact.subtitle')}
           </p>
         </motion.div>
 
@@ -83,16 +85,16 @@ export function ContactSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="space-y-6"
           >
-            <h3 className="text-2xl font-semibold">Contact Information</h3>
+            <h3 className="text-2xl font-semibold">{t('contact.infoTitle')}</h3>
             <p className="text-muted-foreground">
-              Feel free to reach out to me through any of these channels. I'm always open to discussing new projects, opportunities, or partnerships.
+              {t('contact.infoDescription')}
             </p>
             
             <div className="space-y-4 mt-6">
               <div className="flex items-start space-x-4">
                 <Mail className="h-5 w-5 text-primary mt-1" />
                 <div>
-                  <h4 className="font-medium">Email</h4>
+                  <h4 className="font-medium">{t('contact.email')}</h4>
                   <a href="mailto:hello@example.com" className="text-muted-foreground hover:text-primary transition-colors">
                     hello@example.com
                   </a>
@@ -102,7 +104,7 @@ export function ContactSection() {
               <div className="flex items-start space-x-4">
                 <Phone className="h-5 w-5 text-primary mt-1" />
                 <div>
-                  <h4 className="font-medium">Phone</h4>
+                  <h4 className="font-medium">{t('contact.phone')}</h4>
                   <a href="tel:+1234567890" className="text-muted-foreground hover:text-primary transition-colors">
                     +1 (234) 567-890
                   </a>
@@ -112,7 +114,7 @@ export function ContactSection() {
               <div className="flex items-start space-x-4">
                 <MapPin className="h-5 w-5 text-primary mt-1" />
                 <div>
-                  <h4 className="font-medium">Location</h4>
+                  <h4 className="font-medium">{t('contact.location')}</h4>
                   <p className="text-muted-foreground">
                     San Francisco, California
                   </p>
@@ -121,9 +123,9 @@ export function ContactSection() {
             </div>
             
             <div className="pt-4">
-              <h4 className="font-medium mb-2">Availability</h4>
+              <h4 className="font-medium mb-2">{t('contact.availabilityTitle')}</h4>
               <p className="text-muted-foreground">
-                I'm currently <span className="text-primary font-medium">available</span> for freelance work or full-time positions. My typical response time is within 24 hours.
+                {t('contact.availabilityDescription', { context: 'available' })}
               </p>
             </div>
           </motion.div>
@@ -141,9 +143,9 @@ export function ContactSection() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{t('contact.form.name')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your name" {...field} />
+                        <Input placeholder={t('contact.form.namePlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -155,9 +157,9 @@ export function ContactSection() {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>{t('contact.form.email')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Your email" {...field} />
+                        <Input placeholder={t('contact.form.emailPlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -169,9 +171,9 @@ export function ContactSection() {
                   name="subject"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Subject</FormLabel>
+                      <FormLabel>{t('contact.form.subject')}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Message subject" {...field} />
+                        <Input placeholder={t('contact.form.subjectPlaceholder')} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -183,10 +185,10 @@ export function ContactSection() {
                   name="message"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Message</FormLabel>
+                      <FormLabel>{t('contact.form.message')}</FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder="Your message" 
+                          placeholder={t('contact.form.messagePlaceholder')} 
                           className="min-h-[120px]" 
                           {...field} 
                         />
@@ -200,12 +202,12 @@ export function ContactSection() {
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Sending...
+                      {t('contact.sending')}
                     </>
                   ) : (
                     <>
                       <Send className="mr-2 h-4 w-4" />
-                      Send Message
+                      {t('contact.sendMessage')}
                     </>
                   )}
                 </Button>

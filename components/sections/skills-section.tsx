@@ -1,10 +1,11 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "@/lib/motion";
+import { useTheme } from "next-themes";
+import { useTranslation } from "react-i18next";
 
 // Define skill categories and their items
 const skillCategories = {
@@ -44,6 +45,7 @@ const technologies = [
 
 export function SkillsSection() {
   const { theme } = useTheme();
+  const { t } = useTranslation('common');
   
   return (
     <section id="skills" className="py-20">
@@ -55,19 +57,19 @@ export function SkillsSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-2">Skills & Expertise</h2>
+          <h2 className="text-3xl font-bold mb-2">{t('skills.title')}</h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            I've developed a diverse set of skills throughout my career. Here's an overview of my technical expertise and proficiency levels.
+            {t('skills.subtitle')}
           </p>
         </motion.div>
 
         <Tabs defaultValue="frontend" className="w-full max-w-4xl mx-auto">
           <div className="flex justify-center mb-8">
             <TabsList>
-              <TabsTrigger value="frontend">Frontend</TabsTrigger>
-              <TabsTrigger value="backend">Backend</TabsTrigger>
-              <TabsTrigger value="tools">Tools & DevOps</TabsTrigger>
+              <TabsTrigger value="frontend">{t('skills.frontend')}</TabsTrigger>
+              <TabsTrigger value="backend">{t('skills.backend')}</TabsTrigger>
+              <TabsTrigger value="tools">{t('skills.tools')}</TabsTrigger>
             </TabsList>
           </div>
           
@@ -108,7 +110,7 @@ export function SkillsSection() {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="mt-16"
         >
-          <h3 className="text-xl font-semibold text-center mb-6">Technologies & Tools</h3>
+          <h3 className="text-xl font-semibold text-center mb-6">{t('skills.technologiesTitle')}</h3>
           <div className="flex flex-wrap justify-center gap-2">
             {technologies.map((tech) => (
               <Badge key={tech} variant="secondary" className="text-sm px-3 py-1">
