@@ -44,5 +44,39 @@
         }
       ]
     }
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "I'm a passionate software engineer with a focus on creating elegant, efficient solutions to complex problems. Here's a bit about who I am and what I do.",
+    "story": {
+      "title": "My Story",
+      "paragraphs": [
+        "With over 7 years of experience in software development, I've had the opportunity to work on a diverse range of projects as an independent contractor and a full-time startup employee.",
+        "I discovered my passion for programming during college, where I built my first web applications. Since then, I've been constantly learning and pushing the boundaries of what I can create.",
+        "What drives me is the ability to solve real-world problems through code, and the satisfaction of seeing users benefit from the solutions I build."
+      ]
+    },
+    "qualities": {
+      "cleanCode": {
+        "title": "Clean Code",
+        "description": "I write maintainable, well-tested code following best practices."
+      },
+      "collaborative": {
+        "title": "Collaborative",
+        "description": "I thrive in team environments and value communication."
+      },
+      "problemSolver": {
+        "title": "Problem Solver",
+        "description": "I enjoy tackling complex challenges with creative solutions."
+      },
+      "detailOriented": {
+        "title": "Detail Oriented",
+        "description": "I pay attention to the small details that make big differences."
+      }
+    },
+    "interests": {
+      "title": "Personal Interests",
+      "description": "When I'm not coding, you can find me on the dance floor, reading tech and nonfiction books, volunteering or attending events to stay connected with the community."
+    }
   }
 } 
