@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
-import { motion } from "@/lib/motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Briefcase, GraduationCap, Calendar } from "lucide-react";
-import { experienceData, educationData } from "@/lib/data";
+import { createTranslation } from "@/i18n";
+import { motion } from "@/lib/motion";
+import { Briefcase, Calendar, GraduationCap } from "lucide-react";
 
-export function ExperienceSection() {
+export async function ExperienceSection() {
+  const { t } = await createTranslation('common');
+
   return (
     <section id="experience" className="py-20">
       <div className="container mx-auto px-4">
@@ -17,10 +18,10 @@ export function ExperienceSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold mb-2">Experience & Education</h2>
+          <h2 className="text-3xl font-bold mb-2">{t('experience.title')}</h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            My professional journey and educational background.
+            {t('experience.subtitle')}
           </p>
         </motion.div>
 
@@ -29,11 +30,11 @@ export function ExperienceSection() {
           <div className="space-y-6">
             <h3 className="text-2xl font-semibold flex items-center">
               <Briefcase className="mr-2 h-5 w-5 text-primary" />
-              Work Experience
+              {t('experience.workExperience.title')}
             </h3>
             
             <div className="space-y-6">
-              {experienceData.map((item, index) => (
+              {(t('experience.workExperience.items', { returnObjects: true }) as any[]).map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
@@ -68,11 +69,11 @@ export function ExperienceSection() {
           <div className="space-y-6">
             <h3 className="text-2xl font-semibold flex items-center">
               <GraduationCap className="mr-2 h-5 w-5 text-primary" />
-              Education
+              {t('experience.education.title')}
             </h3>
             
             <div className="space-y-6">
-              {educationData.map((item, index) => (
+              {(t('experience.education.items', { returnObjects: true }) as any[]).map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: 20 }}

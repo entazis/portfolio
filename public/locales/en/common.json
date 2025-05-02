@@ -1,0 +1,48 @@
+{
+  "experience": {
+    "title": "Experience & Education",
+    "subtitle": "My professional journey and educational background.",
+    "workExperience": {
+      "title": "Work Experience",
+      "items": [
+        {
+          "role": "Software Engineer",
+          "company": "Tech Company Inc.",
+          "period": "2020 - Present",
+          "descriptions": [
+            "Developed and maintained web applications using React and TypeScript",
+            "Implemented responsive designs and optimized performance",
+            "Collaborated with cross-functional teams to deliver high-quality products"
+          ]
+        },
+        {
+          "role": "Junior Developer",
+          "company": "Startup Solutions",
+          "period": "2018 - 2020",
+          "descriptions": [
+            "Built and tested new features for the company's main product",
+            "Participated in code reviews and team meetings",
+            "Assisted in debugging and troubleshooting issues"
+          ]
+        }
+      ]
+    },
+    "education": {
+      "title": "Education",
+      "items": [
+        {
+          "degree": "Bachelor of Science in Computer Science",
+          "institution": "University of Technology",
+          "period": "2014 - 2018",
+          "description": "Graduated with honors. Specialized in software engineering and web development."
+        },
+        {
+          "degree": "Master of Science in Software Engineering",
+          "institution": "Tech Institute",
+          "period": "2018 - 2020",
+          "description": "Focused on advanced software development practices and project management."
+        }
+      ]
+    }
+  }
+} 
