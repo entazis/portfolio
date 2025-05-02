@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
-  const texts = ["Software Engineer", "Frontend Developer", "UI/UX Enthusiast", "Problem Solver"];
+  const texts = ["Full-Stack Software Engineer", "7+ Years Experience in Fast-Paced Environments", "Building Scalable Systems", "AI Enthusiast", "Problem Solver"];
   
   useEffect(() => {
     const typeText = async () => {
@@ -51,7 +51,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Hello, I'm <span className="text-primary">John Doe</span>
+              Hello, I'm <span className="text-primary">Bence</span>
             </h1>
           </motion.div>
           
