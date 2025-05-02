@@ -7,6 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { config } from "@/lib/config";
 import { motion } from "@/lib/motion";
 import { Briefcase, ChevronDown, Github } from "lucide-react";
 import Link from "next/link";
@@ -18,34 +19,6 @@ interface GitHubProfile {
   label: string;
 }
 
-const TYPING_DELAY = Number(process.env.NEXT_PUBLIC_TYPING_DELAY) || 100;
-const PAUSE_DELAY = Number(process.env.NEXT_PUBLIC_PAUSE_DELAY) || 1500;
-const DELETING_DELAY = Number(process.env.NEXT_PUBLIC_DELETING_DELAY) || 50;
-const HERO_TEXTS: string[] = process.env.NEXT_PUBLIC_HERO_TEXTS
-  ? JSON.parse(process.env.NEXT_PUBLIC_HERO_TEXTS)
-  : [
-      "Full-Stack Software Engineer",
-      "Tech Lead",
-      "7+ Years Experience",
-      "Building Scalable Systems",
-      "AI Enthusiast",
-      "Problem Solver",
-    ];
-const GITHUB_PROFILES: GitHubProfile[] = process.env.NEXT_PUBLIC_GITHUB_PROFILES
-  ? JSON.parse(process.env.NEXT_PUBLIC_GITHUB_PROFILES)
-  : [
-    {
-      username: "entazis",
-      url: "https://github.com/entazis",
-      label: "Personal Projects",
-    },
-    {
-      username: "beam-bence",
-      url: "https://github.com/beam-bence",
-      label: "Work Projects",
-    },
-  ];
-
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
@@ -53,23 +26,23 @@ export default function HeroSection() {
   useEffect(() => {
     const typeText = async () => {
       // Type current text
-      const currentText = HERO_TEXTS[textIndex];
+      const currentText = config.heroTexts[textIndex];
       for (let i = 0; i <= currentText.length; i++) {
         setTypedText(currentText.substring(0, i));
-        await new Promise(resolve => setTimeout(resolve, TYPING_DELAY));
+        await new Promise(resolve => setTimeout(resolve, config.typingDelay));
       }
       
       // Pause at the end
-      await new Promise(resolve => setTimeout(resolve, PAUSE_DELAY));
+      await new Promise(resolve => setTimeout(resolve, config.pauseDelay));
       
       // Delete the text
       for (let i = currentText.length; i >= 0; i--) {
         setTypedText(currentText.substring(0, i));
-        await new Promise(resolve => setTimeout(resolve, DELETING_DELAY));
+        await new Promise(resolve => setTimeout(resolve, config.deletingDelay));
       }
       
       // Move to next text
-      setTextIndex((textIndex + 1) % HERO_TEXTS.length);
+      setTextIndex((textIndex + 1) % config.heroTexts.length);
     };
     
     typeText();
@@ -135,7 +108,7 @@ export default function HeroSection() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                {GITHUB_PROFILES.map((profile) => (
+                {config.githubProfiles.map((profile: GitHubProfile) => (
                   <DropdownMenuItem key={profile.username} asChild>
                     <a
                       href={profile.url}
