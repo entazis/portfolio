@@ -1,12 +1,12 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { createTranslation } from "@/i18n";
 import { motion } from "@/lib/motion";
 import { Briefcase, Calendar, GraduationCap } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-export async function ExperienceSection() {
-  const { t } = await createTranslation('common');
+export function ExperienceSection() {
+  const { t } = useTranslation('common');
 
   return (
     <section id="experience" className="py-20">

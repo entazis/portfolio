@@ -1,12 +1,12 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { createTranslation } from "@/i18n";
 import { motion } from "@/lib/motion";
 import { BadgeCheck, Code, Lightbulb, Users } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-export async function AboutSection() {
-  const { t } = await createTranslation('common');
+export function AboutSection() {
+  const { t } = useTranslation('common');
 
   return (
     <section id="about" className="py-20 bg-muted/30">
