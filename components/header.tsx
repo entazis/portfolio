@@ -6,19 +6,21 @@ import { cn } from "@/lib/utils";
 import { Code, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const navItems = [
-  { name: "Home", href: "#hero" },
-  { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Experience", href: "#experience" },
-  { name: "Contact", href: "#contact" },
+  { name: "header.nav.home", href: "#hero" },
+  { name: "header.nav.about", href: "#about" },
+  { name: "header.nav.skills", href: "#skills" },
+  { name: "header.nav.projects", href: "#projects" },
+  { name: "header.nav.experience", href: "#experience" },
+  { name: "header.nav.contact", href: "#contact" },
 ];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,7 +51,7 @@ export function Header() {
             className="flex items-center gap-2 text-primary font-semibold"
           >
             <Code className="h-5 w-5" />
-            <span className="text-lg">DevPortfolio</span>
+            <span className="text-lg">{t('header.brand')}</span>
           </Link>
         </div>
 
@@ -61,7 +63,7 @@ export function Header() {
               href={item.href}
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              {item.name}
+              {t(item.name)}
             </Link>
           ))}
         </nav>
@@ -94,7 +96,7 @@ export function Header() {
                 className="text-primary hover:text-primary/80 transition-colors px-2 py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                {item.name}
+                {t(item.name)}
               </Link>
             ))}
           </div>
