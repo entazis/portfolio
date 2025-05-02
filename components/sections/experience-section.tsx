@@ -34,7 +34,12 @@ export async function ExperienceSection() {
             </h3>
             
             <div className="space-y-6">
-              {(t('experience.workExperience.items', { returnObjects: true }) as any[]).map((item, index) => (
+              {(t('experience.workExperience.items', { returnObjects: true }) as {
+                role: string;
+                company: string;
+                period: string;
+                descriptions: string[];
+              }[]).map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: -20 }}
@@ -73,7 +78,12 @@ export async function ExperienceSection() {
             </h3>
             
             <div className="space-y-6">
-              {(t('experience.education.items', { returnObjects: true }) as any[]).map((item, index) => (
+              {(t('experience.education.items', { returnObjects: true }) as {
+                degree: string;
+                institution: string;
+                period: string;
+                description: string;
+              }[]).map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, x: 20 }}
