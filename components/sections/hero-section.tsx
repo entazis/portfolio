@@ -1,6 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { motion } from "@/lib/motion";
 import { Briefcase, ChevronDown, Github } from "lucide-react";
 import Link from "next/link";
@@ -9,6 +15,19 @@ import { useEffect, useState } from "react";
 const TYPING_DELAY = Number(process.env.NEXT_PUBLIC_TYPING_DELAY) || 100;
 const PAUSE_DELAY = Number(process.env.NEXT_PUBLIC_PAUSE_DELAY) || 1500;
 const DELETING_DELAY = Number(process.env.NEXT_PUBLIC_DELETING_DELAY) || 50;
+
+const GITHUB_PROFILES = [
+  {
+    username: "bence",
+    url: "https://github.com/entazis",
+    label: "Personal Projects",
+  },
+  {
+    username: "bence-work",
+    url: "https://github.com/beam-bence",
+    label: "Work Projects",
+  },
+];
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
@@ -92,12 +111,29 @@ export default function HeroSection() {
                 View Projects
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-4 w-4" />
-                GitHub Profile
-              </a>
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="lg" className="group">
+                  <Github className="mr-2 h-4 w-4" />
+                  GitHub Profiles
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {GITHUB_PROFILES.map((profile) => (
+                  <DropdownMenuItem key={profile.username} asChild>
+                    <a
+                      href={profile.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2"
+                    >
+                      <Github className="h-4 w-4" />
+                      <span>{profile.label}</span>
+                    </a>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </motion.div>
         </div>
       </div>
