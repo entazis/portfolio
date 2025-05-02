@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Code } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Code, Menu, X } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const navItems = [
   { name: "Home", href: "#hero" },
@@ -42,17 +42,19 @@ export function Header() {
           : "bg-transparent"
       )}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        <Link
-          href="#hero"
-          className="flex items-center gap-2 text-primary font-semibold"
-        >
-          <Code className="h-5 w-5" />
-          <span className="text-lg">DevPortfolio</span>
-        </Link>
+      <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-16">
+        <div className="flex-1 flex justify-start">
+          <Link
+            href="#hero"
+            className="flex items-center gap-2 text-primary font-semibold"
+          >
+            <Code className="h-5 w-5" />
+            <span className="text-lg">DevPortfolio</span>
+          </Link>
+        </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-8">
+        <nav className="hidden md:flex gap-8 flex-1 justify-center">
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -64,7 +66,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex-1 flex items-center justify-end gap-2">
           <ModeToggle />
           <Button
             variant="ghost"
