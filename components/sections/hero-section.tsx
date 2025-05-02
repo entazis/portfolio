@@ -6,6 +6,10 @@ import { Briefcase, ChevronDown, Github } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const TYPING_DELAY = Number(process.env.NEXT_PUBLIC_TYPING_DELAY) || 100;
+const PAUSE_DELAY = Number(process.env.NEXT_PUBLIC_PAUSE_DELAY) || 1500;
+const DELETING_DELAY = Number(process.env.NEXT_PUBLIC_DELETING_DELAY) || 50;
+
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
@@ -17,16 +21,16 @@ export default function HeroSection() {
       const currentText = texts[textIndex];
       for (let i = 0; i <= currentText.length; i++) {
         setTypedText(currentText.substring(0, i));
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, TYPING_DELAY));
       }
       
       // Pause at the end
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, PAUSE_DELAY));
       
       // Delete the text
       for (let i = currentText.length; i >= 0; i--) {
         setTypedText(currentText.substring(0, i));
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise(resolve => setTimeout(resolve, DELETING_DELAY));
       }
       
       // Move to next text
