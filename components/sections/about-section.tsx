@@ -1,8 +1,10 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { BadgeCheck, Code, Users, Lightbulb } from "lucide-react";
 import { motion } from "@/lib/motion";
+import { BadgeCheck, Code, Lightbulb, Users } from "lucide-react";
+
+// TODO extract the texts into env variables
 
 export function AboutSection() {
   return (
@@ -18,8 +20,8 @@ export function AboutSection() {
           <h2 className="text-3xl font-bold mb-2">About Me</h2>
           <div className="w-20 h-1 bg-primary mx-auto mb-6"></div>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            I'm a passionate software engineer with a focus on creating elegant, 
-            efficient solutions to complex problems. Here's a bit about who I am and what I do.
+            I&apos;m a passionate software engineer with a focus on creating elegant, 
+            efficient solutions to complex problems. Here&apos;s a bit about who I am and what I do.
           </p>
         </motion.div>
 
@@ -33,12 +35,12 @@ export function AboutSection() {
             <h3 className="text-2xl font-semibold mb-4">My Story</h3>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                With over 5 years of experience in software development, I've had the opportunity to work
-                on a diverse range of projects, from small startups to large enterprise applications.
+                With over 7 years of experience in software development, I&apos;ve had the opportunity to work
+                on a diverse range of projects as an independent contractor and a full-time startup employee.
               </p>
               <p>
-                I discovered my passion for programming during college, where I built my first web application.
-                Since then, I've been constantly learning and pushing the boundaries of what I can create.
+                I discovered my passion for programming during college, where I built my first web applications.
+                Since then, I&apos;ve been constantly learning and pushing the boundaries of what I can create.
               </p>
               <p>
                 What drives me is the ability to solve real-world problems through code, and the
@@ -105,9 +107,8 @@ export function AboutSection() {
         >
           <h3 className="text-2xl font-semibold mb-4">Personal Interests</h3>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            When I'm not coding, you can find me hiking in nature, reading science fiction,
-            experimenting with new recipes in the kitchen, or attending tech meetups to stay
-            connected with the community.
+            When I&apos;m not coding, you can find me on the dance floor, reading tech and nonfiction books,
+            volunteering or attending events to stay connected with the community.
           </p>
         </motion.div>
       </div>
