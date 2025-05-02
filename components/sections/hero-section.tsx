@@ -12,22 +12,29 @@ import { Briefcase, ChevronDown, Github } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+interface GitHubProfile {
+  username: string;
+  url: string;
+  label: string;
+}
+
 const TYPING_DELAY = Number(process.env.NEXT_PUBLIC_TYPING_DELAY) || 100;
 const PAUSE_DELAY = Number(process.env.NEXT_PUBLIC_PAUSE_DELAY) || 1500;
 const DELETING_DELAY = Number(process.env.NEXT_PUBLIC_DELETING_DELAY) || 50;
-
-const GITHUB_PROFILES = [
-  {
-    username: "bence",
-    url: "https://github.com/entazis",
-    label: "Personal Projects",
-  },
-  {
-    username: "bence-work",
-    url: "https://github.com/beam-bence",
-    label: "Work Projects",
-  },
-];
+const GITHUB_PROFILES: GitHubProfile[] = process.env.NEXT_PUBLIC_GITHUB_PROFILES
+  ? JSON.parse(process.env.NEXT_PUBLIC_GITHUB_PROFILES)
+  : [
+    {
+      username: "entazis",
+      url: "https://github.com/entazis",
+      label: "Personal Projects",
+    },
+    {
+      username: "beam-bence",
+      url: "https://github.com/beam-bence",
+      label: "Work Projects",
+    },
+  ];
 
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
