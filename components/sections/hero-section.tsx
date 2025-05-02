@@ -21,6 +21,16 @@ interface GitHubProfile {
 const TYPING_DELAY = Number(process.env.NEXT_PUBLIC_TYPING_DELAY) || 100;
 const PAUSE_DELAY = Number(process.env.NEXT_PUBLIC_PAUSE_DELAY) || 1500;
 const DELETING_DELAY = Number(process.env.NEXT_PUBLIC_DELETING_DELAY) || 50;
+const HERO_TEXTS: string[] = process.env.NEXT_PUBLIC_HERO_TEXTS
+  ? JSON.parse(process.env.NEXT_PUBLIC_HERO_TEXTS)
+  : [
+      "Full-Stack Software Engineer",
+      "Tech Lead",
+      "7+ Years Experience",
+      "Building Scalable Systems",
+      "AI Enthusiast",
+      "Problem Solver",
+    ];
 const GITHUB_PROFILES: GitHubProfile[] = process.env.NEXT_PUBLIC_GITHUB_PROFILES
   ? JSON.parse(process.env.NEXT_PUBLIC_GITHUB_PROFILES)
   : [
@@ -39,12 +49,11 @@ const GITHUB_PROFILES: GitHubProfile[] = process.env.NEXT_PUBLIC_GITHUB_PROFILES
 export default function HeroSection() {
   const [typedText, setTypedText] = useState("");
   const [textIndex, setTextIndex] = useState(0);
-  const texts = ["Full-Stack Software Engineer", "7+ Years Experience", "Building Scalable Systems", "AI Enthusiast", "Problem Solver"];
   
   useEffect(() => {
     const typeText = async () => {
       // Type current text
-      const currentText = texts[textIndex];
+      const currentText = HERO_TEXTS[textIndex];
       for (let i = 0; i <= currentText.length; i++) {
         setTypedText(currentText.substring(0, i));
         await new Promise(resolve => setTimeout(resolve, TYPING_DELAY));
@@ -60,7 +69,7 @@ export default function HeroSection() {
       }
       
       // Move to next text
-      setTextIndex((textIndex + 1) % texts.length);
+      setTextIndex((textIndex + 1) % HERO_TEXTS.length);
     };
     
     typeText();
