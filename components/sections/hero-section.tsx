@@ -11,6 +11,7 @@ import { config } from "@/lib/config";
 import { motion } from "@/lib/motion";
 import { Briefcase, ChevronDown, Github } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import { TypingText } from "./typing-text";
 
 interface GitHubProfile {
@@ -20,6 +21,8 @@ interface GitHubProfile {
 }
 
 export default function HeroSection() {
+  const { t } = useTranslation('common');
+
   return (
     <section 
       id="hero" 
@@ -35,7 +38,7 @@ export default function HeroSection() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
-              Hello, I&apos;m <span className="text-primary">Bence</span>
+              {t('hero.greeting')} <span className="text-primary">Bence</span>
             </h1>
           </motion.div>
           
@@ -54,7 +57,7 @@ export default function HeroSection() {
             transition={{ delay: 0.4, duration: 0.5 }}
             className="text-muted-foreground max-w-2xl"
           >
-            Expertise in building scalable systems, optimizing performance, improving system stability, and mentoring team members in fast-paced environments.
+            {t('hero.description')}
           </motion.div>
           
           <motion.div
@@ -66,14 +69,14 @@ export default function HeroSection() {
             <Button asChild size="lg" className="group">
               <Link href="#projects">
                 <Briefcase className="mr-2 h-4 w-4 group-hover:rotate-12 transition-transform" />
-                View Projects
+                {t('hero.viewProjects')}
               </Link>
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="lg" className="group">
                   <Github className="mr-2 h-4 w-4" />
-                  GitHub Profiles
+                  {t('hero.githubProfiles')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -99,7 +102,7 @@ export default function HeroSection() {
       <Link 
         href="#about" 
         className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce"
-        aria-label="Scroll to About section"
+        aria-label={t('hero.scrollToAbout')}
       >
         <ChevronDown className="h-6 w-6 text-muted-foreground hover:text-primary transition-colors" />
       </Link>

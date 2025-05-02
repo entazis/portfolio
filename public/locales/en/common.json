@@ -78,5 +78,12 @@
       "title": "Personal Interests",
       "description": "When I'm not coding, you can find me on the dance floor, reading tech and nonfiction books, volunteering or attending events to stay connected with the community."
     }
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "description": "Expertise in building scalable systems, optimizing performance, improving system stability, and mentoring team members in fast-paced environments.",
+    "viewProjects": "View Projects",
+    "githubProfiles": "GitHub Profiles",
+    "scrollToAbout": "Scroll to About section"
   }
 } 
