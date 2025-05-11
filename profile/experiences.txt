@@ -1,0 +1,148 @@
+Bence Szabó
+Full-Stack Software Engineer | 7+ Years Experience in Fast-Paced
+Environments | Building Scalable Systems | Passionate Problem
+Solver and AI Enthusiastic
+Budapest, Budapest, Hungary
+Summary
+Senior Software Engineer with 7 years of experience working with
+startups in backend and full-stack development. Expertise in building
+scalable systems, optimizing performance, improving system
+stability, and mentoring team members in fast-paced environments.
+Hungarian (Native or Bilingual)
+English (Professional Working)
+Experience
+beamLive
+4 years 10 months
+Tech Lead
+January 2025 - Present (5 months)
+Senior Software Engineer
+February 2022 - January 2025 (3 years)
+* Designed and built APIs using Node.js and TypeScript, delivering low-latency
+solutions for critical systems, resulting in 40% faster response times.
+* Developed a nano-service engine and -editor enabling downtime-free feature
+creation.
+* Led the migration from PostgreSQL and HTTP to Redis and MQTT
+technologies, optimizing performance for high-scale environments.
+* Implemented database replication/sharding, and created a testing framework
+enhancing system stability and reducing maintenance costs.
+Key Projects:
+* Nanoservices: Scalable architecture, 50% downtime reduction.
+* Automated Testing: Applied Jest, increasing coverage by 70%.
+* Redis Clustering: Improved response time and fault tolerance.
+* Message Queues: Enhanced load balancing and multi-tenancy.
+* MQTT Load Balancing: 30% code reduction, 40% faster deployment.
+* Location Service: Real-time tracking and geofencing.
+* Context Management: Multi-context services, 70% faster deployment.
+* Admin Tools: Configurable editors, 60% maintenance time reduction.
+Page 1 of 5* Transaction Handling: Transaction-based operations, reduced conflicts.
+* Dynamic Indexing: Automated database index creation and update based on
+data schemas.
+* Real-time Balance: Dynamic transaction tracking.
+* Notification Engine: Template-based notifications.
+* Continuous Integration: GitHub workflows, increased reliability.
+* Graph Database: Efficient relationship handling.
+* Spreadsheet Calculator: Simplified pricing logic.
+Full Stack Software Developer & Product Owner
+August 2020 - January 2022 (1 year 6 months)
+* Architected and shipped new features for the administrative platform,
+improving scalability and performance.
+* Initiated a system redesign that boosted performance and scalability,
+ensuring adaptability to future requirements.
+* Improved code quality by 40% through core component extraction,
+simplifying the codebase.
+CodeBerry Programming School
+3 years 3 months
+Software Developer
+October 2018 - August 2020 (1 year 11 months)
+Hungary
+Core Development Areas:
+* Web Applications & Websites: created and enhanced web-based platforms,
+ensuring a seamless user experience.
+* Landing & Payment Pages: Revitalized the online presence with redesigned
+landing and payment pages, optimizing conversion rates.
+* User Experience (UX) Improvements: Implemented UX upgrades and
+automated email systems to engage users effectively.
+* Gamification Features: Developed a badge system to gamify the user
+experience, fostering increased interaction and retention.
+* Data Extraction Tools: Crafted web scrapers to gather and process data,
+supporting various operational needs.
+Data Analyst
+June 2018 - August 2020 (2 years 3 months)
+Hungary
+Key Analytical Functions:
+* Data Visualization: Crafted intuitive visual representations of complex
+datasets, facilitating easier understanding and insight generation.
+Page 2 of 5* Google Analytics Configuration: Configured and customized Google Analytics
+for optimal data tracking and reporting.
+* Data Mining: Extracted valuable insights from diverse data sources, including
+databases, Google Analytics, Google Ads, and Facebook Ads.
+* Ad Campaign Analysis: Performed detailed statistical analyses of advertising
+campaigns, evaluating channels, mediums, and sources.
+* AARRR Metrics: Monitored and reported on critical AARRR metrics
+(Acquisition, Activation, Retention, Referral, Revenue), traffic, conversion
+rates, and user retention.
+Code Mentor
+September 2018 - March 2019 (7 months)
+Hungary
+Guided and mentored students in coding practices, helping them build
+practical skills through projects in web development.
+Data Scientist Intern
+June 2017 - June 2018 (1 year 1 month)
+Hungary
+Key Contributions:
+* Predicting customer churn: developed predictive machine learning models
+focused on customer churn prediction, contributing to customer retention
+strategies.
+* Conducted correlation analysis to uncover meaningful relationships within
+data, driving business insights.
+Independent Contractor
+Full Stack Developer with Data Analytics experience
+August 2018 - August 2020 (2 years 1 month)
+Hungary
+* Built custom websites, applications, and web scrapers for clients improving
+user experience and performance.
+* Developed server-side applications and static sites ensuring efficient and
+responsive client solutions.
+* Managed data analytics tasks, including the creation of dashboards and
+reports to support client decision-making.
+DreamJo.bs
+Data Analyst
+March 2019 - May 2019 (3 months)
+Hungary
+Page 3 of 5* Set Google Analytics up to track and analyze website traffic effectively.
+* Generated statistics and charts to visualize the performance of advertising
+campaigns, including analysis of various channels and sources.
+Wellcome.Chat
+Data Analyst
+September 2018 - February 2019 (6 months)
+Hungary
+* Conducted customer interviews to gather qualitative insights and feedback.
+* Performed data analysis on web pages with chat support to understand user
+interactions and improve the support experience.
+Dmlab
+Data Engineer
+July 2018 - July 2018 (1 month)
+Budapest, Hungary
+* Developed web scraping scripts in Python to collect data on energy company
+downtime, improving the company’s ability to respond to power disruptions.
+* Identified and corrected data integrity issues, ensuring the reliability and
+accuracy of datasets for internal use.
+Budapest University of Technology and Economics
+Project Management Teaching Assistant
+September 2016 - December 2016 (4 months)
+Hungary
+* Assisted with lectures, and provided support in delivering educational
+content.
+* Corrected project documents, and ensured the accuracy and quality of
+student submissions.
+SANXO-systems Ltd
+Software Developer Intern
+June 2015 - August 2015 (3 months)
+Hungary
+Developed a computer vision program that utilizes advanced multi-integration
+camera technology to measure the speed of any moving object.
+Education
+Budapest University of Technology and Economics
+Page 4 of 5Master of Science (M.Sc.), Electrical Engineering · (2016 - 2018)
+Budapest University of Technology and Economics
+Bachelor of Science (B.Sc.), Electrical Engineering · (2012 - 2015)
