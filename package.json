@@ -1,0 +1,19 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "A modern, responsive, and multilingual portfolio website built with Next.js 14, showcasing professional experience, skills, and projects. The portfolio features a clean, minimalist design with smooth animations and internationalization support.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/entazis/portfolio.git"
+  },
+  "author": "entazis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/entazis/portfolio/issues"
+  },
+  "homepage": "https://github.com/entazis/portfolio#readme"
+}
