@@ -1,0 +1,39 @@
+# Node.js and npm related
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+.next/
+out/
+
+# Logs
+*.log
+*.log.*
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Test coverage
+coverage/
+
+# Editor and system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+
+# Specific to Cursor or other tooling
+.cursorignore
