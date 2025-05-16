@@ -3,21 +3,26 @@ import { FC } from 'react';
 
 /**
  * LanguageSwitcher component for switching between EN and HU locales.
+ * @param locale - Current locale
  */
 const locales = [
   { code: 'en', label: 'EN' },
   { code: 'hu', label: 'HU' },
 ];
 
-const LanguageSwitcher: FC = () => {
+type LanguageSwitcherProps = {
+  locale: string;
+};
+
+const LanguageSwitcher: FC<LanguageSwitcherProps> = ({ locale }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const currentLocale = pathname.split('/')[1] || 'en';
+  const currentLocale = locale;
 
-  const handleSwitch = (locale: string) => {
-    if (locale === currentLocale) return;
+  const handleSwitch = (targetLocale: string) => {
+    if (targetLocale === currentLocale) return;
     const segments = pathname.split('/');
-    segments[1] = locale;
+    segments[1] = targetLocale;
     router.push(segments.join('/') || '/');
   };
 
