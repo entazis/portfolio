@@ -1,4 +1,7 @@
 import { FC, ReactNode } from 'react';
+import LanguageSwitcher from './LanguageSwitcher';
+import Navigation from './Navigation';
+import ThemeSwitcher from './ThemeSwitcher';
 
 /**
  * MainLayout component wraps the page with header and footer.
@@ -13,7 +16,11 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => (
     <header className="w-full py-4 px-6 bg-white shadow-md dark:bg-gray-900">
       <div className="container mx-auto flex justify-between items-center">
         <span className="font-bold text-xl">Bence Szabó</span>
-        {/* TODO: Add navigation and language switcher here */}
+        <div className="flex items-center gap-4">
+          <Navigation />
+          <LanguageSwitcher />
+          <ThemeSwitcher />
+        </div>
       </div>
     </header>
     <main className="flex-1 container mx-auto px-6 py-8">{children}</main>
