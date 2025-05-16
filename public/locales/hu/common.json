@@ -7,5 +7,18 @@
   "experience": "Tapasztalat",
   "contact": "Kapcsolat",
   "about": "Rólam",
-  "skills": "Készségek"
+  "skills": "Készségek",
+  "heroTitle": "Szabó Bence vagyok",
+  "heroSubtitle": "Robusztus, skálázható és szép webalkalmazásokat építek.",
+  "heroCTA": "Nézd meg a munkáimat",
+  "aboutTitle": "Rólam",
+  "aboutText": "Szenvedélyes full-stack fejlesztő vagyok, aki szereti a tiszta kódot és a modern tervezési mintákat.",
+  "skillsTitle": "Készségek",
+  "skillsText": "Ezeket a technológiákat és eszközöket használom:",
+  "projectsTitle": "Projektek",
+  "projectsText": "Néhány kedvenc munkám.",
+  "experienceTitle": "Tapasztalat",
+  "experienceText": "Szakmai utam eddig.",
+  "contactTitle": "Kapcsolat",
+  "contactText": "Lépjünk kapcsolatba!"
 } 

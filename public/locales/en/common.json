@@ -7,5 +7,18 @@
   "experience": "Experience",
   "contact": "Contact",
   "about": "About",
-  "skills": "Skills"
+  "skills": "Skills",
+  "heroTitle": "Hi, I'm Bence Szabó",
+  "heroSubtitle": "Building robust, scalable, and beautiful web applications.",
+  "heroCTA": "See my work",
+  "aboutTitle": "About Me",
+  "aboutText": "I'm a passionate full-stack developer with a love for clean code and modern design patterns.",
+  "skillsTitle": "Skills",
+  "skillsText": "Here are some of the technologies and tools I use:",
+  "projectsTitle": "Projects",
+  "projectsText": "A selection of my favorite work.",
+  "experienceTitle": "Experience",
+  "experienceText": "My professional journey so far.",
+  "contactTitle": "Contact",
+  "contactText": "Let's get in touch!"
 } 
