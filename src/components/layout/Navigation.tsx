@@ -2,7 +2,7 @@
 
 // import Link from 'next/link';
 // import { usePathname } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 /**
  * Navigation bar with active link highlighting and translation keys.
@@ -22,6 +22,9 @@ const navLinks = [
 
 const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
   e.preventDefault();
+  if (window.location.hash !== href) {
+    window.location.hash = href;
+  }
   const target = document.querySelector(href);
   if (target) {
     target.scrollIntoView({ behavior: 'smooth' });
@@ -31,6 +34,18 @@ const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) =>
 const Navigation: FC<NavigationProps> = ({ translations }) => {
   // const pathname = usePathname();
   const t = (key: string) => translations[key] || key;
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const target = document.querySelector(window.location.hash);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }, 0);
+      }
+    }
+  }, []);
+
   return (
     <nav aria-label="Main navigation">
       <ul className="flex gap-4">
