@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import '../app/globals.css';
 
 /**
- * Root layout for the application, only provides global styles and html/body tags.
+ * Root layout for the application, provides global styles and html/body tags.
  * @param children - The page content.
  */
 type RootLayoutProps = {
@@ -10,7 +10,7 @@ type RootLayoutProps = {
 };
 
 const RootLayout = ({ children }: RootLayoutProps) => (
-  <html lang="en">
+  <html>
     <body>
       {children}
     </body>

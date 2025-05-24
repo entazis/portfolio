@@ -18,7 +18,7 @@ const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
   console.log('[LocaleLayout] translations:', translations);
 
   return (
-    <html lang={locale}>
+    <html>
       <body>
         <MainLayout translations={translations} locale={locale}>
           {children}
