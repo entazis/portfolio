@@ -48,7 +48,7 @@ const Navigation: FC<NavigationProps> = ({ translations }) => {
 
   return (
     <nav aria-label="Main navigation">
-      <ul className="flex gap-4">
+      <ul className="flex gap-4 px-6 py-3 justify-center">
         {navLinks.map(({ href, labelKey }) => (
           <li key={href}>
             <a

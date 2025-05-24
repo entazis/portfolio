@@ -19,8 +19,8 @@ const MainLayout: FC<MainLayoutProps> = ({ children, translations = {}, locale }
   const t = (key: string) => translations[key] || key;
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
-      <header className="w-full py-4 px-6 bg-white shadow-md dark:bg-gray-900">
-        <div className="container mx-auto flex justify-between items-center">
+      <header className="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur shadow border-b border-gray-200 dark:border-gray-800 w-full">
+        <div className="container mx-auto flex justify-between items-center py-4 px-6">
           <span className="font-bold text-xl">{t('siteTitle')}</span>
           <div className="flex items-center gap-4">
             <Navigation translations={translations} />
