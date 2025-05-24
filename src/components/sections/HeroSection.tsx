@@ -11,7 +11,7 @@ type HeroSectionProps = {
 const HeroSection: FC<HeroSectionProps> = ({ translations }) => {
   const t = (key: string) => translations[key] || key;
   return (
-    <section className="flex flex-col items-center justify-center text-center py-16 gap-6">
+    <section id="home" className="flex flex-col items-center justify-center text-center py-16 gap-6">
       <h1 className="text-4xl md:text-5xl font-bold text-primary">{t('heroTitle')}</h1>
       <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300">{t('heroSubtitle')}</p>
       <a

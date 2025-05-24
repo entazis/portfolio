@@ -11,7 +11,7 @@ type SkillsSectionProps = {
 const SkillsSection: FC<SkillsSectionProps> = ({ translations }) => {
   const t = (key: string) => translations[key] || key;
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-800" id="skills">
+    <section className="py-16 bg-gray-50 dark:bg-gray-800" id="skills"> {/* Navigation anchor: #skills */}
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4 text-primary">{t('skillsTitle')}</h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">{t('skillsText')}</p>

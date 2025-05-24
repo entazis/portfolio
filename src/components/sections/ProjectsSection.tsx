@@ -11,7 +11,7 @@ type ProjectsSectionProps = {
 const ProjectsSection: FC<ProjectsSectionProps> = ({ translations }) => {
   const t = (key: string) => translations[key] || key;
   return (
-    <section className="py-16" id="projects">
+    <section className="py-16" id="projects"> {/* Navigation anchor: #projects */}
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4 text-primary">{t('projectsTitle')}</h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">{t('projectsText')}</p>

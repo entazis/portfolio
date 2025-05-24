@@ -21,10 +21,10 @@ const Page = async ({ params }: PageProps) => {
   return (
     <>
       <HeroSection translations={translations} />
-      <AboutSection translations={translations} />
-      <SkillsSection translations={translations} />
       <ProjectsSection translations={translations} />
+      <SkillsSection translations={translations} />
       <ExperienceSection translations={translations} />
+      <AboutSection translations={translations} />
       <ContactSection translations={translations} />
     </>
   );

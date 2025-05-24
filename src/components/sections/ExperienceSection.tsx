@@ -11,7 +11,7 @@ type ExperienceSectionProps = {
 const ExperienceSection: FC<ExperienceSectionProps> = ({ translations }) => {
   const t = (key: string) => translations[key] || key;
   return (
-    <section className="py-16 bg-gray-50 dark:bg-gray-800" id="experience">
+    <section className="py-16 bg-gray-50 dark:bg-gray-800" id="experience"> {/* Navigation anchor: #experience */}
       <div className="max-w-3xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4 text-primary">{t('experienceTitle')}</h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">{t('experienceText')}</p>
