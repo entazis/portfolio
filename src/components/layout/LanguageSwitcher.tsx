@@ -22,6 +22,8 @@ const LanguageSwitcher: FC<LanguageSwitcherProps> = ({ locale }) => {
 
   const handleSwitch = (targetLocale: string) => {
     if (targetLocale === currentLocale) return;
+    // Set cookie for 1 year
+    document.cookie = `NEXT_LOCALE=${targetLocale}; path=/; max-age=31536000`;
     const segments = pathname.split('/');
     segments[1] = targetLocale;
     router.push(segments.join('/') || '/');
