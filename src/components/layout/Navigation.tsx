@@ -2,7 +2,7 @@
 
 // import Link from 'next/link';
 // import { usePathname } from 'next/navigation';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 /**
  * Navigation bar with active link highlighting and translation keys.
@@ -31,9 +31,20 @@ const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) =>
   }
 };
 
+const SHRINK_SCROLL_Y = 24;
+
 const Navigation: FC<NavigationProps> = ({ translations }) => {
   // const pathname = usePathname();
   const t = (key: string) => translations[key] || key;
+  const [isShrunk, setIsShrunk] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsShrunk(window.scrollY > SHRINK_SCROLL_Y);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     if (window.location.hash) {
@@ -47,8 +58,13 @@ const Navigation: FC<NavigationProps> = ({ translations }) => {
   }, []);
 
   return (
-    <nav aria-label="Main navigation">
-      <ul className="flex gap-4 px-6 py-3 justify-center">
+    <nav
+      aria-label="Main navigation"
+      className={
+        `transition-all duration-300 ${isShrunk ? 'py-1' : 'py-3'}`
+      }
+    >
+      <ul className="flex gap-4 px-6 justify-center">
         {navLinks.map(({ href, labelKey }) => (
           <li key={href}>
             <a

@@ -11,7 +11,7 @@ type ContactSectionProps = {
 const ContactSection: FC<ContactSectionProps> = ({ translations }) => {
   const t = (key: string) => translations[key] || key;
   return (
-    <section className="py-16" id="contact">
+    <section className="py-16 scroll-mt-20" id="contact">
       <div className="max-w-2xl mx-auto text-center">
         <h2 className="text-3xl font-bold mb-4 text-primary">{t('contactTitle')}</h2>
         <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">{t('contactText')}</p>
