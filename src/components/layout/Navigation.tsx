@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { FC } from 'react';
@@ -5,6 +7,10 @@ import { FC } from 'react';
 /**
  * Navigation bar with active link highlighting and translation keys.
  */
+type NavigationProps = {
+  translations: Record<string, string>;
+};
+
 const navLinks = [
   { href: '/', labelKey: 'home' },
   { href: '/projects', labelKey: 'projects' },
@@ -13,8 +19,9 @@ const navLinks = [
   { href: '/contact', labelKey: 'contact' },
 ];
 
-const Navigation: FC<{ t?: (key: string) => string }> = ({ t = (k) => k }) => {
+const Navigation: FC<NavigationProps> = ({ translations }) => {
   const pathname = usePathname();
+  const t = (key: string) => translations[key] || key;
   return (
     <nav aria-label="Main navigation">
       <ul className="flex gap-4">

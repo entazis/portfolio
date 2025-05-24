@@ -17,16 +17,15 @@ type PageProps = {
 const Page = async ({ params }: PageProps) => {
   const { locale } = params;
   const translations = await getTranslation(locale, 'common');
-  const t = (key: string) => translations[key] || key;
 
   return (
     <>
-      <HeroSection t={t} />
-      <AboutSection t={t} />
-      <SkillsSection t={t} />
-      <ProjectsSection t={t} />
-      <ExperienceSection t={t} />
-      <ContactSection t={t} />
+      <HeroSection translations={translations} />
+      <AboutSection translations={translations} />
+      <SkillsSection translations={translations} />
+      <ProjectsSection translations={translations} />
+      <ExperienceSection translations={translations} />
+      <ContactSection translations={translations} />
     </>
   );
 };

@@ -3,7 +3,7 @@ import MainLayout from '../../components/layout/MainLayout';
 import { getTranslation } from '../../lib/getTranslation';
 
 /**
- * Locale layout for the application, loads translations and provides t function.
+ * Locale layout for the application, loads translations and provides them to MainLayout.
  * @param children - The page content.
  * @param params - Route params including locale
  */
@@ -15,12 +15,12 @@ type LocaleLayoutProps = {
 const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
   const { locale } = params;
   const translations = await getTranslation(locale, 'common');
-  const t = (key: string) => translations[key] || key;
+  console.log('[LocaleLayout] translations:', translations);
 
   return (
     <html lang={locale}>
       <body>
-        <MainLayout t={t} locale={locale}>
+        <MainLayout translations={translations} locale={locale}>
           {children}
         </MainLayout>
       </body>
