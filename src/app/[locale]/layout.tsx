@@ -13,7 +13,7 @@ type LocaleLayoutProps = {
 };
 
 const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {
-  const { locale } = params;
+  const { locale } = await params;
   const translations = await getTranslation(locale, 'common');
   console.log('[LocaleLayout] translations:', translations);
 

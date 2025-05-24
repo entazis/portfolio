@@ -15,7 +15,7 @@ type PageProps = {
 };
 
 const Page = async ({ params }: PageProps) => {
-  const { locale } = params;
+  const { locale } = await params;
   const translations = await getTranslation(locale, 'common');
 
   return (
