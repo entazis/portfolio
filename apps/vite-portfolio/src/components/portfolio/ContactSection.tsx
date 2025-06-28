@@ -1,10 +1,9 @@
 import React from 'react';
 
 const ContactSection: React.FC = () => {
-  // Replace with actual links
-  const email = "bence.szabo.dev@example.com"; 
-  const linkedinUrl = "https://www.linkedin.com/in/benceszabo-dev"; // Placeholder
-  const githubUrl = "https://github.com/benceszabo-dev"; // Placeholder
+  const email = "hello@entazis.dev"; 
+  const linkedinUrl = "https://www.linkedin.com/in/szabobence1025";
+  const githubUrl = "https://github.com/entazis";
 
   return (
     <section id="contact" className="section-padding bg-background">
