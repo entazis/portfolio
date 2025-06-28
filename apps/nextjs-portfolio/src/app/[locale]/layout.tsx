@@ -9,7 +9,7 @@ import { getTranslation } from '../../lib/getTranslation';
  */
 type LocaleLayoutProps = {
   children: ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 const LocaleLayout = async ({ children, params }: LocaleLayoutProps) => {

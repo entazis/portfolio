@@ -11,7 +11,7 @@ import { getTranslation } from '../../lib/getTranslation';
  * @param params - Route params including locale
  */
 type PageProps = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
 const Page = async ({ params }: PageProps) => {
