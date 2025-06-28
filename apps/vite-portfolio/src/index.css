@@ -1,0 +1,94 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* Light mode background - White */
+    --foreground: 224 71% 4%; /* Dark Blue for text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 224 71% 4%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 71% 4%;
+
+    --primary: 221 83% 53%; /* Professional Blue */
+    --primary-foreground: 0 0% 98%; /* White / Very Light Gray */
+
+    --secondary: 215 28% 96%; /* Light Grayish Blue */
+    --secondary-foreground: 224 71% 4%;
+
+    --muted: 215 20% 94%; /* Lighter Gray */
+    --muted-foreground: 215 16% 47%; /* Muted Text Color */
+
+    --accent: 190 70% 50%; /* Teal Accent */
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 72% 51%; /* Red */
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 215 20% 90%; /* Light border */
+    --input: 215 20% 90%;
+    --ring: 221 83% 53%; /* Blue for focus rings */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%; /* Dark Blue background */
+    --foreground: 0 0% 95%; /* Light Gray / White text */
+
+    --card: 224 71% 8%; /* Slightly lighter dark blue for cards */
+    --card-foreground: 0 0% 95%;
+
+    --popover: 224 71% 8%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 221 83% 60%; /* Slightly brighter blue for dark mode */
+    --primary-foreground: 224 71% 4%;
+
+    --secondary: 224 71% 12%; /* Darker secondary */
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 224 71% 12%;
+    --muted-foreground: 215 14% 65%;
+
+    --accent: 190 65% 55%; /* Slightly adjusted teal for dark mode */
+    --accent-foreground: 224 71% 4%;
+
+    --destructive: 0 63% 42%;
+    --destructive-foreground: 0 0% 95%;
+
+    --border: 224 71% 15%; /* Darker border */
+    --input: 224 71% 15%;
+    --ring: 221 83% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  .section-title {
+    @apply text-3xl font-bold tracking-tight text-primary sm:text-4xl mb-4 text-center;
+  }
+  .section-subtitle {
+    @apply text-lg text-muted-foreground mb-12 text-center max-w-2xl mx-auto;
+  }
+}
