@@ -1,0 +1,13 @@
+{
+  "name": "@portfolio/shared-types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types for portfolio applications",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

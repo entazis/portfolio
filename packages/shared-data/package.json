@@ -1,0 +1,13 @@
+{
+  "name": "@portfolio/shared-data",
+  "version": "1.0.0",
+  "description": "Shared data for portfolio applications",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@portfolio/shared-types": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

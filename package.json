@@ -1,32 +1,28 @@
 {
-  "name": "portfolio",
-  "version": "0.1.0",
+  "name": "portfolio-monorepo",
+  "version": "1.0.0",
+  "description": "Multi-version portfolio monorepo",
   "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "15.3.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "dev:nextjs": "cd apps/nextjs-portfolio && npm run dev",
+    "dev:vite": "cd apps/vite-portfolio && npm run dev",
+    "build:nextjs": "cd apps/nextjs-portfolio && npm run build",
+    "build:vite": "cd apps/vite-portfolio && npm run build",
+    "build:all": "npm run build:nextjs && npm run build:vite",
+    "lint": "npm run lint --workspaces",
+    "type-check": "npm run type-check --workspaces",
+    "clean": "rm -rf apps/*/node_modules apps/*/.next apps/*/dist node_modules"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@typescript-eslint/eslint-plugin": "^8.32.1",
-    "@typescript-eslint/parser": "^8.32.1",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.2",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-prettier": "^5.4.0",
-    "prettier": "^3.5.3",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }
