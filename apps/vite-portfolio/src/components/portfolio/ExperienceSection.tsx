@@ -10,30 +10,54 @@ interface ExperienceItem {
 const experiences: ExperienceItem[] = [
   {
     role: 'Tech Lead',
-    company: 'beamLive',
+    company: 'BeamLive',
     duration: 'January 2025 - Present',
     description: [
-      'Leading development teams and defining technical strategy.',
-      'Mentoring engineers and fostering a culture of innovation.',
+      'Leading development teams and defining technical strategy for scalable IoT systems.',
+      'Mentoring engineers and fostering a culture of innovation and best practices.',
+      'Continuing work on nano-service architecture and high-performance systems.',
     ],
   },
   {
     role: 'Senior Software Engineer',
-    company: 'beamLive',
-    duration: 'February 2022 - January 2025',
+    company: 'BeamLive',
+    duration: 'February 2022 - December 2024',
     description: [
-      'Designed and built critical APIs using Node.js and TypeScript.',
-      'Developed a nano-service engine and visual editor.',
-      'Led migration from PostgreSQL/HTTP to Redis/MQTT for core services.',
+      'Designed and built APIs using Node.js and TypeScript, delivering low-latency solutions with 40% faster response times.',
+      'Developed a nano-service engine and visual editor enabling downtime-free feature creation.',
+      'Led migration from PostgreSQL/HTTP to Redis/MQTT, optimizing performance for high-scale environments.',
+      'Implemented database replication/sharding and created testing framework enhancing system stability.',
     ],
   },
   {
     role: 'Full Stack Developer & Product Owner',
-    company: 'beamLive',
+    company: 'BeamLive',
     duration: 'August 2020 - January 2022',
     description: [
-      'Architected and shipped key features for the administrative platform.',
-      'Initiated system redesign for improved performance and scalability.',
+      'Architected and shipped new features for the administrative platform, improving scalability and performance.',
+      'Initiated system redesign that boosted performance and scalability, ensuring adaptability to future requirements.',
+      'Improved code quality by 40% through core component extraction, simplifying the codebase.',
+    ],
+  },
+  {
+    role: 'Software Developer',
+    company: 'CodeBerry Programming School',
+    duration: 'October 2018 - August 2020',
+    description: [
+      'Created and enhanced web-based platforms, ensuring seamless user experience.',
+      'Developed gamification features including badge system to increase user interaction and retention.',
+      'Built data extraction tools and web scrapers to support operational needs.',
+      'Worked as Data Analyst, creating dashboards and performing statistical analyses of ad campaigns.',
+    ],
+  },
+  {
+    role: 'Data Scientist Intern & ML Engineer',
+    company: 'CodeBerry Programming School',
+    duration: 'June 2017 - June 2018',
+    description: [
+      'Developed predictive machine learning models for customer churn prediction.',
+      'Conducted correlation analysis to uncover meaningful relationships within data.',
+      'Built automated systems for customer retention using Node.js and Intercom integration.',
     ],
   },
 ];
@@ -44,9 +68,9 @@ const ExperienceSection: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="section-title">Career Journey</h2>
         <p className="section-subtitle">
-          Tracing my path through impactful roles and challenging projects.
+          Tracing my path through impactful roles and challenging projects in fast-paced environments.
         </p>
-        <div className="relative max-w-3xl mx-auto">
+        <div className="relative max-w-4xl mx-auto">
           {/* Timeline line */}
           <div className="absolute top-0 h-full w-1 bg-primary/20 left-5 md:left-1/2 md:-translate-x-1/2"></div>
           

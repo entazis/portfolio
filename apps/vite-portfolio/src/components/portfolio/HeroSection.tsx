@@ -21,13 +21,14 @@ const HeroSection: React.FC = () => {
             className="text-xl sm:text-2xl text-foreground mb-8 font-mono animate-fade-in-up"
             style={{ animationDelay: '0.6s' }}
           >
-            Full-Stack Developer | Problem Solver | Tech Lead
+            Tech Lead | Full-Stack Software Engineer | AI Enthusiast
           </p>
           <p 
-            className="text-lg text-muted-foreground mb-10 max-w-xl mx-auto animate-fade-in-up"
+            className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto animate-fade-in-up"
             style={{ animationDelay: '0.8s' }}
           >
-            Building scalable, high-performance systems with 7+ years of experience. Passionate about elegant solutions and mentoring.
+            7+ years of experience in fast-paced environments, building scalable systems, optimizing performance, 
+            and mentoring teams. Passionate about elegant solutions and innovative problem-solving.
           </p>
           <div 
             className="space-x-4 animate-fade-in-up"

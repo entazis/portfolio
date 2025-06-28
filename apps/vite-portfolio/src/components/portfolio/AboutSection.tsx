@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 const AboutSection: React.FC = () => {
@@ -21,13 +20,29 @@ const AboutSection: React.FC = () => {
             <div>
               <h3 className="text-2xl font-semibold text-primary mb-3">Who I Am</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Hello! I'm Bence, a Full-Stack Software Engineer with a Master's from Budapest University of Technology and Economics. My career has spanned roles from Data Analyst to Tech Lead, always fueled by a desire to solve complex problems and build efficient, scalable systems. I thrive on turning innovative ideas into reality and enjoy mentoring others to grow their skills.
+                Senior Software Engineer with 7 years of experience working with startups in backend and full-stack development. 
+                I hold a Master's degree from Budapest University of Technology and Economics, specializing in Computer-based Systems 
+                with a focus on Smart City technologies. My career has evolved from Data Scientist to Tech Lead, always fueled by 
+                a desire to solve complex problems and build efficient, scalable systems.
               </p>
             </div>
             <div>
-              <h3 className="text-2xl font-semibold text-primary mb-3">My Approach</h3>
+              <h3 className="text-2xl font-semibold text-primary mb-3">My Expertise</h3>
               <p className="text-muted-foreground leading-relaxed">
-                I believe in <strong className="text-foreground">Optimization-Driven Development</strong>, focusing on performance from day one. My background in data analysis ensures <strong className="text-foreground">Data-Informed Solutions</strong>. I apply <strong className="text-foreground">Architectural Thinking</strong> to design robust and scalable systems that stand the test of time.
+                I specialize in building <strong className="text-foreground">scalable systems</strong> and 
+                <strong className="text-foreground"> optimizing performance</strong> for high-scale environments. 
+                My experience spans from designing nano-service architectures to implementing database replication and sharding. 
+                I believe in <strong className="text-foreground">mentoring team members</strong> and fostering innovation 
+                through collaborative problem-solving.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-2xl font-semibold text-primary mb-3">Beyond Code</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                I'm passionate about <strong className="text-foreground">AI and machine learning</strong>, having started 
+                my career in data science and customer churn prediction. I also have extensive experience in 
+                <strong className="text-foreground"> organizational development</strong> through my volunteer work, 
+                including serving as CEO of Invisible University and training others in nonviolent communication and leadership.
               </p>
             </div>
           </div>

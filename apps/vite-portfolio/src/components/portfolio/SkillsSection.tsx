@@ -7,47 +7,69 @@ interface Skill {
 
 interface SkillCategory {
   name: string;
-  icon: string; // Changed to string for HTML entity
+  icon: string;
   skills: Skill[];
 }
 
 const skillCategories: SkillCategory[] = [
   {
-    name: 'Frontend Development',
-    icon: '💻', // Code icon replacement
+    name: 'Backend Development',
+    icon: '🖥️',
     skills: [
+      { name: 'Node.js', level: 'Master' },
       { name: 'TypeScript', level: 'Master' },
-      { name: 'JavaScript', level: 'Master' },
+      { name: 'NestJS', level: 'Expert' },
+      { name: 'API Development', level: 'Master' },
+    ],
+  },
+  {
+    name: 'Databases & Infrastructure',
+    icon: '🗄️',
+    skills: [
+      { name: 'Redis', level: 'Expert' },
+      { name: 'PostgreSQL', level: 'Expert' },
+      { name: 'MongoDB', level: 'Expert' },
+      { name: 'Database Sharding', level: 'Expert' },
+    ],
+  },
+  {
+    name: 'Frontend Development',
+    icon: '💻',
+    skills: [
       { name: 'React', level: 'Expert' },
+      { name: 'JavaScript', level: 'Master' },
+      { name: 'Angular', level: 'Advanced' },
       { name: 'HTML5/CSS3', level: 'Expert' },
     ],
   },
   {
-    name: 'Backend Development',
-    icon: '🖥️', // Server icon replacement
-    skills: [
-      { name: 'Node.js', level: 'Master' },
-      { name: 'PostgreSQL', level: 'Expert' },
-      { name: 'Redis', level: 'Expert' },
-      { name: 'API Design', level: 'Master' },
-    ],
-  },
-  {
     name: 'DevOps & Architecture',
-    icon: '🗄️', // Database icon replacement
+    icon: '⚙️',
     skills: [
       { name: 'Microservices', level: 'Expert' },
+      { name: 'Nano-services', level: 'Master' },
       { name: 'CI/CD', level: 'Expert' },
       { name: 'System Design', level: 'Expert' },
     ],
   },
-   {
-    name: 'Data & Analytics',
-    icon: '🧠', // Brain icon replacement
+  {
+    name: 'Messaging & Communication',
+    icon: '🔄',
     skills: [
+      { name: 'MQTT', level: 'Expert' },
+      { name: 'Message Queues', level: 'Expert' },
+      { name: 'WebSocket', level: 'Expert' },
+      { name: 'Load Balancing', level: 'Expert' },
+    ],
+  },
+  {
+    name: 'Data & Analytics',
+    icon: '🧠',
+    skills: [
+      { name: 'Machine Learning', level: 'Advanced' },
       { name: 'Data Analysis', level: 'Expert' },
-      { name: 'Web Scraping', level: 'Expert' },
       { name: 'Google Analytics', level: 'Expert' },
+      { name: 'Web Scraping', level: 'Expert' },
     ],
   },
 ];
@@ -71,9 +93,9 @@ const SkillsSection: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="section-title">My Expertise</h2>
         <p className="section-subtitle">
-          A snapshot of the technologies and methodologies I excel in.
+          Technologies and methodologies I've mastered through 7+ years of professional experience.
         </p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {skillCategories.map((category, index) => (
             <div 
               key={category.name} 
@@ -98,9 +120,13 @@ const SkillsSection: React.FC = () => {
           ))}
         </div>
          <div className="mt-12 text-center animate-fade-in-up" style={{animationDelay: '0.8s'}}>
-            <h3 className="text-xl font-semibold text-primary mb-4">Additional Technologies</h3>
+            <h3 className="text-xl font-semibold text-primary mb-4">Additional Technologies & Tools</h3>
             <div className="flex flex-wrap justify-center gap-2">
-                {['Jest', 'Git', 'GitHub', 'Docker', 'MongoDB', 'Python', 'Tailwind CSS', 'Next.js', 'AWS', 'REST API', 'Agile/Scrum'].map(tech => (
+                {[
+                  'Jest', 'Git', 'GitHub', 'Docker', 'Python', 'R', 'Tailwind CSS', 'Next.js', 
+                  'AWS', 'REST API', 'GraphQL', 'TypeORM', 'Tile38', 'GeoJSON', 'IoT', 
+                  'Multi-Tenancy', 'JSON Schema', 'Open API', 'RediSearch', 'Integration Testing'
+                ].map(tech => (
                     <span key={tech} className="text-sm px-3 py-1 border border-primary text-primary bg-transparent rounded">{tech}</span>
                 ))}
             </div>
