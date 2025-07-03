@@ -4,8 +4,7 @@
   "description": "Multi-version portfolio monorepo",
   "private": true,
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "scripts": {
     "dev:nextjs": "cd apps/nextjs-portfolio && npm run dev",
