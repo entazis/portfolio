@@ -4,8 +4,7 @@
   "description": "Multi-version portfolio monorepo",
   "private": true,
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "scripts": {
     "dev:nextjs": "cd apps/nextjs-portfolio && npm run dev",
@@ -13,9 +12,15 @@
     "build:nextjs": "cd apps/nextjs-portfolio && npm run build",
     "build:vite": "cd apps/vite-portfolio && npm run build",
     "build:all": "npm run build:nextjs && npm run build:vite",
+    "start:nextjs": "cd apps/nextjs-portfolio && npm run start",
+    "preview:vite": "cd apps/vite-portfolio && npm run preview",
     "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint --workspaces -- --fix",
     "type-check": "npm run type-check --workspaces",
-    "clean": "rm -rf apps/*/node_modules apps/*/.next apps/*/dist node_modules"
+    "clean": "rm -rf apps/*/node_modules apps/*/.next apps/*/dist node_modules",
+    "clean:builds": "rm -rf apps/*/.next apps/*/dist",
+    "install:all": "npm install && npm run install --workspaces",
+    "size": "npm run build:all && du -sh apps/*/dist apps/*/.next 2>/dev/null || echo 'Build artifacts not found'"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

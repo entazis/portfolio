@@ -5,9 +5,7 @@ This repository contains multiple versions of my portfolio website, managed as a
 ## Structure
 
 - `apps/nextjs-portfolio/` - Next.js version with internationalization
-- `apps/vite-portfolio/` - React + Vite version with modern UI components
-- `packages/shared-types/` - Shared TypeScript types
-- `packages/shared-data/` - Shared data and content
+- `apps/vite-portfolio/` - React + Vite version with optimized dependencies
 
 ## Development
 
@@ -15,18 +13,33 @@ This repository contains multiple versions of my portfolio website, managed as a
 # Install dependencies for all workspaces
 npm install
 
-# Run Next.js version
-npm run dev:nextjs
+# Development
+npm run dev:nextjs          # Start Next.js dev server
+npm run dev:vite           # Start Vite dev server
 
-# Run Vite version
-npm run dev:vite
+# Production builds
+npm run build:all          # Build both applications
+npm run build:nextjs       # Build Next.js only
+npm run build:vite         # Build Vite only
 
-# Build all applications
-npm run build:all
+# Production preview
+npm run start:nextjs       # Start Next.js production server
+npm run preview:vite       # Preview Vite production build
 
-# Clean all node_modules and build artifacts
-npm run clean
+# Utilities
+npm run size              # Show build artifact sizes
+npm run lint              # Lint all workspaces
+npm run lint:fix          # Fix linting issues
+npm run clean             # Clean all dependencies and builds
+npm run clean:builds      # Clean build artifacts only
 ```
+
+## Performance Metrics
+
+- **Next.js Portfolio**: 102kB first load JS, highly optimized
+- **Vite Portfolio**: 209kB JS (gzipped: 65kB), 2.6M build size
+- **Dependencies**: Optimized from 73 to 34 packages (-53%)
+- **Build Times**: NextJS <1s, Vite ~1s
 
 ## Deployment
 
