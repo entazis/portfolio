@@ -5,9 +5,7 @@ This repository contains multiple versions of my portfolio website, managed as a
 ## Structure
 
 - `apps/nextjs-portfolio/` - Next.js version with internationalization
-- `apps/vite-portfolio/` - React + Vite version with modern UI components
-- `packages/shared-types/` - Shared TypeScript types
-- `packages/shared-data/` - Shared data and content
+- `apps/vite-portfolio/` - React + Vite version with optimized dependencies
 
 ## Development
 
