@@ -11,7 +11,7 @@ const AboutSection: React.FC = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
             <img 
-              src="/information_technology.png"
+              src="/information_technology_2.png"
               alt="Information Technology"
               className="rounded-lg shadow-xl w-full h-auto object-cover aspect-video"
             />
