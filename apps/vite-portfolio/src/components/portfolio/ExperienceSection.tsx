@@ -5,6 +5,7 @@ interface ExperienceItem {
   company: string;
   duration: string;
   description: string[];
+  icon: string;
 }
 
 const experiences: ExperienceItem[] = [
@@ -17,6 +18,7 @@ const experiences: ExperienceItem[] = [
       'Mentoring engineers and fostering a culture of innovation and best practices.',
       'Continuing work on nano-service architecture and high-performance systems.',
     ],
+    icon: '🎯',
   },
   {
     role: 'Senior Software Engineer',
@@ -28,6 +30,7 @@ const experiences: ExperienceItem[] = [
       'Led migration from PostgreSQL/HTTP to Redis/MQTT, optimizing performance for high-scale environments.',
       'Implemented database replication/sharding and created testing framework enhancing system stability.',
     ],
+    icon: '⚡',
   },
   {
     role: 'Full Stack Developer & Product Owner',
@@ -38,6 +41,7 @@ const experiences: ExperienceItem[] = [
       'Initiated system redesign that boosted performance and scalability, ensuring adaptability to future requirements.',
       'Improved code quality by 40% through core component extraction, simplifying the codebase.',
     ],
+    icon: '🔧',
   },
   {
     role: 'Software Developer',
@@ -49,6 +53,7 @@ const experiences: ExperienceItem[] = [
       'Built data extraction tools and web scrapers to support operational needs.',
       'Worked as Data Analyst, creating dashboards and performing statistical analyses of ad campaigns.',
     ],
+    icon: '💻',
   },
   {
     role: 'Data Scientist Intern & ML Engineer',
@@ -59,6 +64,7 @@ const experiences: ExperienceItem[] = [
       'Conducted correlation analysis to uncover meaningful relationships within data.',
       'Built automated systems for customer retention using Node.js and Intercom integration.',
     ],
+    icon: '🤖',
   },
 ];
 
@@ -82,15 +88,15 @@ const ExperienceSection: React.FC = () => {
             >
               {/* Icon and Connector for large screens */}
               <div className="hidden md:flex flex-col items-center mr-8 relative z-10">
-                <div className="bg-accent text-accent-foreground rounded-full p-3 shadow-md flex items-center justify-center">
-                  <span className="text-lg">💼</span>
+                <div className="bg-white/80 backdrop-blur-sm rounded-full p-3 shadow-lg border-2 border-white/20 flex items-center justify-center">
+                  <span className="text-lg">{exp.icon}</span>
                 </div>
               </div>
 
               {/* Icon for small screens */}
                <div className="md:hidden flex flex-col items-center mr-4 relative z-10 mt-1">
-                <div className="bg-accent text-accent-foreground rounded-full p-2 shadow-md flex items-center justify-center">
-                  <span className="text-sm">💼</span>
+                <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg border-2 border-white/20 flex items-center justify-center">
+                  <span className="text-sm">{exp.icon}</span>
                 </div>
               </div>
 
