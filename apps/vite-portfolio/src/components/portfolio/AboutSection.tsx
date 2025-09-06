@@ -1,4 +1,5 @@
 import React from 'react';
+import OptimizedImage from './OptimizedImage';
 
 const AboutSection: React.FC = () => {
   return (
@@ -10,10 +11,22 @@ const AboutSection: React.FC = () => {
         </p>
         <div className="grid md:grid-cols-2 gap-12 items-center">
           <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-            <img 
-              src="/information_technology_2.png"
-              alt="Information Technology"
-              className="rounded-lg shadow-xl w-full h-auto object-cover aspect-video"
+            <OptimizedImage
+              src="/information_technology_2-800.jpg"
+              alt="Information Technology - Modern workspace with coding and development tools"
+              className="rounded-lg shadow-xl w-full h-auto aspect-video"
+              sizes={{
+                webp: {
+                  desktop: '/information_technology_2-800.webp',
+                  mobile: '/information_technology_2-400.webp'
+                },
+                jpg: {
+                  desktop: '/information_technology_2-800.jpg',
+                  mobile: '/information_technology_2-400.jpg'
+                }
+              }}
+              loading="lazy"
+              fetchPriority="low"
             />
           </div>
           <div className="space-y-6 animate-fade-in-up" style={{animationDelay: '0.4s'}}>

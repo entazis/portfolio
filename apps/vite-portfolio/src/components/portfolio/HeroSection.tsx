@@ -1,15 +1,29 @@
 import React from 'react';
+import OptimizedImage from './OptimizedImage';
 
 const HeroSection: React.FC = () => {
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center bg-secondary/30 section-padding relative">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
-          <img 
-            src="/bence-szabo.png" 
-            alt="Bence Szabó"
-            className="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto mb-8 shadow-xl border-4 border-primary object-cover animate-fade-in-up"
+          <OptimizedImage
+            src="/bence-szabo-400.jpg"
+            alt="Bence Szabó - Tech Lead and Full-Stack Software Engineer"
+            className="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto mb-8 shadow-xl border-4 border-primary animate-fade-in-up"
             style={{ animationDelay: '0.2s' }}
+            sizes={{
+              webp: {
+                desktop: '/bence-szabo-400.webp',
+                mobile: '/bence-szabo-200.webp'
+              },
+              jpg: {
+                desktop: '/bence-szabo-400.jpg',
+                mobile: '/bence-szabo-200.jpg'
+              }
+            }}
+            placeholder="/bence-szabo-placeholder.jpg"
+            loading="eager"
+            fetchPriority="high"
           />
           <h1 
             className="text-4xl sm:text-5xl md:text-6xl font-bold text-primary mb-4 animate-fade-in-up"
