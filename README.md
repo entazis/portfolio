@@ -4,8 +4,8 @@ This repository contains multiple versions of my portfolio website, managed as a
 
 ## Structure
 
-- `apps/nextjs-portfolio/` - Next.js version with internationalization
-- `apps/vite-portfolio/` - React + Vite version with optimized dependencies
+- `apps/nextjs-proto/` - Next.js version with internationalization
+- `apps/portfolio-simple/` - React + Vite version with optimized dependencies
 
 ## Development
 
@@ -14,17 +14,17 @@ This repository contains multiple versions of my portfolio website, managed as a
 npm install
 
 # Development
-npm run dev:nextjs          # Start Next.js dev server
-npm run dev:vite           # Start Vite dev server
+npm run dev:proto          # Start Next.js dev server
+npm run dev:simple           # Start Vite dev server
 
 # Production builds
 npm run build:all          # Build both applications
-npm run build:nextjs       # Build Next.js only
-npm run build:vite         # Build Vite only
+npm run build:proto       # Build Next.js only
+npm run build:simple         # Build Vite only
 
 # Production preview
-npm run start:nextjs       # Start Next.js production server
-npm run preview:vite       # Preview Vite production build
+npm run start:proto       # Start Next.js production server
+npm run preview:simple       # Preview Vite production build
 
 # Utilities
 npm run size              # Show build artifact sizes
