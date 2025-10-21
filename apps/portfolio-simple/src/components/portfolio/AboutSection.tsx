@@ -9,25 +9,49 @@ const AboutSection: React.FC = () => {
         <p className="section-subtitle">
           My journey in tech, driven by curiosity and a passion for impact.
         </p>
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-            <OptimizedImage
-              src="/information_technology_2-800.jpg"
-              alt="Information Technology - Modern workspace with coding and development tools"
-              className="rounded-lg shadow-xl w-full h-auto aspect-video"
-              sizes={{
-                webp: {
-                  desktop: '/information_technology_2-800.webp',
-                  mobile: '/information_technology_2-400.webp'
-                },
-                jpg: {
-                  desktop: '/information_technology_2-800.jpg',
-                  mobile: '/information_technology_2-400.jpg'
-                }
-              }}
-              loading="lazy"
-              fetchPriority="low"
-            />
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="animate-fade-in-up relative" style={{animationDelay: '0.2s'}}>
+            <div className="relative">
+              <OptimizedImage
+                src="/information_technology_2-800.jpg"
+                alt="Information Technology - Modern workspace with coding and development tools"
+                className="rounded-lg shadow-xl w-full h-auto aspect-video"
+                sizes={{
+                  webp: {
+                    desktop: '/information_technology_2-800.webp',
+                    mobile: '/information_technology_2-400.webp'
+                  },
+                  jpg: {
+                    desktop: '/information_technology_2-800.jpg',
+                    mobile: '/information_technology_2-400.jpg'
+                  }
+                }}
+                loading="lazy"
+                fetchPriority="low"
+              />
+              <div className="absolute -top-4 -right-4 bg-primary text-primary-foreground px-4 py-2 rounded-lg shadow-lg">
+                <div className="text-2xl font-bold">7+</div>
+                <div className="text-xs">Years Experience</div>
+              </div>
+            </div>
+            <div className="mt-8 grid grid-cols-2 gap-4">
+              <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-3xl font-bold text-primary mb-1">15+</div>
+                <div className="text-sm text-muted-foreground">Repositories Consolidated</div>
+              </div>
+              <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-3xl font-bold text-primary mb-1">5x</div>
+                <div className="text-sm text-muted-foreground">Productivity Gains</div>
+              </div>
+              <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-3xl font-bold text-primary mb-1">5</div>
+                <div className="text-sm text-muted-foreground">Team Members</div>
+              </div>
+              <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                <div className="text-3xl font-bold text-primary mb-1">6,674+</div>
+                <div className="text-sm text-muted-foreground">Commits Preserved</div>
+              </div>
+            </div>
           </div>
           <div className="space-y-6 animate-fade-in-up" style={{animationDelay: '0.4s'}}>
             <div>
@@ -43,8 +67,8 @@ const AboutSection: React.FC = () => {
             <div>
               <h3 className="text-2xl font-semibold text-primary mb-3">My Expertise</h3>
               <p className="text-muted-foreground leading-relaxed">
-                I specialize in building <strong className="text-foreground">scalable microservices architectures</strong> and 
-                <strong className="text-foreground"> leading distributed teams</strong>. Currently managing a team of 5 engineers 
+                I specialize in building <strong className="text-foreground">scalable microservices architectures</strong> and{' '}
+                <strong className="text-foreground">leading distributed teams</strong>. Currently managing a team of 5 engineers 
                 across multiple time zones while integrating AI-assisted development workflows into daily operations. 
                 My experience spans from designing nano-service architectures to implementing database replication, sharding, 
                 and monorepo management. I'm passionate about <strong className="text-foreground">mentoring engineers</strong>, 
@@ -57,8 +81,8 @@ const AboutSection: React.FC = () => {
                 I'm passionate about <strong className="text-foreground">AI and machine learning</strong>, which has come 
                 full circle from my early data science work to now implementing AI-assisted development workflows that deliver 
                 measurable productivity gains. I integrate MCP servers and AI agents into development processes, exploring how 
-                autonomous systems can enhance engineering productivity. I also have extensive experience in 
-                <strong className="text-foreground"> organizational development</strong> through my volunteer work, 
+                autonomous systems can enhance engineering productivity. I also have extensive experience in{' '}
+                <strong className="text-foreground">organizational development</strong> through my volunteer work, 
                 including serving as CEO of Invisible University and training others in nonviolent communication and leadership.
               </p>
             </div>
