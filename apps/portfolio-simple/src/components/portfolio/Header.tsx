@@ -10,6 +10,7 @@ const Header: React.FC = () => {
     { href: '#experience', label: 'Experience' },
     { href: '#projects', label: 'Projects' },
     { href: '#contact', label: 'Contact' },
+    { href: 'https://log.entazis.dev', label: 'Log' },
   ];
 
   useEffect(() => {
