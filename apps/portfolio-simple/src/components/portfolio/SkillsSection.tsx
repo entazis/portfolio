@@ -29,6 +29,7 @@ const skillCategories: SkillCategory[] = [
       { name: 'Redis', level: 'Expert' },
       { name: 'PostgreSQL', level: 'Expert' },
       { name: 'MongoDB', level: 'Expert' },
+      { name: 'Prometheus', level: 'Advanced' },
       { name: 'Database Sharding', level: 'Expert' },
     ],
   },
@@ -48,6 +49,9 @@ const skillCategories: SkillCategory[] = [
     skills: [
       { name: 'Microservices', level: 'Expert' },
       { name: 'Nano-services', level: 'Master' },
+      { name: 'Monorepo Management', level: 'Expert' },
+      { name: 'AI Agents', level: 'Expert' },
+      { name: 'MCP', level: 'Advanced' },
       { name: 'CI/CD', level: 'Expert' },
       { name: 'System Design', level: 'Expert' },
     ],
@@ -125,7 +129,8 @@ const SkillsSection: React.FC = () => {
                 {[
                   'Jest', 'Git', 'GitHub', 'Docker', 'Python', 'R', 'Tailwind CSS', 'Next.js', 
                   'AWS', 'REST API', 'GraphQL', 'TypeORM', 'Tile38', 'GeoJSON', 'IoT', 
-                  'Multi-Tenancy', 'JSON Schema', 'Open API', 'RediSearch', 'Integration Testing'
+                  'Multi-Tenancy', 'JSON Schema', 'Open API', 'RediSearch', 'Integration Testing',
+                  'Cursor', 'Schema Generation', 'Runtime Validation', 'Team Leadership'
                 ].map(tech => (
                     <span key={tech} className="text-sm px-3 py-1 border border-primary text-primary bg-transparent rounded">{tech}</span>
                 ))}

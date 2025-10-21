@@ -17,11 +17,13 @@ const ContactSection: React.FC = () => {
           <div className="bg-card p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-primary mb-3">What I Can Help With</h3>
             <ul className="text-sm text-muted-foreground space-y-1 text-left">
-              <li>• Scalable system architecture & design</li>
-              <li>• Node.js, TypeScript, and React development</li>
-              <li>• Database optimization & microservices</li>
-              <li>• Team mentoring & technical leadership</li>
-              <li>• IoT solutions & real-time systems</li>
+              <li>• Scalable microservices architecture & system design</li>
+              <li>• AI-assisted development workflows & productivity optimization</li>
+              <li>• Monorepo architecture & migration strategies</li>
+              <li>• Node.js, TypeScript, NestJS, and React development</li>
+              <li>• Database optimization, Redis, PostgreSQL & microservices</li>
+              <li>• Distributed team leadership & technical mentorship</li>
+              <li>• IoT solutions & real-time systems with MQTT</li>
             </ul>
           </div>
           

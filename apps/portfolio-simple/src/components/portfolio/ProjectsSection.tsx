@@ -12,6 +12,84 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "Deployment Protocol & Security Hardening",
+    icon: "🔒",
+    duration: "2025.09",
+    description: "Unified all repositories under BeamLive GitHub organization and established robust deployment practices with comprehensive review processes.",
+    technologies: ["DevOps", "Security", "CI/CD", "Release Management", "GitHub", "Policy Design"],
+    keyAchievements: [
+      "Designed comprehensive deployment policy with review and staging process",
+      "Introduced technical and security reviews before production deployments",
+      "Established clear guidelines for code quality and security standards",
+      "Enhanced system security and deployment reliability through standardized processes",
+    ]
+  },
+  {
+    title: "MCP Server Integration",
+    icon: "🤖",
+    duration: "2025.08",
+    description: "Deployed Model-Context Protocol servers to enable AI agents to interact with core services and automate development workflows.",
+    technologies: ["AI Agents", "MCP", "API Integration", "Automation", "Protocol Design"],
+    keyAchievements: [
+      "Integrated MCP servers with existing infrastructure",
+      "Experimented with autonomous agents for testing and development tasks",
+      "Enabled AI-driven automation for routine development operations",
+      "Created foundation for AI-assisted development workflows",
+    ]
+  },
+  {
+    title: "Dynamic Model Loading & Schema Generation",
+    icon: "🔄",
+    duration: "2025.07 - 2025.10",
+    description: "Developed runtime schema system for Beam's dynamic data models, unifying metadata and automating schema management across all services.",
+    technologies: ["JSON Schema", "Runtime Validation", "NestJS", "TypeScript", "Automation", "Redis"],
+    keyAchievements: [
+      "Merged all entity model types into unified schema with metadata",
+      "Implemented runtime JSON Schema generation and dynamic loading",
+      "Automated database index, trigger, and validation schema generation",
+      "Drastically reduced schema maintenance time and improved consistency",
+    ]
+  },
+  {
+    title: "Beam Live Monorepo & DevOps Ecosystem",
+    icon: "📦",
+    duration: "2025.07 - 2025.09",
+    description: "Consolidated 15+ repositories into single Beam Live Core Monorepo with full version history preservation and enhanced developer productivity.",
+    technologies: ["Monorepo", "DevOps", "Prometheus", "AI Agents", "NestJS", "TypeScript", "GitHub Actions"],
+    keyAchievements: [
+      "Migrated 6,674 commits with full version history preservation",
+      "Achieved 5x productivity increase through AI-assisted code migration",
+      "Introduced Prometheus monitoring for comprehensive observability",
+      "Simplified maintenance and unified development workflow",
+    ]
+  },
+  {
+    title: "Beam v2.2 Migration & System Stabilization",
+    icon: "⚙️",
+    duration: "2025.03 - 2025.08",
+    description: "Directed large-scale migration project enhancing scalability, testing, and deployment consistency across all core services.",
+    technologies: ["Microservices", "NestJS", "Redis", "CI/CD", "Testing Automation", "Integration Testing", "Jest"],
+    keyAchievements: [
+      "Oversaw multiple service migrations (connector, authenticator, notification, CUDB)",
+      "Created 20+ integration tests per service improving reliability",
+      "Established AI-assisted development guidelines and team stand-ups",
+      "Successfully migrated all services with improved stability and coverage",
+    ]
+  },
+  {
+    title: "AI-Assisted Development & Team Management",
+    icon: "👥",
+    duration: "2025.02 - 2025.10",
+    description: "Integrated AI tools into daily workflows, enabling automated code review and refactoring while managing distributed team of 5 developers.",
+    technologies: ["Leadership", "AI Tooling", "Remote Team Management", "Process Automation", "Mentorship"],
+    keyAchievements: [
+      "Set up AI tools budget and rules for AI agent usage",
+      "Implemented AI-driven code review processes and debugging workflows",
+      "Mentored developers in AI-assisted development practices",
+      "Dramatically improved team productivity and code quality",
+    ]
+  },
+  {
     title: "Nano-Service Engine & Editor",
     icon: "🏗️",
     duration: "2022.08 - 2023.02",
