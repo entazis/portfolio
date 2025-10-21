@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# Portfolio Simple
 
-## Project info
+A clean, minimalist portfolio website built with React, TypeScript, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/8fd7b901-6b75-4ef7-ad64-ea7fb16eea6e
+## Tech Stack
 
-## How can I edit this code?
+- **Framework**: React 19.1.0
+- **Build Tool**: Vite 5.4.1
+- **Language**: TypeScript 5.5.3
+- **Styling**: Tailwind CSS 3.4.11
+- **UI Components**: Radix UI with shadcn/ui
+- **Routing**: React Router DOM 6.26.2
+- **Icons**: Lucide React
+- **Notifications**: Sonner
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- 🎨 Clean and minimalist design
+- 📱 Fully responsive layout
+- ♿ Accessible components (Radix UI primitives)
+- 🎭 Smooth animations and transitions
+- 🚀 Optimized bundle with Vite
+- 🖼️ Optimized images with WebP support
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/8fd7b901-6b75-4ef7-ad64-ea7fb16eea6e) and start prompting.
+## Development
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+# Install dependencies
+npm install
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server (http://localhost:8080)
 npm run dev
+
+# Build for production
+npm run build
+
+# Build for development
+npm run build:dev
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
 ```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+├── components/
+│   ├── portfolio/
+│   │   ├── Header.tsx           # Navigation header
+│   │   ├── Footer.tsx           # Site footer
+│   │   ├── HeroSection.tsx      # Hero section
+│   │   ├── AboutSection.tsx     # About section
+│   │   ├── ExperienceSection.tsx # Work experience
+│   │   ├── SkillsSection.tsx    # Skills showcase
+│   │   ├── ProjectsSection.tsx  # Projects gallery
+│   │   ├── ContactSection.tsx   # Contact form
+│   │   └── OptimizedImage.tsx   # Image optimization component
+│   └── ui/                      # Reusable UI components (shadcn/ui)
+├── pages/
+│   ├── Index.tsx                # Main portfolio page
+│   └── NotFound.tsx             # 404 page
+├── hooks/                       # Custom React hooks
+├── lib/                         # Utility functions
+├── App.tsx                      # App root component
+└── main.tsx                     # App entry point
+```
 
-**Use GitHub Codespaces**
+## Customization
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- **Colors**: Edit `src/index.css` to customize the color scheme
+- **Content**: Update component files in `src/components/portfolio/`
+- **Styling**: Modify `tailwind.config.ts` for theme customization
+- **Routes**: Add new routes in `src/App.tsx`
 
-## What technologies are used for this project?
+## Build Output
 
-This project is built with:
+The production build generates optimized static files in the `dist/` directory, ready for deployment to any static hosting service.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Performance Optimizations
 
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/8fd7b901-6b75-4ef7-ad64-ea7fb16eea6e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- WebP image format with JPEG fallbacks
+- Responsive images with multiple sizes
+- Lazy loading for images
+- Preloading of critical assets
+- Optimized bundle splitting

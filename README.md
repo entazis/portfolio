@@ -6,6 +6,7 @@ This repository contains multiple versions of my portfolio website, managed as a
 
 - `apps/nextjs-proto/` - Next.js version with internationalization
 - `apps/portfolio-simple/` - React + Vite version with optimized dependencies
+- `apps/portfolio-dark/` - React + Vite version with dark theme and comprehensive Radix UI components
 
 ## Development
 
@@ -15,16 +16,19 @@ npm install
 
 # Development
 npm run dev:proto          # Start Next.js dev server
-npm run dev:simple           # Start Vite dev server
+npm run dev:simple         # Start Vite dev server (simple version)
+npm run dev:dark           # Start Vite dev server (dark theme)
 
 # Production builds
-npm run build:all          # Build both applications
-npm run build:proto       # Build Next.js only
-npm run build:simple         # Build Vite only
+npm run build:all          # Build all applications
+npm run build:proto        # Build Next.js only
+npm run build:simple       # Build Vite (simple) only
+npm run build:dark         # Build Vite (dark) only
 
 # Production preview
-npm run start:proto       # Start Next.js production server
-npm run preview:simple       # Preview Vite production build
+npm run start:proto        # Start Next.js production server
+npm run preview:simple     # Preview Vite (simple) production build
+npm run preview:dark       # Preview Vite (dark) production build
 
 # Utilities
 npm run size              # Show build artifact sizes
