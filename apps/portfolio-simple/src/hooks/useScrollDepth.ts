@@ -23,7 +23,7 @@ export const useScrollDepth = (options: UseScrollDepthOptions = {}): void => {
 
   // Create a stable reference for milestones to prevent unnecessary effect re-runs
   // when milestones array is passed inline or recreated each render
-  const stableMilestones = useMemo(() => milestones, [JSON.stringify(milestones)]);
+  const stableMilestones = useMemo(() => milestones, [milestones]);
 
   const trackedMilestones = useRef<Set<number>>(new Set());
   const maxScrollDepth = useRef<number>(0);
@@ -32,6 +32,7 @@ export const useScrollDepth = (options: UseScrollDepthOptions = {}): void => {
 
   useEffect(() => {
     const metricsService = getMetricsService();
+    const trackedMilestonesRef = trackedMilestones.current;
 
     /**
      * Calculate current scroll depth percentage
@@ -96,8 +97,11 @@ export const useScrollDepth = (options: UseScrollDepthOptions = {}): void => {
       // This ensures we only emit valid milestone percentages (e.g., 25, 50, 75, 100)
       // and not arbitrary values (e.g., 95) that aren't part of the tracked milestones
       const finalDepth = maxScrollDepth.current;
-      const tracked = trackedMilestones.current;
-      if (finalDepth > 0 && !tracked.has(finalDepth) && stableMilestones.includes(finalDepth)) {
+      if (
+        finalDepth > 0 &&
+        !trackedMilestonesRef.has(finalDepth) &&
+        stableMilestones.includes(finalDepth)
+      ) {
         metricsService.trackScrollDepth(finalDepth);
       }
     };
