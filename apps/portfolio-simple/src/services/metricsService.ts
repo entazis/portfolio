@@ -30,10 +30,14 @@ const DEFAULT_CONFIG: MetricsConfig = {
 class MetricsService {
   private config: MetricsConfig;
   private metricQueue: Metric[] = [];
-  private batchTimer: NodeJS.Timeout | null = null;
+  private batchTimer: number | null = null;
   private isInitialized = false;
   private failedAttempts = 0;
   private readonly maxRetries = 3;
+  private isFlushing = false;
+  private flushPromise: Promise<void> | null = null;
+  private unloadHandlers: Array<() => void> = [];
+  private hasUnloaded = false;
 
   constructor(config: Partial<MetricsConfig> = {}) {
     this.config = { ...DEFAULT_CONFIG, ...config };
@@ -46,13 +50,43 @@ class MetricsService {
   private loadConfigFromEnv(): void {
     if (typeof window === 'undefined') return;
 
+    // Parse enabled flag: default to false when undefined or explicitly 'false'
+    const enabledEnv = import.meta.env.VITE_METRICS_ENABLED;
+    const enabled =
+      enabledEnv === undefined || enabledEnv === 'false' ? false : enabledEnv !== 'false';
+
+    // Parse and validate sampleRate with clamping to [0, 1]
+    const sampleRateStr = import.meta.env.VITE_METRICS_SAMPLE_RATE;
+    const parsedSampleRate = sampleRateStr ? parseFloat(sampleRateStr) : this.config.sampleRate;
+    const sampleRate = Number.isFinite(parsedSampleRate)
+      ? Math.min(1, Math.max(0, parsedSampleRate))
+      : this.config.sampleRate;
+
+    // Parse and validate batchSize with minimum of 1
+    const batchSizeStr = import.meta.env.VITE_METRICS_BATCH_SIZE;
+    const parsedBatchSize = batchSizeStr ? parseInt(batchSizeStr, 10) : this.config.batchSize;
+    const batchSize =
+      Number.isFinite(parsedBatchSize) && !isNaN(parsedBatchSize)
+        ? Math.max(1, parsedBatchSize)
+        : this.config.batchSize;
+
+    // Parse and validate batchInterval with minimum of 1000ms
+    const batchIntervalStr = import.meta.env.VITE_METRICS_BATCH_INTERVAL;
+    const parsedBatchInterval = batchIntervalStr
+      ? parseInt(batchIntervalStr, 10)
+      : this.config.batchInterval;
+    const batchInterval =
+      Number.isFinite(parsedBatchInterval) && !isNaN(parsedBatchInterval)
+        ? Math.max(1000, parsedBatchInterval)
+        : this.config.batchInterval;
+
     const envConfig: Partial<MetricsConfig> = {
-      enabled: import.meta.env.VITE_METRICS_ENABLED !== 'false',
+      enabled,
       apiUrl: import.meta.env.VITE_METRICS_API_URL || this.config.apiUrl,
       siteName: import.meta.env.VITE_SITE_NAME || this.config.siteName,
-      sampleRate: parseFloat(import.meta.env.VITE_METRICS_SAMPLE_RATE || '1.0'),
-      batchSize: parseInt(import.meta.env.VITE_METRICS_BATCH_SIZE || '10', 10),
-      batchInterval: parseInt(import.meta.env.VITE_METRICS_BATCH_INTERVAL || '5000', 10),
+      sampleRate,
+      batchSize,
+      batchInterval,
       debug: import.meta.env.VITE_METRICS_DEBUG === 'true',
     };
 
@@ -285,23 +319,39 @@ class MetricsService {
   public async flushMetrics(): Promise<void> {
     if (this.metricQueue.length === 0) return;
 
-    const metricsToSend = [...this.metricQueue];
-    this.metricQueue = [];
-
-    const batch: MetricBatch = {
-      site: this.config.siteName,
-      metrics: metricsToSend,
-      timestamp: Date.now(),
-    };
-
-    this.log('Flushing metrics batch', batch);
-
-    try {
-      await this.submitBatch(batch);
-      this.failedAttempts = 0;
-    } catch (error) {
-      this.handleSubmissionError(error, metricsToSend);
+    // Prevent concurrent flushes - return existing promise if already flushing
+    if (this.isFlushing && this.flushPromise) {
+      return this.flushPromise;
     }
+
+    this.isFlushing = true;
+
+    this.flushPromise = (async () => {
+      try {
+        const metricsToSend = [...this.metricQueue];
+        this.metricQueue = [];
+
+        const batch: MetricBatch = {
+          site: this.config.siteName,
+          metrics: metricsToSend,
+          timestamp: Date.now(),
+        };
+
+        this.log('Flushing metrics batch', batch);
+
+        try {
+          await this.submitBatch(batch);
+          this.failedAttempts = 0;
+        } catch (error) {
+          this.handleSubmissionError(error, metricsToSend);
+        }
+      } finally {
+        this.isFlushing = false;
+        this.flushPromise = null;
+      }
+    })();
+
+    return this.flushPromise;
   }
 
   /**
@@ -356,6 +406,9 @@ class MetricsService {
     if (typeof window === 'undefined') return;
 
     const handleUnload = () => {
+      if (this.hasUnloaded) return;
+      this.hasUnloaded = true;
+
       if (this.metricQueue.length > 0) {
         // Use sendBeacon for reliable delivery during page unload
         const batch: MetricBatch = {
@@ -375,6 +428,10 @@ class MetricsService {
 
     window.addEventListener('beforeunload', handleUnload);
     window.addEventListener('pagehide', handleUnload);
+    this.unloadHandlers = [
+      () => window.removeEventListener('beforeunload', handleUnload),
+      () => window.removeEventListener('pagehide', handleUnload),
+    ];
   }
 
   /**
@@ -389,13 +446,17 @@ class MetricsService {
   /**
    * Clean up resources
    */
-  public destroy(): void {
+  public async destroy(): Promise<void> {
     if (this.batchTimer) {
       clearInterval(this.batchTimer);
       this.batchTimer = null;
     }
 
-    this.flushMetrics();
+    // Clean up unload handlers
+    this.unloadHandlers.forEach((cleanup) => cleanup());
+    this.unloadHandlers = [];
+
+    await this.flushMetrics();
     this.isInitialized = false;
     this.log('Metrics service destroyed');
   }

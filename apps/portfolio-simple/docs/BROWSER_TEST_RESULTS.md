@@ -221,8 +221,6 @@ Screenshot captured showing:
 - ✅ Navigation active
 - ✅ Smooth scrolling working
 
-![Test Screenshot](file:///tmp/cursor-browser-extension/1763300388483/metrics-test-result.png)
-
 ---
 
 ## 🔍 Diagnostic Information

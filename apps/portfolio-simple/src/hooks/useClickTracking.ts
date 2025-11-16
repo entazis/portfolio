@@ -1,6 +1,27 @@
 /**
  * Hook for tracking click events on buttons and links
- * Provides a simple callback to track user interactions
+ * Provides simple callbacks to track user interactions
+ *
+ * @example
+ * ```tsx
+ * const MyComponent = () => {
+ *   const { trackClick, trackExternalLink } = useClickTracking();
+ *
+ *   // For inline handlers (simple cases)
+ *   return (
+ *     <button onClick={() => trackClick('Button Label')}>
+ *       Click me
+ *     </button>
+ *   );
+ *
+ *   // For memoized handlers (when passing to child components)
+ *   const handleClick = useCallback(() => {
+ *     trackClick('Button Label', 'section-id');
+ *   }, [trackClick]);
+ *
+ *   return <ChildComponent onClick={handleClick} />;
+ * };
+ * ```
  */
 
 import { getMetricsService } from '@/services/metricsService';
@@ -9,13 +30,14 @@ import { useCallback } from 'react';
 interface UseClickTrackingReturn {
   trackClick: (label: string, target?: string) => void;
   trackExternalLink: (url: string, label?: string) => void;
-  handleClickEvent: (label: string, target?: string) => () => void;
-  handleExternalLinkClick: (url: string, label?: string) => () => void;
 }
 
 /**
  * Custom hook to track click events
- * Provides helper functions for tracking button and link clicks
+ *
+ * Returns memoized tracking functions that can be called directly in event handlers.
+ * For optimal performance when passing handlers to child components, wrap the calls
+ * in useCallback at the component level.
  */
 export const useClickTracking = (): UseClickTrackingReturn => {
   const metricsService = getMetricsService();
@@ -24,6 +46,13 @@ export const useClickTracking = (): UseClickTrackingReturn => {
    * Track a button or element click
    * @param label - Descriptive label for the click (e.g., "View Projects")
    * @param target - Optional target identifier (e.g., section ID)
+   *
+   * @example
+   * ```tsx
+   * <button onClick={() => trackClick('View Projects', 'projects')}>
+   *   View Projects
+   * </button>
+   * ```
    */
   const trackClick = useCallback(
     (label: string, target?: string) => {
@@ -36,6 +65,16 @@ export const useClickTracking = (): UseClickTrackingReturn => {
    * Track an external link click
    * @param url - The external URL being clicked
    * @param label - Optional descriptive label for the link
+   *
+   * @example
+   * ```tsx
+   * <a
+   *   href="https://github.com/user"
+   *   onClick={() => trackExternalLink('https://github.com/user', 'GitHub')}
+   * >
+   *   GitHub Profile
+   * </a>
+   * ```
    */
   const trackExternalLink = useCallback(
     (url: string, label?: string) => {
@@ -44,41 +83,9 @@ export const useClickTracking = (): UseClickTrackingReturn => {
     [metricsService],
   );
 
-  /**
-   * Returns a click handler function for use in onClick props
-   * @param label - Descriptive label for the click
-   * @param target - Optional target identifier
-   * @returns Click handler function
-   */
-  const handleClickEvent = useCallback(
-    (label: string, target?: string) => {
-      return () => {
-        trackClick(label, target);
-      };
-    },
-    [trackClick],
-  );
-
-  /**
-   * Returns a click handler function for external links
-   * @param url - The external URL being clicked
-   * @param label - Optional descriptive label
-   * @returns Click handler function
-   */
-  const handleExternalLinkClick = useCallback(
-    (url: string, label?: string) => {
-      return () => {
-        trackExternalLink(url, label);
-      };
-    },
-    [trackExternalLink],
-  );
-
   return {
     trackClick,
     trackExternalLink,
-    handleClickEvent,
-    handleExternalLinkClick,
   };
 };
 

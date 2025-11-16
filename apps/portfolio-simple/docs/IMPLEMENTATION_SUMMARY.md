@@ -221,7 +221,7 @@ a9b0b336b3b5   prom/prometheus:v2.54.1   0.0.0.0:9090->9090/tcp
 ### Before
 ```javascript
 // Simple tracking
-fetch('https://entazis.dev/track', {
+fetch('/api/track', {
   method: 'POST',
   body: JSON.stringify({ site: 'entazis.dev', page: window.location.pathname })
 });

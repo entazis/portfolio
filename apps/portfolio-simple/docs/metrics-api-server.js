@@ -11,6 +11,58 @@ app.use(express.json());
 
 const PUSHGATEWAY_URL = process.env.PUSHGATEWAY_URL || 'http://pushgateway:9091';
 const PORT = process.env.PORT || 8080;
+const FETCH_TIMEOUT_MS = 5000; // Timeout for Pushgateway requests
+const ALLOWED_METRIC_TYPES = ['gauge', 'counter', 'histogram']; // Supported Prometheus metric types
+
+/**
+ * Validate a single metric object
+ * @param {Object} metric - Metric object to validate
+ * @param {number} index - Index of the metric in the array (for error reporting)
+ * @returns {Object} Validation result with { isValid: boolean, error?: string }
+ */
+const validateMetric = (metric, index) => {
+  const errors = [];
+
+  // Check if metric is an object
+  if (!metric || typeof metric !== 'object') {
+    return {
+      isValid: false,
+      error: `Metric at index ${index}: must be an object`,
+    };
+  }
+
+  // Validate name field
+  if (!metric.name || typeof metric.name !== 'string' || metric.name.trim() === '') {
+    errors.push('name must be a non-empty string');
+  }
+
+  // Validate type field
+  if (!metric.type || typeof metric.type !== 'string') {
+    errors.push('type must be a string');
+  } else if (!ALLOWED_METRIC_TYPES.includes(metric.type)) {
+    errors.push(`type must be one of: ${ALLOWED_METRIC_TYPES.join(', ')}`);
+  }
+
+  // Validate value field
+  if (metric.value === undefined || metric.value === null) {
+    errors.push('value is required');
+  } else {
+    const numericValue = Number(metric.value);
+    if (isNaN(numericValue) || !isFinite(numericValue)) {
+      errors.push('value must be a number or numeric string');
+    }
+  }
+
+  // Return validation result
+  if (errors.length > 0) {
+    return {
+      isValid: false,
+      error: `Metric at index ${index}: ${errors.join(', ')}`,
+    };
+  }
+
+  return { isValid: true };
+};
 
 /**
  * Format a metric in Prometheus text format
@@ -20,9 +72,11 @@ const PORT = process.env.PORT || 8080;
 const formatPrometheusMetric = (metric) => {
   const { name, type, value, labels } = metric;
 
-  // Build label string
   const labelPairs = Object.entries(labels || {})
-    .map(([key, value]) => `${key}="${value}"`)
+    .map(
+      ([key, value]) =>
+        `${key}="${String(value).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`,
+    )
     .join(', ');
 
   const labelString = labelPairs ? `{${labelPairs}}` : '';
@@ -32,27 +86,8 @@ const formatPrometheusMetric = (metric) => {
     case 'counter':
     case 'gauge':
       return `${name}${labelString} ${value}`;
-
     case 'histogram':
-      // For histograms, we create multiple metrics with buckets
-      // Simplified approach: create a summary with quantiles
-      const buckets = [0.001, 0.01, 0.1, 0.5, 1, 2.5, 5, 10, 30, 60];
-      const lines = [];
-
-      // Add bucket metrics
-      buckets.forEach((bucket) => {
-        const bucketLabel = labelPairs ? `{${labelPairs}, le="${bucket}"}` : `{le="${bucket}"}`;
-        lines.push(`${name}_bucket${bucketLabel} ${value <= bucket ? 1 : 0}`);
-      });
-
-      // Add +Inf bucket
-      const infLabel = labelPairs ? `{${labelPairs}, le="+Inf"}` : `{le="+Inf"}`;
-      lines.push(`${name}_bucket${infLabel} 1`);
-
-      // Add sum and count
-      lines.push(`${name}_sum${labelString} ${value}`);
-      lines.push(`${name}_count${labelString} 1`);
-
+      throw new Error('Histogram type is not supported. Use counter or gauge types instead.');
       return lines.join('\n');
 
     default:
@@ -75,6 +110,7 @@ const submitToPushgateway = async (job, metricsText) => {
       'Content-Type': 'text/plain',
     },
     body: metricsText,
+    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
 
   if (!response.ok) {
@@ -116,6 +152,26 @@ app.post('/track', async (req, res) => {
       });
     }
 
+    // Validate all metrics before processing
+    const validationErrors = [];
+    for (let i = 0; i < metrics.length; i++) {
+      const validationResult = validateMetric(metrics[i], i);
+      if (!validationResult.isValid) {
+        validationErrors.push(validationResult.error);
+      }
+    }
+
+    // If validation errors exist, return 400 with detailed error information
+    if (validationErrors.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Metric validation failed',
+        validationErrors: validationErrors,
+        totalMetrics: metrics.length,
+        invalidCount: validationErrors.length,
+      });
+    }
+
     // Format all metrics
     const formattedMetrics = metrics.map((metric) => formatPrometheusMetric(metric)).join('\n');
 
@@ -142,10 +198,18 @@ app.post('/track', async (req, res) => {
  * Get metrics statistics (for debugging)
  */
 app.get('/metrics/stats', async (req, res) => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
   try {
-    // Query Pushgateway for current metrics
-    const response = await fetch(`${PUSHGATEWAY_URL}/metrics`);
+    // Query Pushgateway for current metrics with timeout
+    const response = await fetch(`${PUSHGATEWAY_URL}/metrics`, {
+      signal: controller.signal,
+    });
     const metricsText = await response.text();
+
+    // Clear timeout on successful completion
+    clearTimeout(timeoutId);
 
     // Parse and count metrics
     const lines = metricsText.split('\n').filter((line) => line && !line.startsWith('#'));
@@ -157,6 +221,19 @@ app.get('/metrics/stats', async (req, res) => {
       pushgatewayUrl: PUSHGATEWAY_URL,
     });
   } catch (error) {
+    // Clear timeout in case of other errors
+    clearTimeout(timeoutId);
+
+    // Check if the error is due to abort/timeout
+    if (error.name === 'AbortError') {
+      console.error('Request to Pushgateway timed out:', error);
+      return res.status(504).json({
+        success: false,
+        error: 'Gateway timeout: Pushgateway did not respond in time',
+        timeout: FETCH_TIMEOUT_MS,
+      });
+    }
+
     console.error('Error getting stats:', error);
     return res.status(500).json({
       success: false,
@@ -177,14 +254,16 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`===========================================`);
-  console.log(`Metrics API Server`);
-  console.log(`===========================================`);
-  console.log(`Port: ${PORT}`);
-  console.log(`Pushgateway: ${PUSHGATEWAY_URL}`);
-  console.log(`Health: http://localhost:${PORT}/health`);
-  console.log(`===========================================`);
-});
+if (import.meta.url === `file://${process.argv[1]}`) {
+  app.listen(PORT, () => {
+    console.log(`===========================================`);
+    console.log(`Metrics API Server`);
+    console.log(`===========================================`);
+    console.log(`Port: ${PORT}`);
+    console.log(`Pushgateway: ${PUSHGATEWAY_URL}`);
+    console.log(`Health: http://localhost:${PORT}/health`);
+    console.log(`===========================================`);
+  });
+}
 
 export default app;

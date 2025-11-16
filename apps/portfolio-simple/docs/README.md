@@ -48,14 +48,27 @@ docs/
 
 ### 1. Install Dependencies
 
-Already done! ✅ `web-vitals` has been installed.
+Already done! ✅ `web-vitals` was installed as part of the project setup.
+See [package.json](../package.json) for details.
 
 ### 2. Configure Environment
 
-Copy the example environment file:
+Copy the example environment file.
+
+**Important:** Run this command from the project root (`apps/portfolio-simple`):
 
 ```bash
+# Make sure you're in apps/portfolio-simple directory first
+cd apps/portfolio-simple
+
+# Then copy the environment file
 cp .env.example .env
+```
+
+Alternatively, if running from elsewhere, use the full path:
+
+```bash
+cp apps/portfolio-simple/.env.example apps/portfolio-simple/.env
 ```
 
 The default configuration is:
@@ -70,29 +83,142 @@ VITE_METRICS_BATCH_INTERVAL=5000
 VITE_METRICS_DEBUG=false
 ```
 
-### 3. Update Your Metrics API Server
+### 3. Default Ports Reference
 
-Replace your current simple Express server with the enhanced one:
+The following default ports are used throughout this setup:
+
+| Port | Service | Configuration Location |
+|------|---------|------------------------|
+| **8080** | Metrics API Server | `docs/metrics-api-server.js` (line 13: `PORT` env var) |
+| **9091** | Pushgateway | `docs/metrics-api-server.js` (line 12: `PUSHGATEWAY_URL` env var) |
+| **9090** | Prometheus | Standard Prometheus default port |
+| **3000** | Grafana | Standard Grafana default port |
+
+**To change these ports:**
+
+- **Metrics API**: Set the `PORT` environment variable when starting the server
+- **Pushgateway**: Set the `PUSHGATEWAY_URL` environment variable in your metrics API server
+- **Prometheus/Grafana**: Configure in your `docker-compose.yml` or respective configuration files
+
+Example:
 
 ```bash
-# Your current server location (adjust path as needed)
-cp docs/metrics-api-server.js /path/to/your/metrics-api/index.js
+# Start Metrics API on port 8000 instead of 8080
+PORT=8000 node index.js
+
+# Or set Pushgateway URL to custom port
+PUSHGATEWAY_URL=http://localhost:9092 node index.js
+```
+
+### 4. Set Up Your Metrics API Server
+
+The `docs/metrics-api-server.js` file provides a complete Express-based metrics collection server. You have several deployment options:
+
+#### Option A: Standalone Node.js Service (Recommended)
+
+Create a separate service in your repository:
+
+```bash
+# Create the metrics API service directory
+mkdir -p services/metrics-api
+cp docs/metrics-api-server.js services/metrics-api/index.js
+
+# Initialize the service
+cd services/metrics-api
+npm init -y
+npm install express cors prom-client
+
+# Start the service
+npm start
+```
+
+Expected directory structure:
+
+```
+portfolio/
+├── apps/
+│   └── portfolio-simple/
+├── services/
+│   └── metrics-api/
+│       ├── index.js          # The metrics server
+│       ├── package.json       # Service dependencies
+│       └── node_modules/
+└── package.json
+```
+
+#### Option B: Integrate into Existing Backend
+
+If you already have a backend service (Express, NestJS, etc.):
+
+```bash
+# Copy into your backend's routes or API folder
+cp docs/metrics-api-server.js /path/to/backend/src/routes/metrics-api.js
+
+# Then import and mount in your main server file:
+# app.use('/metrics', require('./routes/metrics-api'));
+```
+
+#### Option C: Local Development Setup
+
+For quick local testing:
+
+```bash
+# Create a dev folder
+mkdir -p dev/metrics-api
+cp docs/metrics-api-server.js dev/metrics-api/index.js
+cd dev/metrics-api
+npm init -y
+npm install express cors prom-client
+node index.js
 ```
 
 The enhanced server supports:
+
 - Batch metric submissions at `/track`
 - Proper Prometheus formatting for histograms
 - Multiple metric types (counters, histograms, gauges)
+- CORS configuration for local and production use
 
-### 4. Run the Application
+**Production Deployment:** For production environments (Docker, Kubernetes, cloud platforms), see the [Deployment Guide](#deployment) section below for containerization and scaling recommendations
+
+### 5. Run the Application
 
 ```bash
 npm run dev
 ```
 
-Open the browser console (with `VITE_METRICS_DEBUG=true`) to see metrics being collected and batched.
+To enable debug logging and see metrics being collected and batched in the browser console, set the `VITE_METRICS_DEBUG` environment variable:
 
-### 5. Verify Metrics
+**Unix/Linux/macOS (one-off run):**
+
+```bash
+VITE_METRICS_DEBUG=true npm run dev
+```
+
+**Windows PowerShell:**
+
+```powershell
+$env:VITE_METRICS_DEBUG="true"; npm run dev
+```
+
+**Windows Command Prompt:**
+
+```cmd
+set VITE_METRICS_DEBUG=true && npm run dev
+```
+
+**Alternative (all platforms):**
+Create a `.env` file in the `apps/portfolio-simple` directory:
+
+```
+VITE_METRICS_DEBUG=true
+```
+
+Then run `npm run dev` as usual.
+
+After starting the dev server with debug mode enabled, open your browser console to see detailed logs of metrics being collected and batched.
+
+### 6. Verify Metrics
 
 Check that metrics are flowing through the pipeline:
 
@@ -110,6 +236,7 @@ curl http://localhost:9091/metrics | grep web_
 ## Metrics Being Tracked
 
 ### Performance (Web Vitals)
+
 - `web_vitals_cls` - Cumulative Layout Shift
 - `web_vitals_fcp_seconds` - First Contentful Paint
 - `web_vitals_inp_seconds` - Interaction to Next Paint
@@ -117,6 +244,7 @@ curl http://localhost:9091/metrics | grep web_
 - `web_vitals_ttfb_seconds` - Time to First Byte
 
 ### User Engagement
+
 - `web_page_visits_total` - Page visits
 - `web_section_views_total` - Section visibility
 - `web_section_time_spent_seconds` - Time in each section
@@ -131,21 +259,25 @@ See `docs/METRICS.md` for complete Grafana dashboard setup with example queries.
 ### Quick Dashboard Queries
 
 **Page Views:**
+
 ```promql
 rate(web_page_visits_total{site="entazis.dev"}[5m])
 ```
 
 **LCP (75th percentile):**
+
 ```promql
 histogram_quantile(0.75, sum(rate(web_vitals_lcp_seconds_bucket[5m])) by (le))
 ```
 
 **Section Engagement:**
+
 ```promql
 sum by (section) (rate(web_section_views_total[1h]))
 ```
 
 **Button Clicks:**
+
 ```promql
 sum by (button_label) (rate(web_button_clicks_total[5m]))
 ```
@@ -161,6 +293,7 @@ VITE_METRICS_DEBUG=true npm run dev
 ```
 
 You should see logs like:
+
 ```
 [MetricsService] Metrics service initialized
 [MetricsService] Metric queued { name: 'web_page_visits_total', ... }
@@ -198,6 +331,110 @@ Reduce metric volume:
 VITE_METRICS_SAMPLE_RATE=0.5  # Track 50% of visitors
 VITE_METRICS_BATCH_SIZE=20    # Larger batches
 VITE_METRICS_BATCH_INTERVAL=10000  # Less frequent sends
+```
+
+## Deployment
+
+### Docker Deployment
+
+Create a `Dockerfile` in your metrics API service directory:
+
+```dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY index.js ./
+EXPOSE 8080
+CMD ["node", "index.js"]
+```
+
+Build and run:
+
+```bash
+cd services/metrics-api
+docker build -t metrics-api .
+docker run -p 8080:8080 -e PORT=8080 metrics-api
+```
+
+### Docker Compose (with Prometheus & Grafana)
+
+Create `docker-compose.yml`:
+
+```yaml
+version: '3.8'
+services:
+  metrics-api:
+    build: ./services/metrics-api
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - PUSHGATEWAY_URL=http://pushgateway:9091
+  
+  pushgateway:
+    image: prom/pushgateway:latest
+    ports:
+      - "9091:9091"
+  
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+  
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+```
+
+### Cloud Deployment
+
+**Vercel/Netlify (Frontend):**
+
+```bash
+# Deploy the React app
+npm run build
+vercel --prod
+```
+
+**Cloud Run / App Engine / Heroku (Metrics API):**
+
+```bash
+# Deploy the metrics service
+cd services/metrics-api
+gcloud run deploy metrics-api --source .
+# or: heroku create && git push heroku main
+```
+
+**Kubernetes:**
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-api
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: metrics-api
+        image: your-registry/metrics-api:latest
+        ports:
+        - containerPort: 8080
+```
+
+### Environment Variables for Production
+
+Ensure your production `.env` points to the deployed metrics API:
+
+```bash
+VITE_METRICS_API_URL=https://your-metrics-api.com/track
+VITE_METRICS_ENABLED=true
+VITE_METRICS_SAMPLE_RATE=0.1  # Sample 10% in production
 ```
 
 ## Architecture Diagram
