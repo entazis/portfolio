@@ -1,9 +1,16 @@
 import React from 'react';
 import OptimizedImage from './OptimizedImage';
+import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 
 const AboutSection: React.FC = () => {
+  const sectionRef = useSectionVisibility('about');
+
   return (
-    <section id="about" className="section-padding bg-background">
+    <section 
+      id="about" 
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="section-padding bg-background"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="section-title">About Me</h2>
         <p className="section-subtitle">
