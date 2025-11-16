@@ -94,58 +94,11 @@ app.get('/health', (req, res) => {
 });
 
 /**
- * Legacy endpoint for backward compatibility
- * POST /track
- * Body: { site: string, page: string }
- */
-app.post('/track', async (req, res) => {
-  try {
-    const { site, page, metrics } = req.body;
-
-    // Handle legacy format (single page visit)
-    if (site && page && !metrics) {
-      const metric = `web_page_visits_total{site="${site}", page="${page}"} 1`;
-      await submitToPushgateway('web_visits', metric);
-      return res.json({ success: true, message: 'Metric tracked' });
-    }
-
-    // Handle new batch format
-    if (metrics && Array.isArray(metrics)) {
-      const formattedMetrics = metrics.map((m) => formatPrometheusMetric(m)).join('\n');
-
-      await submitToPushgateway('web_metrics', formattedMetrics);
-      return res.json({
-        success: true,
-        message: `Batch of ${metrics.length} metrics tracked`,
-      });
-    }
-
-    // Handle single metric in new format
-    if (site && metrics && typeof metrics === 'object') {
-      const formatted = formatPrometheusMetric(metrics);
-      await submitToPushgateway('web_metrics', formatted);
-      return res.json({ success: true, message: 'Metric tracked' });
-    }
-
-    return res.status(400).json({
-      success: false,
-      error: 'Invalid request format',
-    });
-  } catch (error) {
-    console.error('Error tracking metric:', error);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
-  }
-});
-
-/**
  * Batch metrics submission endpoint
- * POST /metrics/batch
+ * POST /track
  * Body: { site: string, metrics: Metric[], timestamp: number }
  */
-app.post('/metrics/batch', async (req, res) => {
+app.post('/track', async (req, res) => {
   try {
     const { site, metrics, timestamp } = req.body;
 

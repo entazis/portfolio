@@ -191,8 +191,7 @@ const MyComponent = () => {
 
 The metrics API server (`docs/metrics-api-server.js`) provides:
 
-- **Backward compatibility**: Supports legacy `/track` endpoint
-- **Batch processing**: `/metrics/batch` endpoint for efficient metric submission
+- **Batch processing**: `/track` endpoint for efficient metric submission
 - **Prometheus formatting**: Proper metric formatting with labels and types
 - **Health checks**: `/health` endpoint for monitoring
 - **Statistics**: `/metrics/stats` endpoint for debugging

@@ -79,8 +79,8 @@ Replace your current simple Express server with the enhanced one:
 cp docs/metrics-api-server.js /path/to/your/metrics-api/index.js
 ```
 
-Or manually update your existing server to support:
-- Batch metric submissions at `/metrics/batch`
+The enhanced server supports:
+- Batch metric submissions at `/track`
 - Proper Prometheus formatting for histograms
 - Multiple metric types (counters, histograms, gauges)
 
