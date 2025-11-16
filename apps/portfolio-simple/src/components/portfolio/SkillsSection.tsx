@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 
 interface Skill {
   name: string;
@@ -92,8 +93,14 @@ const getBadgeStyle = (level: Skill['level']) => {
 };
 
 const SkillsSection: React.FC = () => {
+  const sectionRef = useSectionVisibility('skills');
+
   return (
-    <section id="skills" className="section-padding bg-secondary/30">
+    <section 
+      id="skills" 
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="section-padding bg-secondary/30"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="section-title">My Expertise</h2>
         <p className="section-subtitle">

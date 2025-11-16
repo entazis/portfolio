@@ -1,9 +1,26 @@
+import { useClickTracking } from '@/hooks/useClickTracking';
+import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 import React from 'react';
 import OptimizedImage from './OptimizedImage';
 
 const HeroSection: React.FC = () => {
+  const { trackClick } = useClickTracking();
+  const sectionRef = useSectionVisibility('hero');
+
+  const handleViewProjectsClick = () => {
+    trackClick('View Projects', 'projects');
+  };
+
+  const handleContactMeClick = () => {
+    trackClick('Contact Me', 'contact');
+  };
+
   return (
-    <section id="hero" className="min-h-screen flex items-center justify-center bg-secondary/30 section-padding relative">
+    <section 
+      id="hero" 
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="min-h-screen flex items-center justify-center bg-secondary/30 section-padding relative"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
           <OptimizedImage
@@ -51,12 +68,14 @@ const HeroSection: React.FC = () => {
           >
             <a 
               href="#projects"
+              onClick={handleViewProjectsClick}
               className="inline-block px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-medium transition-colors"
             >
               View Projects
             </a>
             <a 
               href="#contact"
+              onClick={handleContactMeClick}
               className="inline-block px-6 py-3 border border-primary text-primary hover:bg-primary/10 rounded-md font-medium transition-colors"
             >
               Contact Me

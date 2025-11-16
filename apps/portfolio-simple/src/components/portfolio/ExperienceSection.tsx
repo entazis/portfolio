@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 
 interface ExperienceItem {
   role: string;
@@ -75,8 +76,14 @@ const experiences: ExperienceItem[] = [
 ];
 
 const ExperienceSection: React.FC = () => {
+  const sectionRef = useSectionVisibility('experience');
+
   return (
-    <section id="experience" className="section-padding bg-background">
+    <section 
+      id="experience" 
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="section-padding bg-background"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="section-title">Career Journey</h2>
         <p className="section-subtitle">

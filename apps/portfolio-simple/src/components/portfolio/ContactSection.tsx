@@ -1,3 +1,5 @@
+import { useClickTracking } from '@/hooks/useClickTracking';
+import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 import * as React from 'react';
 
 const GithubIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -12,13 +14,36 @@ const GithubIcon: React.FC<{ className?: string }> = ({ className }) => (
 );
 
 const ContactSection: React.FC = () => {
+  const { trackExternalLink } = useClickTracking();
+  const sectionRef = useSectionVisibility('contact');
+
   const email = "hello@entazis.dev"; 
   const linkedinUrl = "https://www.linkedin.com/in/szabobence1025";
   const githubUrl = "https://github.com/entazis";
   const githubSecondaryUrl = "https://github.com/beam-bence";
 
+  const handleEmailClick = () => {
+    trackExternalLink(`mailto:${email}`, 'Email');
+  };
+
+  const handleLinkedInClick = () => {
+    trackExternalLink(linkedinUrl, 'LinkedIn');
+  };
+
+  const handleGitHubPersonalClick = () => {
+    trackExternalLink(githubUrl, 'GitHub Personal');
+  };
+
+  const handleGitHubCompanyClick = () => {
+    trackExternalLink(githubSecondaryUrl, 'GitHub Company');
+  };
+
   return (
-    <section id="contact" className="section-padding bg-background">
+    <section 
+      id="contact" 
+      ref={sectionRef as React.RefObject<HTMLElement>}
+      className="section-padding bg-background"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="section-title">Let's Build Something Amazing</h2>
         <p className="section-subtitle">
@@ -41,6 +66,7 @@ const ContactSection: React.FC = () => {
           
           <a 
             href={`mailto:${email}`}
+            onClick={handleEmailClick}
             className="w-full inline-flex items-center justify-center px-6 py-3 bg-primary hover:bg-primary/90 text-primary-foreground rounded-md font-medium transition-colors"
           >
             <span className="mr-2 text-lg">📧</span> Send me an Email
@@ -53,6 +79,7 @@ const ContactSection: React.FC = () => {
               target="_blank" 
               rel="noopener noreferrer" 
               aria-label="LinkedIn"
+              onClick={handleLinkedInClick}
               className="inline-flex items-center justify-center w-12 h-12 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
             >
               <span className="text-xl">💼</span>
@@ -63,6 +90,7 @@ const ContactSection: React.FC = () => {
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="GitHub - Personal"
+                onClick={handleGitHubPersonalClick}
                 className="inline-flex items-center justify-center w-12 h-12 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
               >
                 <GithubIcon className="w-5 h-5" />
@@ -75,6 +103,7 @@ const ContactSection: React.FC = () => {
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="GitHub - Company"
+                onClick={handleGitHubCompanyClick}
                 className="inline-flex items-center justify-center w-12 h-12 border border-input bg-background hover:bg-accent hover:text-accent-foreground rounded-md transition-colors"
               >
                 <GithubIcon className="w-5 h-5" />
