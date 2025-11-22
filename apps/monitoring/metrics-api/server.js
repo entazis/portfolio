@@ -9,6 +9,19 @@ import fetch from 'node-fetch';
 const app = express();
 app.use(express.json());
 
+// Add CORS support
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
 const PUSHGATEWAY_URL = process.env.PUSHGATEWAY_URL || 'http://pushgateway:9091';
 const PORT = process.env.PORT || 8080;
 const FETCH_TIMEOUT_MS = 5000; // Timeout for Pushgateway requests
@@ -267,4 +280,3 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 }
 
 export default app;
-
