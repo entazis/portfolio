@@ -1,0 +1,71 @@
+{
+  "id": null,
+  "uid": "web-visits",
+  "title": "Website Visitors",
+  "tags": ["web", "traffic"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Total Visits (Last 24h)",
+      "targets": [
+        {
+          "expr": "sum(increase(web_page_visits_total[24h]))",
+          "legendFormat": "Total"
+        }
+      ],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "reduceOptions": {
+          "calcs": ["sum"],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "gridPos": { "x": 0, "y": 0, "w": 8, "h": 4 }
+    },
+    {
+      "type": "timeseries",
+      "title": "Visits Over Time",
+      "targets": [
+        {
+          "expr": "sum(increase(web_page_visits_total[5m])) by (site)",
+          "legendFormat": "{{site}}"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 4, "w": 24, "h": 8 },
+      "options": {
+        "legend": { "showLegend": true },
+        "tooltip": { "mode": "multi" }
+      }
+    },
+    {
+      "type": "table",
+      "title": "Visits Per Page (Last 24h)",
+      "targets": [
+        {
+          "expr": "sum(increase(web_page_visits_total[24h])) by (site, page)"
+        }
+      ],
+      "gridPos": { "x": 0, "y": 12, "w": 24, "h": 8 },
+      "options": {
+        "showHeader": true
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "indexByName": { "site": 0, "page": 1, "Value": 2 },
+            "renameByName": { "Value": "Visits" }
+          }
+        }
+      ]
+    }
+  ]
+}

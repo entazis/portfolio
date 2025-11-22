@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=15d'
+      - '--storage.tsdb.retention.size=1GB'
+      - '--web.enable-lifecycle'
+    networks:
+      - monitor
+
+  pushgateway:
+    image: prom/pushgateway:v1.9.0
+    restart: unless-stopped
+    ports:
+      - "9091:9091"
+    networks:
+      - monitor
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+      - GF_USERS_ALLOW_SIGN_UP=${GF_USERS_ALLOW_SIGN_UP}
+      - GF_SECURITY_DISABLE_GRAVATAR=${GF_SECURITY_DISABLE_GRAVATAR}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./dashboards:/var/lib/grafana/dashboards
+    networks:
+      - monitor
+
+  metrics-api:
+    build: ./metrics-api
+    ports:
+      - "8080:8080"
+    networks:
+      - monitor
+
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  monitor:
