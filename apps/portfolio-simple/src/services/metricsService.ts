@@ -162,7 +162,7 @@ class MetricsService {
 
     const metric: Metric = {
       name: `web_vitals_${vital.name.toLowerCase()}`,
-      type: 'histogram',
+      type: 'gauge',
       value: vital.value,
       labels: {
         site: this.config.siteName,
