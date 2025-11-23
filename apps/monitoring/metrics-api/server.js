@@ -106,22 +106,22 @@ const formatMetricLine = (metric) => {
 const formatPrometheusMetrics = (metrics) => {
   // Group metrics by name and deduplicate by labels
   const metricsByName = new Map();
-  
+
   for (const metric of metrics) {
     const { name, type, labels } = metric;
-    
+
     if (!metricsByName.has(name)) {
       metricsByName.set(name, {
         type: type === 'counter' || type === 'gauge' ? type : 'gauge',
-        instances: new Map() // Use Map to deduplicate by label signature
+        instances: new Map(), // Use Map to deduplicate by label signature
       });
     }
-    
+
     // Create a stable key from sorted labels
     const labelKey = JSON.stringify(
-      Object.entries(labels || {}).sort(([a], [b]) => a.localeCompare(b))
+      Object.entries(labels || {}).sort(([a], [b]) => a.localeCompare(b)),
     );
-    
+
     // Store metric, overwriting if same labels exist (keeps last value)
     metricsByName.get(name).instances.set(labelKey, metric);
   }
@@ -131,7 +131,7 @@ const formatPrometheusMetrics = (metrics) => {
   for (const [name, { type, instances }] of metricsByName.entries()) {
     // Add TYPE declaration once per metric name
     output.push(`# TYPE ${name} ${type}`);
-    
+
     // Add all unique instances of this metric
     for (const metric of instances.values()) {
       output.push(formatMetricLine(metric));
