@@ -53,9 +53,7 @@
       "pluginVersion": "11.2.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus"
-          },
+          "datasource": "Prometheus",
           "expr": "web_page_visits_total",
           "instant": true,
           "refId": "A"
@@ -140,9 +138,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus"
-          },
+          "datasource": "Prometheus",
           "expr": "web_page_visits_total",
           "legendFormat": "{{site}} - {{page}}",
           "refId": "A"
@@ -201,9 +197,7 @@
       "pluginVersion": "11.2.0",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus"
-          },
+          "datasource": "Prometheus",
           "expr": "web_page_visits_total",
           "format": "table",
           "instant": true,
@@ -270,9 +264,7 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus"
-          },
+          "datasource": "Prometheus",
           "expr": "web_section_views_total",
           "format": "time_series",
           "instant": true,
@@ -360,25 +352,19 @@
       },
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus"
-          },
+          "datasource": "Prometheus",
           "expr": "web_vitals_lcp{site=\"entazis.dev\"}",
           "legendFormat": "LCP - {{page}}",
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus"
-          },
+          "datasource": "Prometheus",
           "expr": "web_vitals_fcp{site=\"entazis.dev\"}",
           "legendFormat": "FCP - {{page}}",
           "refId": "B"
         },
         {
-          "datasource": {
-            "type": "prometheus"
-          },
+          "datasource": "Prometheus",
           "expr": "web_vitals_ttfb{site=\"entazis.dev\"}",
           "legendFormat": "TTFB - {{page}}",
           "refId": "C"
