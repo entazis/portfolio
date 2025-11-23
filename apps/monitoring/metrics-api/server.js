@@ -78,12 +78,12 @@ const validateMetric = (metric, index) => {
 };
 
 /**
- * Format a metric in Prometheus text format
+ * Format a single metric line (without TYPE declaration)
  * @param {Object} metric - Metric object with name, type, value, labels
- * @returns {string} Prometheus formatted metric string
+ * @returns {string} Prometheus formatted metric line
  */
-const formatPrometheusMetric = (metric) => {
-  const { name, type, value, labels } = metric;
+const formatMetricLine = (metric) => {
+  const { name, value, labels } = metric;
 
   const labelPairs = Object.entries(labels || {})
     .map(
@@ -93,14 +93,52 @@ const formatPrometheusMetric = (metric) => {
     .join(', ');
 
   const labelString = labelPairs ? `{${labelPairs}}` : '';
+  return `${name}${labelString} ${value}`;
+};
 
-  // Format based on metric type - Pushgateway requires TYPE declaration
-  const metricType = type === 'counter' || type === 'gauge' ? type : 'gauge';
+/**
+ * Format multiple metrics in Prometheus text format with proper grouping
+ * Groups metrics by name to avoid duplicate TYPE declarations
+ * Deduplicates metrics with same name and labels (keeps last value)
+ * @param {Array} metrics - Array of metric objects
+ * @returns {string} Prometheus formatted metrics text
+ */
+const formatPrometheusMetrics = (metrics) => {
+  // Group metrics by name and deduplicate by labels
+  const metricsByName = new Map();
+  
+  for (const metric of metrics) {
+    const { name, type, labels } = metric;
+    
+    if (!metricsByName.has(name)) {
+      metricsByName.set(name, {
+        type: type === 'counter' || type === 'gauge' ? type : 'gauge',
+        instances: new Map() // Use Map to deduplicate by label signature
+      });
+    }
+    
+    // Create a stable key from sorted labels
+    const labelKey = JSON.stringify(
+      Object.entries(labels || {}).sort(([a], [b]) => a.localeCompare(b))
+    );
+    
+    // Store metric, overwriting if same labels exist (keeps last value)
+    metricsByName.get(name).instances.set(labelKey, metric);
+  }
 
-  // Pushgateway expects:
-  // # TYPE metric_name type
-  // metric_name{labels} value
-  return `# TYPE ${name} ${metricType}\n${name}${labelString} ${value}`;
+  // Build output with one TYPE declaration per metric name
+  const output = [];
+  for (const [name, { type, instances }] of metricsByName.entries()) {
+    // Add TYPE declaration once per metric name
+    output.push(`# TYPE ${name} ${type}`);
+    
+    // Add all unique instances of this metric
+    for (const metric of instances.values()) {
+      output.push(formatMetricLine(metric));
+    }
+  }
+
+  return output.join('\n');
 };
 
 /**
@@ -111,6 +149,10 @@ const formatPrometheusMetric = (metric) => {
  */
 const submitToPushgateway = async (job, metricsText) => {
   const url = `${PUSHGATEWAY_URL}/metrics/job/${job}`;
+
+  console.log('==== SENDING TO PUSHGATEWAY ====');
+  console.log(metricsText);
+  console.log('==== END ====');
 
   const response = await fetch(url, {
     method: 'POST',
@@ -183,9 +225,8 @@ app.post('/track', async (req, res) => {
       });
     }
 
-    // Format all metrics with proper spacing and termination
-    const formattedMetrics =
-      metrics.map((metric) => formatPrometheusMetric(metric)).join('\n') + '\n'; // Add trailing newline for Pushgateway
+    // Format all metrics with proper grouping and spacing
+    const formattedMetrics = formatPrometheusMetrics(metrics) + '\n'; // Add trailing newline for Pushgateway
 
     // Submit to Pushgateway
     await submitToPushgateway('web_metrics', formattedMetrics);
