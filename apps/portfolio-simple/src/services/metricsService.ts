@@ -16,7 +16,7 @@ import type {
  */
 const DEFAULT_CONFIG: MetricsConfig = {
   enabled: true,
-  apiUrl: 'https://entazis.dev/track',
+  apiUrl: 'https://entazis.dev/api/track',
   siteName: 'entazis.dev',
   sampleRate: 1.0,
   batchSize: 10,
@@ -50,10 +50,9 @@ class MetricsService {
   private loadConfigFromEnv(): void {
     if (typeof window === 'undefined') return;
 
-    // Parse enabled flag: default to false when undefined or explicitly 'false'
+    // Parse enabled flag: default to TRUE (enabled) unless explicitly set to 'false'
     const enabledEnv = import.meta.env.VITE_METRICS_ENABLED;
-    const enabled =
-      enabledEnv === undefined || enabledEnv === 'false' ? false : enabledEnv !== 'false';
+    const enabled = enabledEnv === 'false' ? false : true;
 
     // Parse and validate sampleRate with clamping to [0, 1]
     const sampleRateStr = import.meta.env.VITE_METRICS_SAMPLE_RATE;
