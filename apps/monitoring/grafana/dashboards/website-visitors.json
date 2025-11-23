@@ -57,7 +57,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(web_page_visits_total{site=\"entazis.dev\"})",
+          "expr": "web_page_visits_total",
+          "instant": true,
           "refId": "A"
         }
       ],
@@ -144,8 +145,8 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(rate(web_page_visits_total{site=\"entazis.dev\"}[5m])) by (site)",
-          "legendFormat": "{{site}}",
+          "expr": "web_page_visits_total",
+          "legendFormat": "{{site}} - {{page}}",
           "refId": "A"
         }
       ],
@@ -206,7 +207,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(web_page_visits_total{site=\"entazis.dev\"}) by (page)",
+          "expr": "web_page_visits_total",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -276,7 +277,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(web_section_views_total{site=\"entazis.dev\"}) by (section)",
+          "expr": "web_section_views_total",
           "format": "time_series",
           "instant": true,
           "legendFormat": "{{section}}",
