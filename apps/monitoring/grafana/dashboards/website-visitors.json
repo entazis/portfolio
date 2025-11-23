@@ -54,8 +54,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "prometheus"
           },
           "expr": "web_page_visits_total",
           "instant": true,
@@ -142,8 +141,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "prometheus"
           },
           "expr": "web_page_visits_total",
           "legendFormat": "{{site}} - {{page}}",
@@ -204,8 +202,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "prometheus"
           },
           "expr": "web_page_visits_total",
           "format": "table",
@@ -274,8 +271,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "prometheus"
           },
           "expr": "web_section_views_total",
           "format": "time_series",
@@ -365,8 +361,7 @@
       "targets": [
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "prometheus"
           },
           "expr": "web_vitals_lcp{site=\"entazis.dev\"}",
           "legendFormat": "LCP - {{page}}",
@@ -374,8 +369,7 @@
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "prometheus"
           },
           "expr": "web_vitals_fcp{site=\"entazis.dev\"}",
           "legendFormat": "FCP - {{page}}",
@@ -383,8 +377,7 @@
         },
         {
           "datasource": {
-            "type": "prometheus",
-            "uid": "prometheus"
+            "type": "prometheus"
           },
           "expr": "web_vitals_ttfb{site=\"entazis.dev\"}",
           "legendFormat": "TTFB - {{page}}",
