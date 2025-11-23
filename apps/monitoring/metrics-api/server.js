@@ -94,18 +94,13 @@ const formatPrometheusMetric = (metric) => {
 
   const labelString = labelPairs ? `{${labelPairs}}` : '';
 
-  // Format based on metric type
-  switch (type) {
-    case 'counter':
-    case 'gauge':
-      return `${name}${labelString} ${value}`;
-    case 'histogram':
-      throw new Error('Histogram type is not supported. Use counter or gauge types instead.');
-      return lines.join('\n');
+  // Format based on metric type - Pushgateway requires TYPE declaration
+  const metricType = type === 'counter' || type === 'gauge' ? type : 'gauge';
 
-    default:
-      return `${name}${labelString} ${value}`;
-  }
+  // Pushgateway expects:
+  // # TYPE metric_name type
+  // metric_name{labels} value
+  return `# TYPE ${name} ${metricType}\n${name}${labelString} ${value}`;
 };
 
 /**
