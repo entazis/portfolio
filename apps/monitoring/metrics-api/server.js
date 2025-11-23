@@ -115,13 +115,16 @@ const submitToPushgateway = async (job, metricsText) => {
   const response = await fetch(url, {
     method: 'POST',
     headers: {
-      'Content-Type': 'text/plain',
+      'Content-Type': 'text/plain; version=0.0.4; charset=utf-8',
     },
     body: metricsText,
     signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
   });
 
   if (!response.ok) {
+    const errorBody = await response.text();
+    console.error(`Pushgateway error: ${response.status} ${response.statusText}`);
+    console.error(`Error body: ${errorBody}`);
     throw new Error(`Pushgateway error: ${response.status} ${response.statusText}`);
   }
 };
@@ -180,8 +183,9 @@ app.post('/track', async (req, res) => {
       });
     }
 
-    // Format all metrics
-    const formattedMetrics = metrics.map((metric) => formatPrometheusMetric(metric)).join('\n');
+    // Format all metrics with proper spacing and termination
+    const formattedMetrics =
+      metrics.map((metric) => formatPrometheusMetric(metric)).join('\n') + '\n'; // Add trailing newline for Pushgateway
 
     // Submit to Pushgateway
     await submitToPushgateway('web_metrics', formattedMetrics);
