@@ -44,13 +44,16 @@ services:
     build: ./metrics-api
     ports:
       - "8080:8080"
+    volumes:
+      - metrics_api_data:/data
     networks:
       - monitor
-
 
 volumes:
   prometheus_data:
   grafana_data:
+  metrics_api_data:
+
 
 networks:
   monitor:

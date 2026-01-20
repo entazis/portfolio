@@ -5,6 +5,8 @@
 
 import express from 'express';
 import fetch from 'node-fetch';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
 const app = express();
 app.use(express.json());
@@ -24,8 +26,89 @@ app.use((req, res, next) => {
 
 const PUSHGATEWAY_URL = process.env.PUSHGATEWAY_URL || 'http://pushgateway:9091';
 const PORT = process.env.PORT || 8080;
-const FETCH_TIMEOUT_MS = 5000; // Timeout for Pushgateway requests
+const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS) || 15000; // Timeout for Pushgateway requests
 const ALLOWED_METRIC_TYPES = ['gauge', 'counter', 'histogram']; // Supported Prometheus metric types
+const COUNTER_STATE_FILE_PATH = process.env.COUNTER_STATE_FILE_PATH || '/data/counter-state.json';
+const MAX_PUSH_RETRIES = Number(process.env.MAX_PUSH_RETRIES) || 3;
+const PUSH_RETRY_BASE_DELAY_MS = 250;
+
+/**
+ * In Pushgateway, pushes overwrite the current value for a series.
+ * If clients send counter "deltas" (e.g. value=1 per event), we must convert them to
+ * cumulative totals before pushing, otherwise counters never increase and Grafana
+ * queries like increase() will stay at 0.
+ */
+const counterTotalsBySeriesKey = new Map();
+let isCounterStateSaveScheduled = false;
+
+/**
+ * Create a stable key from labels so we can track totals per series.
+ * @param {Record<string, unknown>} labels
+ * @returns {string}
+ */
+const createLabelsKey = (labels = {}) =>
+  JSON.stringify(Object.entries(labels).sort(([a], [b]) => a.localeCompare(b)));
+
+/**
+ * @param {string} name
+ * @param {Record<string, unknown>} labels
+ * @returns {string}
+ */
+const createCounterSeriesKey = (name, labels = {}) => `${name}:${createLabelsKey(labels)}`;
+
+/**
+ * Load counter totals from disk (best-effort).
+ * @returns {Promise<void>}
+ */
+const loadCounterState = async () => {
+  try {
+    const fileContents = await fs.readFile(COUNTER_STATE_FILE_PATH, 'utf8');
+    const parsed = JSON.parse(fileContents);
+    if (!parsed || typeof parsed !== 'object') {
+      return;
+    }
+    for (const [seriesKey, value] of Object.entries(parsed)) {
+      const numericValue = Number(value);
+      if (Number.isFinite(numericValue)) {
+        counterTotalsBySeriesKey.set(seriesKey, numericValue);
+      }
+    }
+  } catch (err) {
+    // Ignore missing file / first run
+  }
+};
+
+/**
+ * Save counter totals to disk (best-effort).
+ * @returns {Promise<void>}
+ */
+const saveCounterState = async () => {
+  try {
+    const dirPath = path.dirname(COUNTER_STATE_FILE_PATH);
+    await fs.mkdir(dirPath, { recursive: true });
+    const asObject = Object.fromEntries(counterTotalsBySeriesKey.entries());
+    await fs.writeFile(COUNTER_STATE_FILE_PATH, JSON.stringify(asObject), 'utf8');
+  } catch (err) {
+    console.error('Failed to save counter state:', err);
+  }
+};
+
+/**
+ * Schedule a counter state save (debounced per event loop tick).
+ * @returns {void}
+ */
+const scheduleCounterStateSave = () => {
+  if (isCounterStateSaveScheduled) {
+    return;
+  }
+  isCounterStateSaveScheduled = true;
+  setTimeout(async () => {
+    isCounterStateSaveScheduled = false;
+    await saveCounterState();
+  }, 0);
+};
+
+await loadCounterState();
 
 /**
  * Validate a single metric object
@@ -142,6 +225,13 @@ const formatPrometheusMetrics = (metrics) => {
 };
 
 /**
+ * @param {number} milliseconds
+ * @returns {Promise<void>}
+ */
+const waitForMilliseconds = async (milliseconds) =>
+  new Promise((resolve) => setTimeout(resolve, milliseconds));
+
+/**
  * Submit metrics to Pushgateway
  * @param {string} job - Job name for the metrics
  * @param {string} metricsText - Prometheus formatted metrics text
@@ -154,20 +244,31 @@ const submitToPushgateway = async (job, metricsText) => {
   console.log(metricsText);
   console.log('==== END ====');
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'text/plain; version=0.0.4; charset=utf-8',
-    },
-    body: metricsText,
-    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-  });
-
-  if (!response.ok) {
-    const errorBody = await response.text();
-    console.error(`Pushgateway error: ${response.status} ${response.statusText}`);
-    console.error(`Error body: ${errorBody}`);
-    throw new Error(`Pushgateway error: ${response.status} ${response.statusText}`);
+  for (let attempt = 1; attempt <= MAX_PUSH_RETRIES; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST', // POST adds/updates metrics; PUT would replace ALL metrics for the job
+        headers: {
+          'Content-Type': 'text/plain; version=0.0.4; charset=utf-8',
+        },
+        body: metricsText,
+        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+      });
+      if (response.ok) {
+        return;
+      }
+      const errorBody = await response.text();
+      console.error(`Pushgateway error: ${response.status} ${response.statusText}`);
+      console.error(`Error body: ${errorBody}`);
+      throw new Error(`Pushgateway error: ${response.status} ${response.statusText}`);
+    } catch (error) {
+      const isLastAttempt = attempt >= MAX_PUSH_RETRIES;
+      console.error(`Pushgateway request attempt ${attempt} failed:`, error);
+      if (isLastAttempt) {
+        throw error;
+      }
+      await waitForMilliseconds(PUSH_RETRY_BASE_DELAY_MS * attempt);
+    }
   }
 };
 
@@ -225,8 +326,23 @@ app.post('/track', async (req, res) => {
       });
     }
 
+    // Convert counter deltas -> cumulative totals per series (per metric name + labels)
+    const processedMetrics = metrics.map((metric) => {
+      if (metric.type !== 'counter') {
+        return metric;
+      }
+      const labels = metric.labels || {};
+      const seriesKey = createCounterSeriesKey(metric.name, labels);
+      const previousTotal = counterTotalsBySeriesKey.get(seriesKey) || 0;
+      const delta = Number(metric.value);
+      const nextTotal = Number.isFinite(delta) ? previousTotal + delta : previousTotal;
+      counterTotalsBySeriesKey.set(seriesKey, nextTotal);
+      return { ...metric, value: nextTotal };
+    });
+    scheduleCounterStateSave();
+
     // Format all metrics with proper grouping and spacing
-    const formattedMetrics = formatPrometheusMetrics(metrics) + '\n'; // Add trailing newline for Pushgateway
+    const formattedMetrics = formatPrometheusMetrics(processedMetrics) + '\n'; // Add trailing newline for Pushgateway
 
     // Submit to Pushgateway
     await submitToPushgateway('web_metrics', formattedMetrics);

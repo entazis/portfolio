@@ -54,12 +54,12 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_page_visits_total",
+          "expr": "round(sum(increase(web_page_visits_total[$__range])))",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Total Visits (Last 24h)",
+      "title": "Total Visits",
       "type": "stat"
     },
     {
@@ -139,7 +139,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_page_visits_total",
+          "expr": "sum by (site, page) (increase(web_page_visits_total[$__rate_interval]))",
           "legendFormat": "{{site}} - {{page}}",
           "refId": "A"
         }
@@ -198,13 +198,13 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_page_visits_total",
+          "expr": "round(sum by (page, site) (increase(web_page_visits_total[$__range])))",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Visits Per Page (Last 24h)",
+      "title": "Visits Per Page",
       "transformations": [
         {
           "id": "organize",
@@ -265,7 +265,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_section_views_total",
+          "expr": "round(sum by (section) (increase(web_section_views_total[$__range])))",
           "format": "time_series",
           "instant": true,
           "legendFormat": "{{section}}",
@@ -381,7 +381,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
