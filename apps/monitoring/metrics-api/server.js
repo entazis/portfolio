@@ -247,7 +247,7 @@ const submitToPushgateway = async (job, metricsText) => {
   for (let attempt = 1; attempt <= MAX_PUSH_RETRIES; attempt++) {
     try {
       const response = await fetch(url, {
-        method: 'PUT',
+        method: 'POST', // POST adds/updates metrics; PUT would replace ALL metrics for the job
         headers: {
           'Content-Type': 'text/plain; version=0.0.4; charset=utf-8',
         },
