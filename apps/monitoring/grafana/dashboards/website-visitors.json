@@ -54,7 +54,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_page_visits_total",
+          "expr": "sum(increase(web_page_visits_total[24h]))",
           "instant": true,
           "refId": "A"
         }
@@ -139,7 +139,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_page_visits_total",
+          "expr": "sum by (site, page) (rate(web_page_visits_total[5m]))",
           "legendFormat": "{{site}} - {{page}}",
           "refId": "A"
         }
@@ -198,7 +198,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_page_visits_total",
+          "expr": "sum by (page, site) (increase(web_page_visits_total[24h]))",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -265,7 +265,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_section_views_total",
+          "expr": "sum by (section) (increase(web_section_views_total[24h]))",
           "format": "time_series",
           "instant": true,
           "legendFormat": "{{section}}",
@@ -327,7 +327,7 @@
               }
             ]
           },
-          "unit": "ms"
+          "unit": "s"
         },
         "overrides": []
       },
@@ -353,19 +353,19 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_vitals_lcp{site=\"entazis.dev\"}",
+          "expr": "web_vitals_lcp{site=\"entazis.dev\"} / 1000",
           "legendFormat": "LCP - {{page}}",
           "refId": "A"
         },
         {
           "datasource": "Prometheus",
-          "expr": "web_vitals_fcp{site=\"entazis.dev\"}",
+          "expr": "web_vitals_fcp{site=\"entazis.dev\"} / 1000",
           "legendFormat": "FCP - {{page}}",
           "refId": "B"
         },
         {
           "datasource": "Prometheus",
-          "expr": "web_vitals_ttfb{site=\"entazis.dev\"}",
+          "expr": "web_vitals_ttfb{site=\"entazis.dev\"} / 1000",
           "legendFormat": "TTFB - {{page}}",
           "refId": "C"
         }
@@ -381,7 +381,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
