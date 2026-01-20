@@ -54,12 +54,12 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "sum(increase(web_page_visits_total[24h]))",
+          "expr": "sum(web_page_visits_total)",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Total Visits (Last 24h)",
+      "title": "Total Visits",
       "type": "stat"
     },
     {
@@ -139,7 +139,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "sum by (site, page) (rate(web_page_visits_total[5m]))",
+          "expr": "sum by (site, page) (web_page_visits_total)",
           "legendFormat": "{{site}} - {{page}}",
           "refId": "A"
         }
@@ -198,13 +198,13 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "sum by (page, site) (increase(web_page_visits_total[24h]))",
+          "expr": "sum by (page, site) (web_page_visits_total)",
           "format": "table",
           "instant": true,
           "refId": "A"
         }
       ],
-      "title": "Visits Per Page (Last 24h)",
+      "title": "Visits Per Page",
       "transformations": [
         {
           "id": "organize",
@@ -265,7 +265,7 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "sum by (section) (increase(web_section_views_total[24h]))",
+          "expr": "sum by (section) (web_section_views_total)",
           "format": "time_series",
           "instant": true,
           "legendFormat": "{{section}}",
@@ -327,7 +327,7 @@
               }
             ]
           },
-          "unit": "s"
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -353,19 +353,19 @@
       "targets": [
         {
           "datasource": "Prometheus",
-          "expr": "web_vitals_lcp{site=\"entazis.dev\"} / 1000",
+          "expr": "web_vitals_lcp{site=\"entazis.dev\"}",
           "legendFormat": "LCP - {{page}}",
           "refId": "A"
         },
         {
           "datasource": "Prometheus",
-          "expr": "web_vitals_fcp{site=\"entazis.dev\"} / 1000",
+          "expr": "web_vitals_fcp{site=\"entazis.dev\"}",
           "legendFormat": "FCP - {{page}}",
           "refId": "B"
         },
         {
           "datasource": "Prometheus",
-          "expr": "web_vitals_ttfb{site=\"entazis.dev\"} / 1000",
+          "expr": "web_vitals_ttfb{site=\"entazis.dev\"}",
           "legendFormat": "TTFB - {{page}}",
           "refId": "C"
         }
