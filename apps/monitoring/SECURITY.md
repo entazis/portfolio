@@ -8,11 +8,17 @@ This document describes the security measures implemented to protect the Prometh
 
 ### 1. HTTP Basic Authentication
 
-Prometheus is protected by HTTP Basic Authentication via nginx. All requests to `https://prometheus.entazis.dev` require valid credentials.
+Both Prometheus and Grafana are protected by HTTP Basic Authentication via nginx. All requests require valid credentials.
 
-**Implementation:**
+**Prometheus:**
 - Password file: `/etc/nginx/auth/prometheus.htpasswd`
 - Managed via: `manage-prometheus-auth.sh` script
+- Access: `https://prometheus.entazis.dev`
+
+**Grafana:**
+- Password file: `/etc/nginx/auth/grafana.htpasswd`
+- Managed via: `manage-grafana-auth.sh` script
+- Access: `https://grafana.entazis.dev`
 
 ### 2. HTTPS/TLS Encryption
 
@@ -20,31 +26,49 @@ All traffic is encrypted using TLS/SSL certificates managed by Let's Encrypt (Ce
 
 ### 3. Network Isolation
 
-Prometheus runs in a Docker network (`monitor`) and is only accessible via:
-- Localhost (for nginx reverse proxy)
-- Docker network (for other monitoring services)
+All monitoring services run in a Docker network (`monitor`) and are only accessible via:
+- **Prometheus**: Only accessible through nginx reverse proxy at `https://prometheus.entazis.dev` (no direct port exposure)
+- **Grafana**: Only accessible through nginx reverse proxy at `https://grafana.entazis.dev` (no direct port exposure)
+- **Pushgateway**: Only accessible within Docker network (internal only, no public access)
+- **Metrics-API**: Exposes port 8080 for external POST requests from websites (required for metrics collection)
+- Docker network (for internal service-to-service communication)
 
 ## Managing Authentication
 
-### Adding a User
+### Prometheus Authentication
 
+**Adding a User:**
 ```bash
 cd /var/www/portfolio/apps/monitoring
 ./manage-prometheus-auth.sh add <username>
 ```
 
-You will be prompted to enter and confirm a password.
-
-### Removing a User
-
+**Removing a User:**
 ```bash
 ./manage-prometheus-auth.sh remove <username>
 ```
 
-### Listing Users
-
+**Listing Users:**
 ```bash
 ./manage-prometheus-auth.sh list
+```
+
+### Grafana Authentication
+
+**Adding a User:**
+```bash
+cd /var/www/portfolio/apps/monitoring
+./manage-grafana-auth.sh add <username>
+```
+
+**Removing a User:**
+```bash
+./manage-grafana-auth.sh remove <username>
+```
+
+**Listing Users:**
+```bash
+./manage-grafana-auth.sh list
 ```
 
 ### After Making Changes
@@ -106,8 +130,8 @@ location / {
 
 For maximum security, consider:
 1. Removing the public nginx configuration
-2. Accessing Prometheus only through a VPN
-3. Binding Prometheus to localhost only in docker-compose.yml
+2. Accessing Prometheus/Grafana only through a VPN
+3. Services are already bound to localhost only (no direct port exposure in docker-compose.yml)
 
 ### Option 3: OAuth2/OIDC Proxy
 
@@ -206,14 +230,23 @@ If you don't need external access at all:
    sudo systemctl status nginx
    ```
 
-2. **Check Prometheus is running:**
+2. **Check services are running:**
    ```bash
-   docker ps | grep prometheus
+   docker ps | grep -E "prometheus|grafana|pushgateway|metrics-api"
    ```
 
-3. **Test local access:**
+3. **Test nginx proxy access:**
    ```bash
-   curl -u username:password http://localhost:9090
+   curl -u username:password https://prometheus.entazis.dev/api/v1/status/config
+   curl -u username:password https://grafana.entazis.dev/api/health
+   ```
+
+4. **Verify direct port access is blocked:**
+   ```bash
+   # These should fail (connection refused)
+   curl http://localhost:9090  # Prometheus
+   curl http://localhost:9091  # Pushgateway
+   curl http://localhost:3000  # Grafana
    ```
 
 ## References
