@@ -89,6 +89,7 @@ All portfolio sections now track user engagement:
 - `VITE_METRICS_BATCH_SIZE` - Max metrics per batch
 - `VITE_METRICS_BATCH_INTERVAL` - Batch interval (ms)
 - `VITE_METRICS_DEBUG` - Debug logging
+- `VITE_WORK_LOG_URL` - External Work Log URL (defaults to `https://log.entazis.dev`)
 
 ### 6. Documentation ✅
 

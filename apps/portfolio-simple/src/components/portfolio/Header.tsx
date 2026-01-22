@@ -6,6 +6,20 @@ type NavLink = Readonly<{
   isExternal?: boolean;
 }>;
 
+const DEFAULT_WORK_LOG_URL: string = 'https://log.entazis.dev';
+
+const getWorkLogUrl = (): string => {
+  const configuredWorkLogUrl: unknown = import.meta.env.VITE_WORK_LOG_URL;
+  if (typeof configuredWorkLogUrl !== 'string') {
+    return DEFAULT_WORK_LOG_URL;
+  }
+  const trimmedWorkLogUrl: string = configuredWorkLogUrl.trim();
+  if (trimmedWorkLogUrl.length === 0) {
+    return DEFAULT_WORK_LOG_URL;
+  }
+  return trimmedWorkLogUrl;
+};
+
 const ExternalLinkIcon = (): JSX.Element => (
   <svg
     aria-hidden="true"
@@ -26,13 +40,14 @@ const ExternalLinkIcon = (): JSX.Element => (
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const workLogUrl: string = getWorkLogUrl();
   const navLinks: ReadonlyArray<NavLink> = [
     { href: '#about', label: 'About' },
     { href: '#skills', label: 'Skills' },
     { href: '#experience', label: 'Experience' },
     { href: '#projects', label: 'Projects' },
     { href: '#contact', label: 'Contact' },
-    { href: 'https://log.entazis.dev', label: 'Work Log', isExternal: true },
+    { href: workLogUrl, label: 'Work Log', isExternal: true },
   ];
 
   useEffect(() => {
