@@ -6,6 +6,7 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 
 const app = express();
@@ -31,6 +32,8 @@ const ALLOWED_METRIC_TYPES = ['gauge', 'counter', 'histogram']; // Supported Pro
 const COUNTER_STATE_FILE_PATH = process.env.COUNTER_STATE_FILE_PATH || '/data/counter-state.json';
 const MAX_PUSH_RETRIES = Number(process.env.MAX_PUSH_RETRIES) || 3;
 const PUSH_RETRY_BASE_DELAY_MS = 250;
+const ENVIRONMENT = process.env.ENVIRONMENT || process.env.ENV || 'prod';
+const INSTANCE_ID = process.env.INSTANCE_ID || os.hostname();
 
 /**
  * In Pushgateway, pushes overwrite the current value for a series.
@@ -234,11 +237,15 @@ const waitForMilliseconds = async (milliseconds) =>
 /**
  * Submit metrics to Pushgateway
  * @param {string} job - Job name for the metrics
+ * @param {Object} groupingKeyLabels - Grouping key labels for Pushgateway URL
  * @param {string} metricsText - Prometheus formatted metrics text
  * @returns {Promise<void>}
  */
-const submitToPushgateway = async (job, metricsText) => {
-  const url = `${PUSHGATEWAY_URL}/metrics/job/${job}`;
+const submitToPushgateway = async (job, groupingKeyLabels, metricsText) => {
+  const encodedJob = encodeURIComponent(job);
+  const env = encodeURIComponent(String(groupingKeyLabels.env));
+  const instance = encodeURIComponent(String(groupingKeyLabels.instance));
+  const url = `${PUSHGATEWAY_URL}/metrics/job/${encodedJob}/env/${env}/instance/${instance}`;
 
   console.log('==== SENDING TO PUSHGATEWAY ====');
   console.log(metricsText);
@@ -326,8 +333,26 @@ app.post('/track', async (req, res) => {
       });
     }
 
+    const defaultLabels = {
+      env: ENVIRONMENT,
+      instance: INSTANCE_ID,
+    };
+
+    const metricsWithDefaultLabels = metrics.map((metric) => {
+      const labels = metric.labels && typeof metric.labels === 'object' ? metric.labels : {};
+      const siteLabel = labels.site ? labels.site : site;
+      return {
+        ...metric,
+        labels: {
+          ...defaultLabels,
+          ...labels,
+          site: siteLabel,
+        },
+      };
+    });
+
     // Convert counter deltas -> cumulative totals per series (per metric name + labels)
-    const processedMetrics = metrics.map((metric) => {
+    const processedMetrics = metricsWithDefaultLabels.map((metric) => {
       if (metric.type !== 'counter') {
         return metric;
       }
@@ -344,8 +369,12 @@ app.post('/track', async (req, res) => {
     // Format all metrics with proper grouping and spacing
     const formattedMetrics = formatPrometheusMetrics(processedMetrics) + '\n'; // Add trailing newline for Pushgateway
 
-    // Submit to Pushgateway
-    await submitToPushgateway('web_metrics', formattedMetrics);
+    // Submit to Pushgateway (use grouping keys for easier lifecycle management)
+    await submitToPushgateway(
+      'web_metrics',
+      { env: ENVIRONMENT, instance: INSTANCE_ID },
+      formattedMetrics,
+    );
 
     console.log(`[${new Date().toISOString()}] Processed ${metrics.length} metrics for ${site}`);
 
