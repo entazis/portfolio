@@ -15,12 +15,6 @@ services:
     networks:
       - monitor
 
-  pushgateway:
-    image: prom/pushgateway:v1.9.0
-    restart: unless-stopped
-    networks:
-      - monitor
-
   grafana:
     image: grafana/grafana:11.2.0
     restart: unless-stopped
@@ -42,7 +36,7 @@ services:
   metrics-api:
     build: ./metrics-api
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     environment:
       - ENVIRONMENT=${ENVIRONMENT:-prod}
       - INSTANCE_ID=${INSTANCE_ID:-metrics-api-1}

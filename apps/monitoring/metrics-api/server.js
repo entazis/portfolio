@@ -1,10 +1,10 @@
 /**
- * Enhanced Metrics API Server for Prometheus/Pushgateway Integration
- * Supports multiple metric types, batch submissions, and proper Prometheus formatting
+ * Metrics API Server (direct Prometheus scrape)
+ * - Apps POST events to /track (same-origin via nginx)
+ * - Prometheus scrapes /metrics
  */
 
 import express from 'express';
-import fetch from 'node-fetch';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -25,13 +25,9 @@ app.use((req, res, next) => {
   next();
 });
 
-const PUSHGATEWAY_URL = process.env.PUSHGATEWAY_URL || 'http://pushgateway:9091';
 const PORT = process.env.PORT || 8080;
-const FETCH_TIMEOUT_MS = Number(process.env.FETCH_TIMEOUT_MS) || 15000; // Timeout for Pushgateway requests
 const ALLOWED_METRIC_TYPES = ['gauge', 'counter', 'histogram']; // Supported Prometheus metric types
 const COUNTER_STATE_FILE_PATH = process.env.COUNTER_STATE_FILE_PATH || '/data/counter-state.json';
-const MAX_PUSH_RETRIES = Number(process.env.MAX_PUSH_RETRIES) || 3;
-const PUSH_RETRY_BASE_DELAY_MS = 250;
 const ENVIRONMENT = process.env.ENVIRONMENT || process.env.ENV || 'prod';
 const INSTANCE_ID = process.env.INSTANCE_ID || os.hostname();
 
@@ -43,6 +39,12 @@ const INSTANCE_ID = process.env.INSTANCE_ID || os.hostname();
  */
 const counterTotalsBySeriesKey = new Map();
 let isCounterStateSaveScheduled = false;
+
+/**
+ * Store latest gauge-like values (gauge + histogram are treated as gauge values here).
+ * Keyed by stable (name + labels) signature.
+ */
+const gaugeValuesBySeriesKey = new Map();
 
 /**
  * Create a stable key from labels so we can track totals per series.
@@ -57,7 +59,7 @@ const createLabelsKey = (labels = {}) =>
  * @param {Record<string, unknown>} labels
  * @returns {string}
  */
-const createCounterSeriesKey = (name, labels = {}) => `${name}:${createLabelsKey(labels)}`;
+const createSeriesKey = (name, labels = {}) => `${name}:${createLabelsKey(labels)}`;
 
 /**
  * Load counter totals from disk (best-effort).
@@ -228,58 +230,6 @@ const formatPrometheusMetrics = (metrics) => {
 };
 
 /**
- * @param {number} milliseconds
- * @returns {Promise<void>}
- */
-const waitForMilliseconds = async (milliseconds) =>
-  new Promise((resolve) => setTimeout(resolve, milliseconds));
-
-/**
- * Submit metrics to Pushgateway
- * @param {string} job - Job name for the metrics
- * @param {Object} groupingKeyLabels - Grouping key labels for Pushgateway URL
- * @param {string} metricsText - Prometheus formatted metrics text
- * @returns {Promise<void>}
- */
-const submitToPushgateway = async (job, groupingKeyLabels, metricsText) => {
-  const encodedJob = encodeURIComponent(job);
-  const env = encodeURIComponent(String(groupingKeyLabels.env));
-  const instance = encodeURIComponent(String(groupingKeyLabels.instance));
-  const url = `${PUSHGATEWAY_URL}/metrics/job/${encodedJob}/env/${env}/instance/${instance}`;
-
-  console.log('==== SENDING TO PUSHGATEWAY ====');
-  console.log(metricsText);
-  console.log('==== END ====');
-
-  for (let attempt = 1; attempt <= MAX_PUSH_RETRIES; attempt++) {
-    try {
-      const response = await fetch(url, {
-        method: 'POST', // POST adds/updates metrics; PUT would replace ALL metrics for the job
-        headers: {
-          'Content-Type': 'text/plain; version=0.0.4; charset=utf-8',
-        },
-        body: metricsText,
-        signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-      });
-      if (response.ok) {
-        return;
-      }
-      const errorBody = await response.text();
-      console.error(`Pushgateway error: ${response.status} ${response.statusText}`);
-      console.error(`Error body: ${errorBody}`);
-      throw new Error(`Pushgateway error: ${response.status} ${response.statusText}`);
-    } catch (error) {
-      const isLastAttempt = attempt >= MAX_PUSH_RETRIES;
-      console.error(`Pushgateway request attempt ${attempt} failed:`, error);
-      if (isLastAttempt) {
-        throw error;
-      }
-      await waitForMilliseconds(PUSH_RETRY_BASE_DELAY_MS * attempt);
-    }
-  }
-};
-
-/**
  * Health check endpoint
  */
 app.get('/health', (req, res) => {
@@ -288,6 +238,66 @@ app.get('/health', (req, res) => {
     service: 'metrics-api',
     timestamp: new Date().toISOString(),
   });
+});
+
+/**
+ * Prometheus scrape endpoint (text exposition format).
+ */
+app.get('/metrics', (req, res) => {
+  try {
+    const metricsToExpose = [];
+
+    // Counters
+    for (const [seriesKey, value] of counterTotalsBySeriesKey.entries()) {
+      const [name, labelsKey] = String(seriesKey).split(/:(.+)/); // split on first ':'
+      if (!name || !labelsKey) {
+        continue;
+      }
+      let labels = {};
+      try {
+        const parsed = JSON.parse(labelsKey);
+        labels = Array.isArray(parsed) ? Object.fromEntries(parsed) : {};
+      } catch {
+        labels = {};
+      }
+      metricsToExpose.push({
+        name,
+        type: 'counter',
+        value,
+        labels,
+        timestamp: Date.now(),
+      });
+    }
+
+    // Gauges (and histogram-as-gauge)
+    for (const [seriesKey, value] of gaugeValuesBySeriesKey.entries()) {
+      const [name, labelsKey] = String(seriesKey).split(/:(.+)/); // split on first ':'
+      if (!name || !labelsKey) {
+        continue;
+      }
+      let labels = {};
+      try {
+        const parsed = JSON.parse(labelsKey);
+        labels = Array.isArray(parsed) ? Object.fromEntries(parsed) : {};
+      } catch {
+        labels = {};
+      }
+      metricsToExpose.push({
+        name,
+        type: 'gauge',
+        value,
+        labels,
+        timestamp: Date.now(),
+      });
+    }
+
+    const body = `${formatPrometheusMetrics(metricsToExpose)}\n`;
+    res.setHeader('Content-Type', 'text/plain; version=0.0.4; charset=utf-8');
+    return res.status(200).send(body);
+  } catch (error) {
+    console.error('Error rendering /metrics:', error);
+    return res.status(500).send('# error generating metrics\n');
+  }
 });
 
 /**
@@ -357,7 +367,7 @@ app.post('/track', async (req, res) => {
         return metric;
       }
       const labels = metric.labels || {};
-      const seriesKey = createCounterSeriesKey(metric.name, labels);
+      const seriesKey = createSeriesKey(metric.name, labels);
       const previousTotal = counterTotalsBySeriesKey.get(seriesKey) || 0;
       const delta = Number(metric.value);
       const nextTotal = Number.isFinite(delta) ? previousTotal + delta : previousTotal;
@@ -366,15 +376,15 @@ app.post('/track', async (req, res) => {
     });
     scheduleCounterStateSave();
 
-    // Format all metrics with proper grouping and spacing
-    const formattedMetrics = formatPrometheusMetrics(processedMetrics) + '\n'; // Add trailing newline for Pushgateway
-
-    // Submit to Pushgateway (use grouping keys for easier lifecycle management)
-    await submitToPushgateway(
-      'web_metrics',
-      { env: ENVIRONMENT, instance: INSTANCE_ID },
-      formattedMetrics,
-    );
+    // Persist latest gauge-like values (including histogram-as-gauge).
+    for (const metric of processedMetrics) {
+      if (metric.type === 'counter') {
+        continue;
+      }
+      const labels = metric.labels || {};
+      const seriesKey = createSeriesKey(metric.name, labels);
+      gaugeValuesBySeriesKey.set(seriesKey, Number(metric.value));
+    }
 
     console.log(`[${new Date().toISOString()}] Processed ${metrics.length} metrics for ${site}`);
 
@@ -385,54 +395,6 @@ app.post('/track', async (req, res) => {
     });
   } catch (error) {
     console.error('Error processing batch:', error);
-    return res.status(500).json({
-      success: false,
-      error: error.message,
-    });
-  }
-});
-
-/**
- * Get metrics statistics (for debugging)
- */
-app.get('/metrics/stats', async (req, res) => {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
-  try {
-    // Query Pushgateway for current metrics with timeout
-    const response = await fetch(`${PUSHGATEWAY_URL}/metrics`, {
-      signal: controller.signal,
-    });
-    const metricsText = await response.text();
-
-    // Clear timeout on successful completion
-    clearTimeout(timeoutId);
-
-    // Parse and count metrics
-    const lines = metricsText.split('\n').filter((line) => line && !line.startsWith('#'));
-
-    return res.json({
-      success: true,
-      totalMetrics: lines.length,
-      timestamp: new Date().toISOString(),
-      pushgatewayUrl: PUSHGATEWAY_URL,
-    });
-  } catch (error) {
-    // Clear timeout in case of other errors
-    clearTimeout(timeoutId);
-
-    // Check if the error is due to abort/timeout
-    if (error.name === 'AbortError') {
-      console.error('Request to Pushgateway timed out:', error);
-      return res.status(504).json({
-        success: false,
-        error: 'Gateway timeout: Pushgateway did not respond in time',
-        timeout: FETCH_TIMEOUT_MS,
-      });
-    }
-
-    console.error('Error getting stats:', error);
     return res.status(500).json({
       success: false,
       error: error.message,
@@ -458,8 +420,8 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     console.log(`Metrics API Server`);
     console.log(`===========================================`);
     console.log(`Port: ${PORT}`);
-    console.log(`Pushgateway: ${PUSHGATEWAY_URL}`);
     console.log(`Health: http://localhost:${PORT}/health`);
+    console.log(`Metrics: http://localhost:${PORT}/metrics`);
     console.log(`===========================================`);
   });
 }

@@ -223,7 +223,7 @@ curl http://localhost:8080/health
 
 ## Notes
 
-- **Metrics-API Port 8080:** This port remains exposed because it needs to receive POST requests from external websites. The nginx proxy forwards `/api/track` requests to it.
+- **Metrics-API Port 8080:** This port is exposed and is the target for nginx proxying. The nginx proxy forwards `/api/track` requests to it.
 
 - **Internal Communication:** All services communicate internally via Docker network:
   - Prometheus → Pushgateway: `pushgateway:9091`
