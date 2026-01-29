@@ -32,6 +32,95 @@ const ENVIRONMENT = process.env.ENVIRONMENT || process.env.ENV || 'prod';
 const INSTANCE_ID = process.env.INSTANCE_ID || os.hostname();
 
 /**
+ * Histogram bucket configuration.
+ * These buckets are intentionally coarse to keep cardinality and storage reasonable.
+ * Values are assumed to be:
+ * - web vitals: ms (except CLS which is unitless)
+ * - scroll depth: percent (0-100)
+ * - section time: seconds
+ */
+const HISTOGRAM_BUCKETS_BY_METRIC = {
+  // Web vitals (ms)
+  web_vitals_lcp: [500, 1000, 1500, 2000, 2500, 3000, 4000, 5000, 8000],
+  web_vitals_fcp: [200, 400, 600, 800, 1000, 1500, 2000, 3000],
+  web_vitals_ttfb: [100, 200, 300, 500, 800, 1000, 1500, 2000],
+  web_vitals_inp: [50, 100, 200, 300, 500, 800, 1000, 2000],
+  // CLS (unitless)
+  web_vitals_cls: [0.01, 0.025, 0.05, 0.1, 0.15, 0.25, 0.3, 0.5, 1],
+
+  // Engagement
+  web_scroll_depth_percent: [10, 25, 50, 75, 90, 100],
+  web_section_time_spent_seconds: [1, 2, 3, 5, 10, 20, 30, 60, 120, 300],
+};
+
+/**
+ * Convert a single observation into Prometheus histogram counter deltas.
+ * This emits:
+ * - <name>_bucket{le="..."} counter deltas (cumulative buckets)
+ * - <name>_count counter delta
+ * - <name>_sum counter delta
+ *
+ * Note: we rely on the existing counter delta -> cumulative conversion logic.
+ *
+ * @param {Object} input
+ * @param {string} input.name
+ * @param {number} input.value
+ * @param {Record<string, unknown>} input.labels
+ * @returns {Array<{name: string, type: 'counter', value: number, labels: Record<string, unknown>}>}
+ */
+const observationToHistogramCounters = ({ name, value, labels }) => {
+  const buckets = HISTOGRAM_BUCKETS_BY_METRIC[name];
+  if (!buckets || buckets.length === 0) {
+    return [];
+  }
+
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) {
+    return [];
+  }
+
+  const sortedBuckets = [...buckets].sort((a, b) => a - b);
+  const seriesLabels = labels && typeof labels === 'object' ? labels : {};
+
+  const deltas = [];
+
+  // Buckets: cumulative counters (increment if observation <= le)
+  for (const le of sortedBuckets) {
+    deltas.push({
+      name: `${name}_bucket`,
+      type: 'counter',
+      value: numericValue <= le ? 1 : 0,
+      labels: { ...seriesLabels, le: String(le) },
+    });
+  }
+
+  // +Inf bucket always increments
+  deltas.push({
+    name: `${name}_bucket`,
+    type: 'counter',
+    value: 1,
+    labels: { ...seriesLabels, le: '+Inf' },
+  });
+
+  // count/sum
+  deltas.push({
+    name: `${name}_count`,
+    type: 'counter',
+    value: 1,
+    labels: { ...seriesLabels },
+  });
+
+  deltas.push({
+    name: `${name}_sum`,
+    type: 'counter',
+    value: numericValue,
+    labels: { ...seriesLabels },
+  });
+
+  return deltas;
+};
+
+/**
  * In Pushgateway, pushes overwrite the current value for a series.
  * If clients send counter "deltas" (e.g. value=1 per event), we must convert them to
  * cumulative totals before pushing, otherwise counters never increase and Grafana
@@ -39,12 +128,6 @@ const INSTANCE_ID = process.env.INSTANCE_ID || os.hostname();
  */
 const counterTotalsBySeriesKey = new Map();
 let isCounterStateSaveScheduled = false;
-
-/**
- * Store latest gauge-like values (gauge + histogram are treated as gauge values here).
- * Keyed by stable (name + labels) signature.
- */
-const gaugeValuesBySeriesKey = new Map();
 
 /**
  * Create a stable key from labels so we can track totals per series.
@@ -192,35 +275,65 @@ const formatMetricLine = (metric) => {
  * @returns {string} Prometheus formatted metrics text
  */
 const formatPrometheusMetrics = (metrics) => {
-  // Group metrics by name and deduplicate by labels
-  const metricsByName = new Map();
+  const output = [];
+
+  // 1) Group histogram families by base metric name.
+  // Prometheus expects: `# TYPE <base> histogram`, then lines for `<base>_bucket`, `<base>_sum`, `<base>_count`.
+  const histogramFamilies = new Map(); // base -> { buckets: Map<labelKey, metric>, sum: Map<labelKey, metric>, count: Map<labelKey, metric> }
+  const nonHistogram = new Map(); // name -> { type, instances: Map<labelKey, metric> }
+
+  const getLabelKey = (labels) =>
+    JSON.stringify(Object.entries(labels || {}).sort(([a], [b]) => a.localeCompare(b)));
+
+  const histogramSuffixMatch = (name) => {
+    const match = /^(.*)_(bucket|sum|count)$/.exec(String(name));
+    if (!match) return null;
+    return { base: match[1], part: match[2] };
+  };
 
   for (const metric of metrics) {
     const { name, type, labels } = metric;
+    const hist = histogramSuffixMatch(name);
 
-    if (!metricsByName.has(name)) {
-      metricsByName.set(name, {
-        type: type === 'counter' || type === 'gauge' ? type : 'gauge',
-        instances: new Map(), // Use Map to deduplicate by label signature
-      });
+    if (hist) {
+      if (!histogramFamilies.has(hist.base)) {
+        histogramFamilies.set(hist.base, {
+          buckets: new Map(),
+          sum: new Map(),
+          count: new Map(),
+        });
+      }
+      const fam = histogramFamilies.get(hist.base);
+      const labelKey = getLabelKey(labels || {});
+      if (hist.part === 'bucket') fam.buckets.set(labelKey, metric);
+      if (hist.part === 'sum') fam.sum.set(labelKey, metric);
+      if (hist.part === 'count') fam.count.set(labelKey, metric);
+      continue;
     }
 
-    // Create a stable key from sorted labels
-    const labelKey = JSON.stringify(
-      Object.entries(labels || {}).sort(([a], [b]) => a.localeCompare(b)),
-    );
-
-    // Store metric, overwriting if same labels exist (keeps last value)
-    metricsByName.get(name).instances.set(labelKey, metric);
+    if (!nonHistogram.has(name)) {
+      nonHistogram.set(name, {
+        type: type === 'counter' || type === 'gauge' ? type : 'gauge',
+        instances: new Map(),
+      });
+    }
+    const labelKey = getLabelKey(labels || {});
+    nonHistogram.get(name).instances.set(labelKey, metric);
   }
 
-  // Build output with one TYPE declaration per metric name
-  const output = [];
-  for (const [name, { type, instances }] of metricsByName.entries()) {
-    // Add TYPE declaration once per metric name
-    output.push(`# TYPE ${name} ${type}`);
+  // Render histograms first.
+  for (const [base, fam] of histogramFamilies.entries()) {
+    output.push(`# TYPE ${base} histogram`);
 
-    // Add all unique instances of this metric
+    // Render buckets (including +Inf), then sum, then count.
+    for (const metric of fam.buckets.values()) output.push(formatMetricLine(metric));
+    for (const metric of fam.sum.values()) output.push(formatMetricLine(metric));
+    for (const metric of fam.count.values()) output.push(formatMetricLine(metric));
+  }
+
+  // Render non-histogram metrics.
+  for (const [name, { type, instances }] of nonHistogram.entries()) {
+    output.push(`# TYPE ${name} ${type}`);
     for (const metric of instances.values()) {
       output.push(formatMetricLine(metric));
     }
@@ -263,28 +376,6 @@ app.get('/metrics', (req, res) => {
       metricsToExpose.push({
         name,
         type: 'counter',
-        value,
-        labels,
-        timestamp: Date.now(),
-      });
-    }
-
-    // Gauges (and histogram-as-gauge)
-    for (const [seriesKey, value] of gaugeValuesBySeriesKey.entries()) {
-      const [name, labelsKey] = String(seriesKey).split(/:(.+)/); // split on first ':'
-      if (!name || !labelsKey) {
-        continue;
-      }
-      let labels = {};
-      try {
-        const parsed = JSON.parse(labelsKey);
-        labels = Array.isArray(parsed) ? Object.fromEntries(parsed) : {};
-      } catch {
-        labels = {};
-      }
-      metricsToExpose.push({
-        name,
-        type: 'gauge',
         value,
         labels,
         timestamp: Date.now(),
@@ -361,8 +452,44 @@ app.post('/track', async (req, res) => {
       };
     });
 
+    // Expand histogram observations (and web vitals gauges) into histogram counters.
+    // We do NOT keep the original observation gauges, since we don't want "latest gauge-like" behavior.
+    const expandedMetrics = [];
+    for (const metric of metricsWithDefaultLabels) {
+      // Native histograms sent by apps (treated as observations)
+      if (metric.type === 'histogram') {
+        expandedMetrics.push(
+          ...observationToHistogramCounters({
+            name: metric.name,
+            value: metric.value,
+            labels: metric.labels || {},
+          }),
+        );
+        continue;
+      }
+
+      // Web vitals are currently sent as gauges from clients; treat them as observations too.
+      if (
+        metric.type === 'gauge' &&
+        typeof metric.name === 'string' &&
+        metric.name.startsWith('web_vitals_')
+      ) {
+        expandedMetrics.push(
+          ...observationToHistogramCounters({
+            name: metric.name,
+            value: metric.value,
+            labels: metric.labels || {},
+          }),
+        );
+        continue;
+      }
+
+      // Keep everything else as-is.
+      expandedMetrics.push(metric);
+    }
+
     // Convert counter deltas -> cumulative totals per series (per metric name + labels)
-    const processedMetrics = metricsWithDefaultLabels.map((metric) => {
+    const processedMetrics = expandedMetrics.map((metric) => {
       if (metric.type !== 'counter') {
         return metric;
       }
@@ -376,17 +503,9 @@ app.post('/track', async (req, res) => {
     });
     scheduleCounterStateSave();
 
-    // Persist latest gauge-like values (including histogram-as-gauge).
-    for (const metric of processedMetrics) {
-      if (metric.type === 'counter') {
-        continue;
-      }
-      const labels = metric.labels || {};
-      const seriesKey = createSeriesKey(metric.name, labels);
-      gaugeValuesBySeriesKey.set(seriesKey, Number(metric.value));
-    }
-
-    console.log(`[${new Date().toISOString()}] Processed ${metrics.length} metrics for ${site}`);
+    console.log(
+      `[${new Date().toISOString()}] Processed ${metrics.length} metrics (${processedMetrics.length} expanded) for ${site}`,
+    );
 
     return res.json({
       success: true,

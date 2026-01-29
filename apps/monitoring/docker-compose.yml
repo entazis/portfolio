@@ -6,6 +6,7 @@ services:
       - "127.0.0.1:9090:9090"
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml:ro
       - prometheus_data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
@@ -43,6 +44,41 @@ services:
       - INSTANCE_ID=${INSTANCE_ID:-metrics-api-1}
     volumes:
       - metrics_api_data:/data
+    networks:
+      - monitor
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.25.0
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/blackbox_exporter/config.yml'
+    volumes:
+      - ./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml:ro
+    networks:
+      - monitor
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.2.0
+    restart: unless-stopped
+    command:
+      - '-nginx.scrape-uri=http://host.docker.internal/nginx_status'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    networks:
+      - monitor
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    restart: unless-stopped
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro,rslave
     networks:
       - monitor
 

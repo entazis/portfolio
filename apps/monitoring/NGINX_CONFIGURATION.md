@@ -108,6 +108,35 @@ server {
 }
 ```
 
+### 5. NGINX `stub_status` (Required for nginx-exporter)
+
+The monitoring stack includes an `nginx-exporter` container which scrapes an NGINX `stub_status` endpoint at:
+
+- `http://host.docker.internal/nginx_status` (from inside Docker)
+
+To enable it on the host nginx, add a local-only endpoint (avoid exposing it publicly):
+
+```nginx
+server {
+    # ... your existing server config ...
+
+    location = /nginx_status {
+        stub_status;
+
+        # Lock this down: only allow local + docker bridge
+        allow 127.0.0.1;
+        allow 172.17.0.1; # common docker0 gateway (adjust if different)
+        deny all;
+    }
+}
+```
+
+After enabling, reload nginx and verify locally:
+
+```bash
+curl http://127.0.0.1/nginx_status
+```
+
 ### 4. Pushgateway (NOT Required)
 
 **Important:** Pushgateway should NOT have a public nginx entry. It's internal-only and accessed only by:
