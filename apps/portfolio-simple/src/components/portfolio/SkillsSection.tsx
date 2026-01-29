@@ -104,7 +104,7 @@ const SkillsSection: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="section-title">My Expertise</h2>
         <p className="section-subtitle">
-          Technologies and methodologies I've mastered through 7+ years of professional experience.
+          Technologies and methodologies I've mastered through 8+ years of professional experience.
         </p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {skillCategories.map((category, index) => (

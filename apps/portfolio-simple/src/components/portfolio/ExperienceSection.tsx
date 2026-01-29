@@ -1,5 +1,5 @@
-import React from 'react';
 import { useSectionVisibility } from '@/hooks/useSectionVisibility';
+import React from 'react';
 
 interface ExperienceItem {
   role: string;
@@ -16,14 +16,16 @@ const experiences: ExperienceItem[] = [
     duration: 'January 2025 - Present',
     description: [
       'Leading technical architecture and distributed team of 5 engineers across multiple time zones, conducting daily stand-ups and weekly technical meetings.',
-      'Led migration to Beam v2.2 and consolidated 15+ repositories into unified monorepo architecture, preserving 6,674+ commits with full version history.',
+      'Owned the technical definition of the v3.0 roadmap, led migration to v2.2 and consolidated 15+ repositories into unified monorepo architecture, preserving 6,674+ commits with full version history.',
       'Achieved 5x productivity increase through systematic AI-assisted development workflows and MCP server integration for automated code review and refactoring.',
+      'Built and customized MCP servers and AI-assisted workflows to accelerate large-scale migrations and refactoring.',
       'Established deployment protocols with mandatory security reviews, improving production reliability and system security.',
-      'Implemented dynamic model loading system with automated JSON schema generation and database validation, drastically reducing schema maintenance time.',
+      'Designed and implemented dynamic model loading with runtime JSON schema generation, enabling automated index, trigger, and validation creation.',
       'Introduced Prometheus monitoring for comprehensive system observability across all services.',
       'Built collaborative team culture by implementing camera-on policy during remote meetings to strengthen non-verbal communication and trust across time zones.',
       'Mentored senior developers on refactoring practices and design patterns, addressing recurring code issues and promoting continuous learning through reading and tutorials.',
       'Advocated for team interests with management during organizational challenges, ensuring developers felt supported through difficult periods.',
+      'Introduced a multi-layer permission system (path-, endpoint-, and app-level), resolving long-standing access control limitations.',
     ],
     icon: '🎯',
   },
@@ -79,8 +81,8 @@ const ExperienceSection: React.FC = () => {
   const sectionRef = useSectionVisibility('experience');
 
   return (
-    <section 
-      id="experience" 
+    <section
+      id="experience"
       ref={sectionRef as React.RefObject<HTMLElement>}
       className="section-padding bg-background"
     >
@@ -92,12 +94,12 @@ const ExperienceSection: React.FC = () => {
         <div className="relative max-w-4xl mx-auto">
           {/* Timeline line */}
           <div className="absolute top-0 h-full w-1 bg-primary/20 left-5 md:left-1/2 md:-translate-x-1/2"></div>
-          
+
           {experiences.map((exp, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="mb-12 flex items-start animate-fade-in-up"
-              style={{animationDelay: `${0.2 + index * 0.15}s`}}
+              style={{ animationDelay: `${0.2 + index * 0.15}s` }}
             >
               {/* Icon and Connector for large screens */}
               <div className="hidden md:flex flex-col items-center mr-8 relative z-10">
@@ -107,7 +109,7 @@ const ExperienceSection: React.FC = () => {
               </div>
 
               {/* Icon for small screens */}
-               <div className="md:hidden flex flex-col items-center mr-4 relative z-10 mt-1">
+              <div className="md:hidden flex flex-col items-center mr-4 relative z-10 mt-1">
                 <div className="bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg border-2 border-white/20 flex items-center justify-center">
                   <span className="text-sm">{exp.icon}</span>
                 </div>

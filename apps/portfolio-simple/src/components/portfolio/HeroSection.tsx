@@ -58,7 +58,7 @@ const HeroSection: React.FC = () => {
             className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto animate-fade-in-up"
             style={{ animationDelay: '0.8s' }}
           >
-            7+ years of experience in fast-paced environments, building scalable systems, leading distributed teams, 
+            8+ years of experience in fast-paced environments, building scalable systems, leading distributed teams, 
             and achieving measurable productivity gains through AI-assisted development. Passionate about elegant solutions, 
             innovative problem-solving, and mentoring engineers.
           </p>

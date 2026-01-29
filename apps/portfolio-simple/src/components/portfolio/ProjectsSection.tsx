@@ -1,5 +1,5 @@
-import React from 'react';
 import { useSectionVisibility } from '@/hooks/useSectionVisibility';
+import React from 'react';
 
 interface Project {
   title: string;
@@ -12,6 +12,45 @@ interface Project {
 }
 
 const projects: Project[] = [
+  {
+    title: "Core v3.0 Architecture & Permission System",
+    icon: "🧩",
+    duration: "2025.11 - 2026.01",
+    description: "Defined and implemented foundational architectural changes for the next major platform version, focusing on permissions, schema lifecycle, and service boundaries.",
+    technologies: ["Architecture Design", "Access Control", "NestJS", "Redis", "TypeScript", "Strategy Pattern"],
+    keyAchievements: [
+      "Designed hierarchical permissions across data paths, endpoints, and applications",
+      "Split core responsibilities into domain-focused services",
+      "Refactored schema access with strategy patterns (MQTT vs direct Redis)",
+      "Improved platform security and reduced architectural coupling",
+    ]
+  },
+  {
+    title: "Dynamic Schema Lifecycle & Index Management",
+    icon: "🧬",
+    duration: "2025.10 - 2025.12",
+    description: "Reworked how schemas are loaded, validated, indexed, and evolved at runtime across partitions to reduce manual maintenance and improve correctness.",
+    technologies: ["JSON Schema", "Dynamic Indexing", "Redis", "Data Modeling", "Testing Automation"],
+    keyAchievements: [
+      "Implemented dynamic schema loading per partition",
+      "Automated index and trigger generation directly from model schemas",
+      "Enabled schema-change reinitialization flows with test coverage",
+      "Reduced manual schema maintenance while improving query performance",
+    ]
+  },
+  {
+    title: "MCP Server Customization & AI Tooling Integration",
+    icon: "🧠",
+    duration: "2025.09 - 2025.11",
+    description: "Extended MCP tooling to match internal service patterns, exposing structured metadata and enabling safe AI-agent interaction with core services.",
+    technologies: ["MCP", "AI Tooling", "API Design", "Developer Experience", "Automation"],
+    keyAchievements: [
+      "Built a custom MCP implementation tailored to internal service patterns",
+      "Exposed structured endpoint metadata (schemas, I/O contracts)",
+      "Enabled AI agents to safely interact with live core services",
+      "Standardized AI-agent documentation and usage rules",
+    ]
+  },
   {
     title: "Deployment Protocol & Security Hardening",
     icon: "🔒",
@@ -175,8 +214,8 @@ const ProjectsSection: React.FC = () => {
   const sectionRef = useSectionVisibility('projects');
 
   return (
-    <section 
-      id="projects" 
+    <section
+      id="projects"
       ref={sectionRef as React.RefObject<HTMLElement>}
       className="section-padding bg-secondary/30"
     >
@@ -187,10 +226,10 @@ const ProjectsSection: React.FC = () => {
         </p>
         <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <div 
-              key={project.title} 
+            <div
+              key={project.title}
               className="bg-card p-6 rounded-lg shadow-lg flex flex-col hover:shadow-xl transition-shadow duration-300 animate-fade-in-up"
-              style={{animationDelay: `${0.2 + index * 0.1}s`}}
+              style={{ animationDelay: `${0.2 + index * 0.1}s` }}
             >
               <div className="flex items-center mb-4">
                 <span className="text-2xl mr-3 flex-shrink-0">{project.icon}</span>
@@ -200,7 +239,7 @@ const ProjectsSection: React.FC = () => {
                 </div>
               </div>
               <p className="text-muted-foreground text-sm mb-4 flex-grow">{project.description}</p>
-              
+
               <div className="mb-4">
                 <h4 className="text-sm font-semibold text-foreground mb-2">Key Achievements:</h4>
                 <ul className="list-disc list-inside space-y-1 text-muted-foreground text-xs">
@@ -220,7 +259,7 @@ const ProjectsSection: React.FC = () => {
 
               {project.githubUrl && (
                 <div className="mt-auto">
-                  <a 
+                  <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -233,9 +272,9 @@ const ProjectsSection: React.FC = () => {
             </div>
           ))}
         </div>
-        <div className="text-center mt-12 animate-fade-in-up" style={{animationDelay: '0.8s'}}>
+        <div className="text-center mt-12 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
           <p className="text-muted-foreground mb-4">
-            These represent key highlights from my professional journey. Each project involved complex technical challenges 
+            These represent key highlights from my professional journey. Each project involved complex technical challenges
             and delivered measurable business impact.
           </p>
           <p className="text-sm text-muted-foreground">
