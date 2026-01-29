@@ -82,6 +82,7 @@ VITE_METRICS_BATCH_SIZE=10
 VITE_METRICS_BATCH_INTERVAL=5000
 VITE_METRICS_DEBUG=false
 VITE_WORK_LOG_URL=https://log.entazis.dev
+VITE_BLOG_URL=https://blog.entazis.dev
 ```
 
 ### 3. Default Ports Reference

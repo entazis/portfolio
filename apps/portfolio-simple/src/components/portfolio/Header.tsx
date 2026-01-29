@@ -7,6 +7,7 @@ type NavLink = Readonly<{
 }>;
 
 const DEFAULT_WORK_LOG_URL: string = 'https://log.entazis.dev';
+const DEFAULT_BLOG_URL: string = 'https://blog.entazis.dev';
 
 const getWorkLogUrl = (): string => {
   const configuredWorkLogUrl: unknown = import.meta.env.VITE_WORK_LOG_URL;
@@ -18,6 +19,18 @@ const getWorkLogUrl = (): string => {
     return DEFAULT_WORK_LOG_URL;
   }
   return trimmedWorkLogUrl;
+};
+
+const getBlogUrl = (): string => {
+  const configuredBlogUrl: unknown = import.meta.env.VITE_BLOG_URL;
+  if (typeof configuredBlogUrl !== 'string') {
+    return DEFAULT_BLOG_URL;
+  }
+  const trimmedBlogUrl: string = configuredBlogUrl.trim();
+  if (trimmedBlogUrl.length === 0) {
+    return DEFAULT_BLOG_URL;
+  }
+  return trimmedBlogUrl;
 };
 
 const ExternalLinkIcon = (): JSX.Element => (
@@ -41,6 +54,7 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const workLogUrl: string = getWorkLogUrl();
+  const blogUrl: string = getBlogUrl();
   const navLinks: ReadonlyArray<NavLink> = [
     { href: '#about', label: 'About' },
     { href: '#skills', label: 'Skills' },
@@ -48,6 +62,7 @@ const Header: React.FC = () => {
     { href: '#projects', label: 'Projects' },
     { href: '#contact', label: 'Contact' },
     { href: workLogUrl, label: 'Work Log', isExternal: true },
+    { href: blogUrl, label: 'Blog', isExternal: true },
   ];
 
   useEffect(() => {
