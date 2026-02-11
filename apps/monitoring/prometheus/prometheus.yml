@@ -22,6 +22,9 @@ scrape_configs:
           - https://blog.entazis.dev/sitemap.xml
           - https://blog.entazis.dev/en/rss.xml
           - https://blog.entazis.dev/robots.txt
+          - https://dice.entazis.dev/
+          - https://decision-matrix.entazis.dev/
+          - https://nvc-helper.entazis.dev/
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
