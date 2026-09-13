@@ -8,8 +8,8 @@ const Footer: React.FC = () => {
         <div className="max-w-2xl mx-auto">
           <h3 className="text-lg font-semibold text-primary mb-4">Bence Szabó</h3>
           <p className="text-sm text-muted-foreground mb-6">
-            Tech Lead & Full-Stack Software Engineer specializing in scalable systems, 
-            performance optimization, and team leadership.
+            Tech Lead & AI-Native Full-Stack Engineer specializing in scalable platforms,
+            agentic AI systems, and team leadership.
           </p>
           
           <div className="flex justify-center space-x-6 mb-6">

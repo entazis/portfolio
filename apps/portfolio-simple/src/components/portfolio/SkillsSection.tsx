@@ -45,14 +45,24 @@ const skillCategories: SkillCategory[] = [
     ],
   },
   {
+    name: 'AI Engineering',
+    icon: '🤖',
+    skills: [
+      { name: 'Agentic Systems', level: 'Expert' },
+      { name: 'AI Agents & Tools', level: 'Expert' },
+      { name: 'MCP', level: 'Expert' },
+      { name: 'AI Ops Routines', level: 'Expert' },
+      { name: 'Prompt Engineering', level: 'Advanced' },
+      { name: 'Spec-Driven Development', level: 'Expert' },
+    ],
+  },
+  {
     name: 'DevOps & Architecture',
     icon: '⚙️',
     skills: [
       { name: 'Microservices', level: 'Expert' },
       { name: 'Nano-services', level: 'Master' },
       { name: 'Monorepo Management', level: 'Expert' },
-      { name: 'AI Agents', level: 'Expert' },
-      { name: 'MCP', level: 'Advanced' },
       { name: 'CI/CD', level: 'Expert' },
       { name: 'System Design', level: 'Expert' },
     ],
@@ -62,6 +72,7 @@ const skillCategories: SkillCategory[] = [
     icon: '🔄',
     skills: [
       { name: 'MQTT', level: 'Expert' },
+      { name: 'Matrix Protocol', level: 'Advanced' },
       { name: 'Message Queues', level: 'Expert' },
       { name: 'WebSocket', level: 'Expert' },
       { name: 'Load Balancing', level: 'Expert' },
@@ -137,7 +148,8 @@ const SkillsSection: React.FC = () => {
                   'Jest', 'Git', 'GitHub', 'Docker', 'Python', 'R', 'Tailwind CSS', 'Next.js', 
                   'AWS', 'REST API', 'GraphQL', 'TypeORM', 'Tile38', 'GeoJSON', 'IoT', 
                   'Multi-Tenancy', 'JSON Schema', 'Open API', 'RediSearch', 'Integration Testing',
-                  'Cursor', 'Schema Generation', 'Runtime Validation', 'Team Leadership'
+                  'Cursor', 'Claude Code', 'Playwright', 'Synapse', 'OIDC', 'E2EE', 'OpenEHR', 'HL7 v2',
+                  'Schema Generation', 'Runtime Validation', 'Team Leadership'
                 ].map(tech => (
                     <span key={tech} className="text-sm px-3 py-1 border border-primary text-primary bg-transparent rounded">{tech}</span>
                 ))}

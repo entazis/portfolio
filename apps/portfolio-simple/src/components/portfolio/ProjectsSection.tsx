@@ -13,6 +13,70 @@ interface Project {
 
 const projects: Project[] = [
   {
+    title: "BeamBot - Agentic AI Assistant on the Platform",
+    icon: "🤖",
+    duration: "2026.06 - 2026.09",
+    description: "Designed and shipped an AI agent that lives inside the platform's messaging layer and acts on user data through permission-bound tools.",
+    technologies: ["AI Engineering", "Agentic Systems", "MCP", "MQTT", "Prompt Engineering", "Access Control", "NestJS"],
+    keyAchievements: [
+      "Designed the agentic loop with conversational memory, personas, and user identification by name",
+      "Implemented MCP tools over MQTT with broad tool reach gated by connection-bound ACLs",
+      "Built AdminAI: admin functions driven through chat, plus agent-generated custom widgets",
+      "Added _ai metadata to data model schemas and agent/tool input-output validation",
+    ]
+  },
+  {
+    title: "AI Ops - Autonomous Engineering Routines",
+    icon: "🔁",
+    duration: "2026.05 - 2026.09",
+    description: "Turned AI-assisted development into an operating model: agents run scheduled engineering routines, open pull requests, and merge them behind validation gates.",
+    technologies: ["AI Ops", "Agent Orchestration", "CI/CD", "Playwright", "Spec-Driven Development", "Developer Experience"],
+    keyAchievements: [
+      "Daily routines for e2e regression, code quality, security auto-fix, bug bounty, and docs consistency",
+      "Spec-first PRD process and agent skills, including Playwright browser testing to close the loop",
+      "Cross-server agent communication, sub-agent parallelization, and auto-merge of agent PRs",
+      "Validation pipeline runtime reduced from 40 to 10 minutes",
+    ]
+  },
+  {
+    title: "Matrix Integration & Element Widget Framework",
+    icon: "💬",
+    duration: "2026.03 - 2026.07",
+    description: "Adopted the Matrix protocol as the messaging backbone and turned the Element client into an extensible application shell for the platform.",
+    technologies: ["Matrix", "Synapse", "OIDC", "E2EE", "Widget SDK", "Real-Time Systems", "TypeScript"],
+    keyAchievements: [
+      "Custom matrix-bridge with Synapse, Matrix Authentication Service, and centralized OIDC auth",
+      "End-to-end encryption, key management, external invitations, and Google/GitHub login",
+      "Element IoT widget framework: lifecycle SDK, per-page instances, roles mapped to Power Levels",
+      "Maps shipped as the first widget with time-series support",
+    ]
+  },
+  {
+    title: "Platform v3.0 Finalization & v3.1 Evolution",
+    icon: "🚀",
+    duration: "2026.02 - 2026.09",
+    description: "Completed the v3.0 core migration and evolved it into v3.1 with runtime-extensible data models and app-owned contracts.",
+    technologies: ["Architecture", "NestJS", "Redis", "JSON Schema", "Multi-Tenancy", "SDK Design", "Performance"],
+    keyAchievements: [
+      "Migrated all core services to 3.0 and split query handling into BDS and orchestrator services",
+      "Dynamic app schema and object-type injection with locking for concurrent schema changes",
+      "Published 2 SDK npm packages; apps now export their own contracts",
+      "Login/registration latency reduced from 10-20s to 1-2s; dynamic SMS provider routing",
+    ]
+  },
+  {
+    title: "Healthcare Interoperability - OpenEHR & HL7 v2",
+    icon: "🩺",
+    duration: "2026.08 - 2026.09",
+    description: "Built the first healthcare application on the platform using open clinical standards.",
+    technologies: ["OpenEHR", "HL7 v2", "Interoperability", "API Design"],
+    keyAchievements: [
+      "Designed and implemented the OpenEHR app and API",
+      "Implemented HL7 v2 message handling",
+      "Opened the platform to clinical integrations without per-customer data models",
+    ]
+  },
+  {
     title: "Core v3.0 Architecture & Permission System",
     icon: "🧩",
     duration: "2025.11 - 2026.01",

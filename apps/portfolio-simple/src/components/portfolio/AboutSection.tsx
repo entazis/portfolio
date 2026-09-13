@@ -66,29 +66,32 @@ const AboutSection: React.FC = () => {
               <p className="text-muted-foreground leading-relaxed">
                 Tech Lead with 8+ years driving technical innovation in high-growth startups. I hold a Master's degree from
                 Budapest University of Technology and Economics, specializing in Computer-based Systems with a focus on Smart City technologies.
-                Recently, I led the consolidation of 15+ repositories into a unified monorepo at BeamLive (preserving 6,674+ commits),
-                and achieved 5x productivity gains through systematic AI-assisted development workflows. My career has evolved from
-                Data Scientist to Tech Lead, always fueled by a desire to solve complex problems and build maintainable, scalable systems.
+                At BeamLive I finalized the v3 platform, shipped BeamBot (an agentic AI assistant living inside the product),
+                integrated the Matrix protocol, and consolidated 15+ repositories into a unified monorepo (preserving 6,674+ commits).
+                My career has evolved from Data Scientist to Tech Lead, always fueled by a desire to solve complex problems and build
+                maintainable, scalable systems.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-semibold text-primary mb-3">My Expertise</h3>
               <p className="text-muted-foreground leading-relaxed">
-                I specialize in building <strong className="text-foreground">scalable microservices architectures</strong> and{' '}
+                I specialize in building <strong className="text-foreground">scalable microservices architectures</strong>,{' '}
+                <strong className="text-foreground">agentic AI systems</strong>, and{' '}
                 <strong className="text-foreground">leading distributed teams</strong>. Currently managing a team of 5 engineers
-                across multiple time zones while integrating AI-assisted development workflows into daily operations.
-                My experience spans from designing nano-service architectures to implementing database replication, sharding,
-                and monorepo management. I'm passionate about <strong className="text-foreground">mentoring engineers</strong>,
-                establishing robust deployment protocols, and achieving measurable productivity improvements through innovative tooling.
+                across multiple time zones while running an AI Ops layer: autonomous routines for regression testing, code quality,
+                security fixes, and documentation, with agent pull requests auto-merged behind validation gates.
+                My experience spans from nano-service architectures, database replication, and sharding to MCP tools over MQTT,
+                runtime schema injection, and end-to-end encrypted messaging on Matrix. I'm passionate about{' '}
+                <strong className="text-foreground">mentoring engineers</strong> and making teams faster through better constraints and tooling.
               </p>
             </div>
             <div>
               <h3 className="text-2xl font-semibold text-primary mb-3">Beyond Code</h3>
               <p className="text-muted-foreground leading-relaxed">
                 I'm passionate about <strong className="text-foreground">AI and machine learning</strong>, which has come
-                full circle from my early data science work to now implementing AI-assisted development workflows that deliver
-                measurable productivity gains. I integrate MCP servers and AI agents into development processes, exploring how
-                autonomous systems can enhance engineering productivity. I also have extensive experience in{' '}
+                full circle from my early data science work to being an <strong className="text-foreground">AI-native engineer</strong>:
+                AI agents are part of how I design, build, test, and operate software, not a side tool. I treat AI as an amplifier
+                for human judgment rather than a replacement for it. I also have extensive experience in{' '}
                 <strong className="text-foreground">organizational development</strong> through my volunteer work,
                 including serving as CEO of Invisible University and training others in nonviolent communication and leadership.
               </p>

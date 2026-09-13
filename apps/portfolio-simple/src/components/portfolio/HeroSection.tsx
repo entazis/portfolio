@@ -25,7 +25,7 @@ const HeroSection: React.FC = () => {
         <div className="max-w-3xl mx-auto">
           <OptimizedImage
             src="/bence-szabo-400.jpg"
-            alt="Bence Szabó - Tech Lead and Full-Stack Software Engineer"
+            alt="Bence Szabó - Tech Lead and AI-Native Full-Stack Software Engineer"
             className="w-40 h-40 md:w-48 md:h-48 rounded-full mx-auto mb-8 shadow-xl border-4 border-primary animate-fade-in-up"
             style={{ animationDelay: '0.2s' }}
             sizes={{
@@ -52,15 +52,15 @@ const HeroSection: React.FC = () => {
             className="text-xl sm:text-2xl text-foreground mb-8 font-mono animate-fade-in-up"
             style={{ animationDelay: '0.6s' }}
           >
-            Tech Lead | Full-Stack Software Engineer | AI Enthusiast
+            Tech Lead | AI-Native Full-Stack Engineer | Agentic Systems
           </p>
           <p 
             className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto animate-fade-in-up"
             style={{ animationDelay: '0.8s' }}
           >
-            8+ years of experience in fast-paced environments, building scalable systems, leading distributed teams, 
-            and achieving measurable productivity gains through AI-assisted development. Passionate about elegant solutions, 
-            innovative problem-solving, and mentoring engineers.
+            8+ years of experience in fast-paced environments, building scalable platforms and leading distributed teams.
+            I work AI-native: I design agentic AI systems and run engineering with autonomous AI routines that test, fix,
+            and ship behind validation gates. Passionate about elegant solutions and mentoring engineers.
           </p>
           <div 
             className="space-x-4 animate-fade-in-up"
