@@ -4,7 +4,7 @@
     {
       "type": "node-terminal",
       "request": "launch",
-      "name": "Debug Next.js App",
+      "name": "Run Vite dev server",
       "command": "npm run dev",
       "cwd": "${workspaceFolder}"
     }

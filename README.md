@@ -1,57 +1,92 @@
-# Portfolio Monorepo
+# Portfolio
 
-This repository contains multiple versions of my portfolio website, managed as a monorepo.
+Source of [entazis.dev](https://entazis.dev): a clean, minimalist portfolio website built with React, TypeScript, and Tailwind CSS.
 
-## Structure
+## Tech Stack
 
-- `apps/nextjs-proto/` - Next.js version with internationalization
-- `apps/portfolio-simple/` - React + Vite version with optimized dependencies
-- `apps/portfolio-dark/` - React + Vite version with dark theme and comprehensive Radix UI components
+- **Framework**: React 19
+- **Build Tool**: Vite 5
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS 3
+- **UI Components**: Radix UI primitives with shadcn/ui
+- **Routing**: React Router DOM 6
+- **Icons**: Lucide React
+- **Notifications**: Sonner
+- **Metrics**: web-vitals, pushed to a Prometheus/Grafana stack (see [docs/README.md](docs/README.md))
+
+## Features
+
+- 🎨 Clean and minimalist design
+- 📱 Fully responsive layout
+- ♿ Accessible components (Radix UI primitives)
+- 🎭 Smooth animations and transitions
+- 🚀 Optimized bundle with Vite
+- 🖼️ Optimized images with WebP support
+- 📊 Privacy-friendly usage and Web Vitals metrics
 
 ## Development
 
 ```bash
-# Install dependencies for all workspaces
+# Install dependencies
 npm install
 
-# Development
-npm run dev:proto          # Start Next.js dev server
-npm run dev:simple         # Start Vite dev server (simple version)
-npm run dev:dark           # Start Vite dev server (dark theme)
+# Optional: local environment overrides
+cp .env.example .env
 
-# Production builds
-npm run build:all          # Build all applications
-npm run build:proto        # Build Next.js only
-npm run build:simple       # Build Vite (simple) only
-npm run build:dark         # Build Vite (dark) only
+# Start development server (http://localhost:8080)
+npm run dev
 
-# Production preview
-npm run start:proto        # Start Next.js production server
-npm run preview:simple     # Preview Vite (simple) production build
-npm run preview:dark       # Preview Vite (dark) production build
+# Build for production
+npm run build
 
-# Utilities
-npm run size              # Show build artifact sizes
-npm run lint              # Lint all workspaces
-npm run lint:fix          # Fix linting issues
-npm run clean             # Clean all dependencies and builds
-npm run clean:builds      # Clean build artifacts only
+# Build for development
+npm run build:dev
+
+# Preview production build
+npm run preview
+
+# Lint code
+npm run lint
 ```
 
-## Performance Metrics
+## Project Structure
 
-- **Next.js Portfolio**: 102kB first load JS, highly optimized
-- **Vite Portfolio**: 209kB JS (gzipped: 65kB), 2.6M build size
-- **Dependencies**: Optimized from 73 to 34 packages (-53%)
-- **Build Times**: NextJS <1s, Vite ~1s
+```
+src/
+├── components/
+│   ├── portfolio/               # Page sections (Header, Hero, About, Experience, ...)
+│   └── ui/                      # Reusable UI components (shadcn/ui)
+├── pages/
+│   ├── Index.tsx                # Main portfolio page
+│   └── NotFound.tsx             # 404 page
+├── hooks/                       # Custom React hooks (metrics, visibility, ...)
+├── services/                    # Metrics service
+├── lib/                         # Utility functions
+├── App.tsx                      # App root component
+└── main.tsx                     # App entry point
+docs/                            # Metrics setup and test reports
+public/                          # Static assets
+```
+
+## Customization
+
+- **Colors**: Edit `src/index.css` to customize the color scheme
+- **Content**: Update component files in `src/components/portfolio/`
+- **Styling**: Modify `tailwind.config.ts` for theme customization
+- **Routes**: Add new routes in `src/App.tsx`
 
 ## Deployment
 
-Each application can be deployed independently:
+`npm run build` writes a static site to `dist/`. Any static host or web server can serve it; in production nginx serves `dist/` directly from this repository.
 
-- Next.js version: Optimized for Vercel deployment
-- Vite version: Can be deployed to any static hosting service
+## Performance Optimizations
 
-## Version Switching
+- WebP image format with JPEG fallbacks
+- Responsive images with multiple sizes
+- Lazy loading for images
+- Preloading of critical assets
+- Optimized bundle splitting
 
-Each portfolio version is self-contained but shares common data and types through the shared packages.
+## History
+
+This repository used to be a monorepo holding several portfolio prototypes (a Next.js version and a dark-theme Vite version). Those were retired in September 2026 and only this app remains.
