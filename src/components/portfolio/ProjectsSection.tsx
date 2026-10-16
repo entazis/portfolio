@@ -36,6 +36,7 @@ const projects: Project[] = [
       "Spec-first PRD process and agent skills, including Playwright browser testing to close the loop",
       "Cross-server agent communication, sub-agent parallelization, and auto-merge of agent PRs",
       "Validation pipeline runtime reduced from 40 to 10 minutes",
+      "Nine of fifteen core concepts reached their final form in nine months, against six in the previous four years",
     ]
   },
   {

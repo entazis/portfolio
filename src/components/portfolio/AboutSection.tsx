@@ -51,8 +51,8 @@ const AboutSection: React.FC = () => {
                 <div className="text-sm text-muted-foreground">Productivity Gains</div>
               </div>
               <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-3xl font-bold text-primary mb-1">5</div>
-                <div className="text-sm text-muted-foreground">Team Members</div>
+                <div className="text-3xl font-bold text-primary mb-1">11×</div>
+                <div className="text-sm text-muted-foreground">Test Suite Growth in 9 Months</div>
               </div>
               <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div className="text-3xl font-bold text-primary mb-1">6,674+</div>

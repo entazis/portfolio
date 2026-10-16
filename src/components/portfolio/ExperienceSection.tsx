@@ -22,6 +22,7 @@ const experiences: ExperienceItem[] = [
       'Integrated the Matrix protocol (custom bridge, Synapse, OIDC auth, E2EE) and designed the Element widget framework with 3rd-party login.',
       'Delivered healthcare interoperability (OpenEHR API, HL7 v2) and cut login/registration latency from 10–20s to 1–2s.',
       'Consolidated 15+ repositories into a unified monorepo (6,674+ commits) and built dynamic model loading with runtime JSON schema generation.',
+      'Measured from git history: with one to two engineers on the core, the backend grew 4× and the test suite 11× in the first nine months of AI-native development, with 378 PRDs, specs and ADRs written alongside.',
     ],
     icon: '🎯',
   },
