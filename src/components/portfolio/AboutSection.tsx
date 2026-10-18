@@ -55,8 +55,8 @@ const AboutSection: React.FC = () => {
                 <div className="text-sm text-muted-foreground">Test Suite Growth in 9 Months</div>
               </div>
               <div className="bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                <div className="text-3xl font-bold text-primary mb-1">6,674+</div>
-                <div className="text-sm text-muted-foreground">Commits Preserved</div>
+                <div className="text-3xl font-bold text-primary mb-1">1,073</div>
+                <div className="text-sm text-muted-foreground">PRs Merged in 31 Days</div>
               </div>
             </div>
           </div>
@@ -67,7 +67,8 @@ const AboutSection: React.FC = () => {
                 Tech Lead with 8+ years driving technical innovation in high-growth startups. I hold a Master's degree from
                 Budapest University of Technology and Economics, specializing in Computer-based Systems with a focus on Smart City technologies.
                 At BeamLive I finalized the v3 platform, shipped BeamBot (an agentic AI assistant living inside the product),
-                integrated the Matrix protocol, and consolidated 15+ repositories into a unified monorepo (preserving 6,674+ commits).
+                integrated the Matrix protocol, built a workflow engine with booking on top of it, and consolidated 15+ repositories
+                into a unified monorepo (preserving 6,674+ commits).
                 My career has evolved from Data Scientist to Tech Lead, always fueled by a desire to solve complex problems and build
                 maintainable, scalable systems.
               </p>
@@ -79,7 +80,8 @@ const AboutSection: React.FC = () => {
                 <strong className="text-foreground">agentic AI systems</strong>, and{' '}
                 <strong className="text-foreground">leading distributed teams</strong>. Currently managing a team of 5 engineers
                 across multiple time zones while running an AI Ops layer: autonomous routines for regression testing, code quality,
-                security fixes, and documentation, with agent pull requests auto-merged behind validation gates.
+                security fixes, and documentation, with agent pull requests auto-merged behind validation gates; since planning moved
+                from Notion into GitHub Issues, 1,073 pull requests were merged into the core monorepo in 31 days.
                 My experience spans from nano-service architectures, database replication, and sharding to MCP tools over MQTT,
                 runtime schema injection, and end-to-end encrypted messaging on Matrix. I'm passionate about{' '}
                 <strong className="text-foreground">mentoring engineers</strong> and making teams faster through better constraints and tooling.

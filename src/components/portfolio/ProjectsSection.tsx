@@ -15,7 +15,7 @@ const projects: Project[] = [
   {
     title: "BeamBot - Agentic AI Assistant on the Platform",
     icon: "🤖",
-    duration: "2026.06 - 2026.09",
+    duration: "2026.06 - 2026.10",
     description: "Designed and shipped an AI agent that lives inside the platform's messaging layer and acts on user data through permission-bound tools.",
     technologies: ["AI Engineering", "Agentic Systems", "MCP", "MQTT", "Prompt Engineering", "Access Control", "NestJS"],
     keyAchievements: [
@@ -23,26 +23,28 @@ const projects: Project[] = [
       "Implemented MCP tools over MQTT with broad tool reach gated by connection-bound ACLs",
       "Built AdminAI: admin functions driven through chat, plus agent-generated custom widgets",
       "Added _ai metadata to data model schemas and agent/tool input-output validation",
+      "App-owned personas (workflow, survey, booking setup), file attachments with sealed keys, and e2e tests for the personas",
     ]
   },
   {
     title: "AI Ops - Autonomous Engineering Routines",
     icon: "🔁",
-    duration: "2026.05 - 2026.09",
+    duration: "2026.05 - 2026.10",
     description: "Turned AI-assisted development into an operating model: agents run scheduled engineering routines, open pull requests, and merge them behind validation gates.",
     technologies: ["AI Ops", "Agent Orchestration", "CI/CD", "Playwright", "Spec-Driven Development", "Developer Experience"],
     keyAchievements: [
       "Daily routines for e2e regression, code quality, security auto-fix, bug bounty, and docs consistency",
       "Spec-first PRD process and agent skills, including Playwright browser testing to close the loop",
       "Cross-server agent communication, sub-agent parallelization, and auto-merge of agent PRs",
-      "Validation pipeline runtime reduced from 40 to 10 minutes",
+      "Validation pipeline runtime reduced from 40 to 10 minutes; a multi-persona agent team reviews PRs from different angles",
+      "Notion retired for GitHub Issues: 1,073 PRs merged and 459 issues closed in the following 31 days",
       "Nine of fifteen core concepts reached their final form in nine months, against six in the previous four years",
     ]
   },
   {
     title: "Matrix Integration & Element Widget Framework",
     icon: "💬",
-    duration: "2026.03 - 2026.07",
+    duration: "2026.03 - 2026.10",
     description: "Adopted the Matrix protocol as the messaging backbone and turned the Element client into an extensible application shell for the platform.",
     technologies: ["Matrix", "Synapse", "OIDC", "E2EE", "Widget SDK", "Real-Time Systems", "TypeScript"],
     keyAchievements: [
@@ -50,12 +52,13 @@ const projects: Project[] = [
       "End-to-end encryption, key management, external invitations, and Google/GitHub login",
       "Element IoT widget framework: lifecycle SDK, per-page instances, roles mapped to Power Levels",
       "Maps shipped as the first widget with time-series support",
+      "Org Spaces and page graph, platform cut-over to Synapse, beamgate room gate, and message attachments with sealed file keys",
     ]
   },
   {
     title: "Platform v3.0 Finalization & v3.1 Evolution",
     icon: "🚀",
-    duration: "2026.02 - 2026.09",
+    duration: "2026.02 - 2026.10",
     description: "Completed the v3.0 core migration and evolved it into v3.1 with runtime-extensible data models and app-owned contracts.",
     technologies: ["Architecture", "NestJS", "Redis", "JSON Schema", "Multi-Tenancy", "SDK Design", "Performance"],
     keyAchievements: [
@@ -63,6 +66,32 @@ const projects: Project[] = [
       "Dynamic app schema and object-type injection with locking for concurrent schema changes",
       "Published 2 SDK npm packages; apps now export their own contracts",
       "Login/registration latency reduced from 10-20s to 1-2s; dynamic SMS provider routing",
+      "Horizontal scaling of the BDS service, 10× Redis performance, app install authorization, per-service broker identity",
+    ]
+  },
+  {
+    title: "Org Identity, Hierarchy & Spaces",
+    icon: "🏢",
+    duration: "2026.09 - 2026.10",
+    description: "Redefined who a connection belongs to and how organisations nest, so that apps, Spaces and permissions follow the org tree.",
+    technologies: ["Identity", "Access Control", "Multi-Tenancy", "Matrix", "Data Modeling", "NestJS"],
+    keyAchievements: [
+      "A connection is a device session: one per Matrix device, with org-scoped connections and capabilities",
+      "Org tree and hierarchical org auth: login walks the tree, ancestor admins admitted, inheritance repaired by a leased sweep",
+      "Hierarchy mapped onto Matrix: org Spaces, nested sub-Spaces, org pages and the page graph",
+    ]
+  },
+  {
+    title: "Workflow Engine & Booking",
+    icon: "📅",
+    duration: "2026.09 - 2026.10",
+    description: "Built a general workflow engine on the platform and used it to ship booking as the first customer-facing programme.",
+    technologies: ["Workflow Engines", "Domain Modeling", "Product Delivery", "AI Personas", "NestJS", "TypeScript"],
+    keyAchievements: [
+      "Run lifecycle and case engine: sub-workflow runs, repeats, escalations, directives, a page and conversation per run",
+      "Survey as a workflow extension, workflow authoring, content i18n, and a workflow persona in BeamBot",
+      "Booking v0 to M1 inside a programme workflow: readiness gate, run per participant, tick-based reminders",
+      "PREMUSZ beta: passwordless SMS invites, participant import, reminders up to 31 days, exception desk and rating tool",
     ]
   },
   {
